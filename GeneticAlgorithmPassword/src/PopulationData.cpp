@@ -90,9 +90,9 @@ void PopulationData::AllocateRandData() {
 	if (gen != nullptr) {
 		return;
 	}
-	//Will be used to obtain a seed for the random number engine
+	// Will be used to obtain a seed for the random number engine
 	std::random_device rd;  
-	//Standard mersenne_twister_engine seeded with rd()
+	// Standard mersenne_twister_engine seeded with rd()
 	gen = new std::mt19937(rd());
 	dis = new std::uniform_real_distribution<>(0.0f, 1.0f);
 }
