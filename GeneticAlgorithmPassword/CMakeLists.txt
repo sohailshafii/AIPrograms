@@ -18,3 +18,9 @@ target_include_directories(GeneticAlgorithmPassword
 		"${PROJECT_BINARY_DIR}"
 		"${PROJECT_SOURCE_DIR}/src/")
 
+enable_testing()
+
+add_executable(testMain ${PROJECT_SOURCE_DIR}/src/testMain.cpp ${PROJECT_SOURCE_DIR}/src/PopulationData.cpp
+	${PROJECT_SOURCE_DIR}/src/PopulationData.h)
+add_test(NAME testMain COMMAND testMain)
+

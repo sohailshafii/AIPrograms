@@ -1,6 +1,7 @@
 #include "PopulationData.h"
 
 #include <iostream>
+#include <cassert>
 
 std::mt19937 *PopulationData::gen; 
 std::uniform_real_distribution<> *PopulationData::dis;
@@ -143,7 +144,7 @@ void PopulationData::computePerfPopulation(const std::string& password) {
 }
 
 float PopulationData::fitnessFunction(const std::string& password,
-	const std::string& testWord) {
+	const std::string& testWord) const {
 	if (password.size() != testWord.size()) {
 		std::cout << "Word and password incompatible!\n";
 		return -1.0f;
@@ -237,6 +238,54 @@ void PopulationData::mutateNextPopulation(
 				nextGeneration[i].word);
 		}
 	}
+}
+
+void PopulationData::testInitialData() const {
+	assert(currentGeneration != nullptr);
+	assert(breeders != nullptr);
+	assert(nextGeneration != nullptr);
+
+	assert(populationSize != 0);
+	assert(numBreeders != 0);
+	assert(numberOfChildren != 0);
+
+	assert((numBreeders*numberOfChildren/2)
+		== populationSize);
+
+	assert(PopulationData::gen != nullptr); 
+    assert(PopulationData::dis != nullptr);
+}
+
+void PopulationData::testFitnessFunction(const std::string&
+	testPassword, const std::string& halfFitnessVersion) const {
+	float perfectFitness = fitnessFunction(testPassword, testPassword);
+	float halfFitness = fitnessFunction(testPassword, halfFitnessVersion);
+	float badFitness = fitnessFunction(testPassword, "test");
+
+	std::cout << "Perfect fitness: " << perfectFitness << ", "
+		<< "half fitness: " << halfFitness << ", bad fitness: "
+		<< badFitness << ".\n";
+
+	assert(perfectFitness == 100.0f);
+	assert(halfFitness > 50.0f && halfFitness < 100.0f);
+	assert(badFitness < 0.0f);
+}
+
+void PopulationData::measurePerfAndTestSort(const std::string&
+	testPassword) {
+	computePerfPopulation(testPassword);
+
+	bool properOrder = true;
+	for (int i = 1; i < populationSize-1; i++) {
+		auto& curr = currentGeneration[i],
+			prev = currentGeneration[i-1];
+		if (prev.performance < curr.performance) {
+			properOrder = false;
+			break;
+		}
+	}
+
+	assert(properOrder);
 }
 
 float PopulationData::randUnitVal() {

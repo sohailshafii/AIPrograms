@@ -28,13 +28,19 @@ public:
 
 	void calculatePerf(const std::string& password);
 	void printPopulation() const;
-	
+
+	void testInitialData() const;
+	void testFitnessFunction(const std::string&
+		testPassword, const std::string& halfFitnessVersion) const;
+	void measurePerfAndTestSort(const std::string&
+		testPassword);
+
 private:
 	std::string generateAWord(int length);
 
 	void computePerfPopulation(const std::string& password);
 	float fitnessFunction(const std::string& password,
-		const std::string& testWord);
+		const std::string& testWord) const;
 
 	void selectBreedersFromPopulation(
 		int numBestSamples, int numLuckyFewIndices);
