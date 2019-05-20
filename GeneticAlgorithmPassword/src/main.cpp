@@ -1,3 +1,4 @@
+// Sohail Shafii
 // from:
 // https://blog.sicara.com/getting-started-genetic-algorithms-python-tutorial-81ffa1dd72f9
 
@@ -40,29 +41,8 @@ std::vector<PopulationData> evolveMultipleTimes(int numberOfGenerations,
 	return allGenerations;
 }
 
-/*void runTests() {
-	std::string testPassword = "hello";
-
-	std::cout << "Running tests...\n";
-
-	float perfectFitness = fitnessFunction(testPassword, "hello");
-	float halfFitness = fitnessFunction(testPassword, "h30lo");
-	float badFitness = fitnessFunction(testPassword, "test");
-
-	std::cout << "Perfect fitness: " << perfectFitness << ", "
-		<< "half fitness: " << halfFitness << ", bad fitness: "
-		<< badFitness << ".\n";
-
-	assert(perfectFitness == 100.0f);
-	assert(halfFitness > 50.0f && halfFitness < 100.0f);
-	assert(badFitness < 0.0f);
-}*/
-
 int main() {
 	srand(time(NULL));
-
-	//runTests();
-	//return 0;
 
 	std::string password = "banana";
 	int populationSize = 100;
@@ -84,6 +64,11 @@ int main() {
 		std::vector<PopulationData> allEvolutions =
 			evolveMultipleTimes(numberOfGenerations, password, populationSize, 
 				numBestSamples, numLuckyFewIndices, numberOfChildren, chanceOfMutation);
+		
+		std::cout << "Performance of first generation:\n";
+		auto& firstGen = allEvolutions[0];
+		firstGen.printPopulation();
+
 		std::cout << "Performance of last generation:\n";
 		auto& lastGen = allEvolutions[allEvolutions.size()-1];
 		lastGen.calculatePerf(password);

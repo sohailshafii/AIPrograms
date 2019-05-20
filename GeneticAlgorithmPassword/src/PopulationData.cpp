@@ -1,3 +1,7 @@
+// Sohail Shafii
+// from:
+// https://blog.sicara.com/getting-started-genetic-algorithms-python-tutorial-81ffa1dd72f9
+
 #include "PopulationData.h"
 
 #include <iostream>
@@ -178,8 +182,8 @@ void PopulationData::selectBreedersFromPopulation(
 	}
 
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-  	std::shuffle (breeders, breeders + numBreeders,
-  		std::default_random_engine(seed));
+	std::shuffle (breeders, breeders + numBreeders,
+		std::default_random_engine(seed));
 }
 
 std::string PopulationData::createChild(const std::string& individual1,
@@ -253,7 +257,7 @@ void PopulationData::testInitialData() const {
 		== populationSize);
 
 	assert(PopulationData::gen != nullptr); 
-    assert(PopulationData::dis != nullptr);
+	assert(PopulationData::dis != nullptr);
 }
 
 void PopulationData::testFitnessFunction(const std::string&

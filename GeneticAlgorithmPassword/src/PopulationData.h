@@ -1,3 +1,7 @@
+// Sohail Shafii
+// from:
+// https://blog.sicara.com/getting-started-genetic-algorithms-python-tutorial-81ffa1dd72f9
+
 #pragma once
 
 #include <string>
@@ -66,6 +70,6 @@ private:
 	int numBreeders;
 	int numberOfChildren;
 
-    static std::mt19937 *gen; 
-    static std::uniform_real_distribution<> *dis;
+	static std::mt19937 *gen; 
+	static std::uniform_real_distribution<> *dis;
 };

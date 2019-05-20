@@ -1,3 +1,6 @@
+// Sohail Shafii
+// from:
+// https://blog.sicara.com/getting-started-genetic-algorithms-python-tutorial-81ffa1dd72f9
 
 #include "PopulationData.h"
 
