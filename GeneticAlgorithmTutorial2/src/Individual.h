@@ -20,7 +20,7 @@ public:
 		defaultGeneLength = length;
 	}
 
-	char getGene(int index) {
+	char getGene(int index) const {
 		return genes[index];
 	}
 

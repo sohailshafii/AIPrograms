@@ -9,7 +9,7 @@ set (CMAKE_CXX_STANDARD 14)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 set(SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/main.cpp
-${PROJECT_SOURCE_DIR}/src/Individual.h ${PROJECT_SOURCE_DIR}/src/Individual.cpp ${PROJECT_SOURCE_DIR}/src/Population.h ${PROJECT_SOURCE_DIR}/src/Population.cpp)
+${PROJECT_SOURCE_DIR}/src/Individual.h ${PROJECT_SOURCE_DIR}/src/Individual.cpp ${PROJECT_SOURCE_DIR}/src/Population.h ${PROJECT_SOURCE_DIR}/src/Population.cpp ${PROJECT_SOURCE_DIR}/src/FitnessCalc.h ${PROJECT_SOURCE_DIR}/src/FitnessCalc.cpp)
 
 add_executable(GeneticAlgorithmTutorial2 ${SOURCE_FILES})
 
