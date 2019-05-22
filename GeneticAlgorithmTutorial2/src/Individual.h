@@ -4,6 +4,7 @@
 
 #include <string>
 #include <random>
+#include "FitnessCalc.h"
 
 class Individual {
 public:
@@ -33,8 +34,10 @@ public:
 		return numGenes;
 	}
 
-	int getFitness() const {
-		// TODO fitness
+	int getFitness() {
+		if (fitness == 0) {
+			fitness = FitnessCalc::getFitness(*this);
+		}
 		return fitness;
 	}
 
