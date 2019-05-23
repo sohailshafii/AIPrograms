@@ -1,6 +1,8 @@
 // http://www.theprojectspot.com/tutorial-post/creating-a-genetic-algorithm-for-beginners/3
 
 #include "Individual.h"
+#include <cmath>
+#include <iostream>
 
 int Individual::defaultGeneLength = 64;
 
@@ -10,7 +12,7 @@ std::uniform_real_distribution<> *Individual::dis;
 Individual::Individual() {
 	allocateRandData();
 
-	genes = new char[defaultGeneLength];
+	genes = new int[defaultGeneLength];
 	numGenes = defaultGeneLength;
 	fitness = 0;
 }
@@ -35,24 +37,25 @@ Individual& Individual::operator=(
 
 void Individual::allocateAndCopyFrom(
 	const Individual& other) {
-	genes = new char[other.numGenes];
-	memcpy(genes, other.genes, other.numGenes);
+	genes = new int[other.numGenes];
+	memcpy(genes, other.genes, sizeof(int)*other.numGenes);
 	numGenes = other.numGenes;
 	fitness = other.fitness;
 }
 
 void Individual::generateIndividual() {
 	for (int i = 0; i < numGenes; i++) {
-		char gene = (char)(255.0f*Individual::randUnitVal());
+		auto randomVar = Individual::randUnitVal();
+		genes[i] = (int)(round(randomVar));
 	}
 }
 
-std::string Individual::toString() const {
-	std::string geneString = "";
-    for (int i = 0; i < size(); i++) {
-        geneString += genes[i];
+void Individual::print() const {
+	int numGenes = size();
+    for (int i = 0; i < numGenes; i++) {
+        std::cout << genes[i] << ", ";
     }
-    return geneString;
+    std::cout << std::endl;
 }
 
 void Individual::allocateRandData() {

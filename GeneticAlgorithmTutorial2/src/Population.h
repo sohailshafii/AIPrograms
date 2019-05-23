@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Individual.h"
+#include <iostream>
 
 class Population {
 public:
@@ -40,6 +41,12 @@ public:
 	void saveIndividual(int index,
 		Individual& indiv) {
 		individuals[index] = indiv;
+	}
+
+	void PrintPropulation() {
+		for (int i = 0; i < populationSize; i++) {
+			individuals[i].print();
+		}
 	}
 
 private:

@@ -4,14 +4,15 @@
 #include "Individual.h"
 
 int FitnessCalc::numChars = 64;
-char* FitnessCalc::solution = new char[64];
+int* FitnessCalc::solution = new int[64];
 
-void FitnessCalc::setSolution(char* newSolution, int length) {
+void FitnessCalc::setSolution(int* newSolution, int length) {
 	if (solution != nullptr) {
 		delete [] solution;
 	}
 	numChars = length;
-	memcpy(solution, newSolution, length);
+	solution = new int[numChars];
+	memcpy(solution, newSolution, length*sizeof(int));
 }	
 
 void FitnessCalc::setSolution(const std::string& newSolution) {
@@ -19,15 +20,15 @@ void FitnessCalc::setSolution(const std::string& newSolution) {
 		delete [] solution;
 	}
 	numChars = newSolution.size();
-    solution = new char[numChars];
+    solution = new int[numChars];
     const char* charVersion = newSolution.c_str();
 
     // Loop through each character of our string and save it in our byte 
     // array
     for (int i = 0; i < numChars; i++) {
         auto currChar = charVersion[i]; 
-        if (currChar == '0' || currChar == '1') {
-            solution[i] = currChar;
+        if (currChar == '1') {
+            solution[i] = 1;
         } else {
             solution[i] = 0;
         }

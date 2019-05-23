@@ -7,10 +7,10 @@
 int main() {
 	FitnessCalc::setSolution("1111000000000000000000000000000000000000000000000000000000001111");
 
-	Population myPop(50,true);
+	Population myPop(50, true);
+
 	int generationCount = 0;
-	while(myPop.getFittest().getFitness() < FitnessCalc::getMaxFitness() && 
-		generationCount < 20) {
+	while(myPop.getFittest().getFitness() < FitnessCalc::getMaxFitness()) {
 		generationCount++;
 		std::cout << " Generation: " << generationCount << ", fittest: "
 			<< myPop.getFittest().getFitness() << " vs " << 
@@ -19,7 +19,8 @@ int main() {
 		std::cout << "Evolved!\n";
 	}
 	std::cout << "Solution found! Generation: " << generationCount
-		<< ", genes: " << myPop.getFittest().toString() << std::endl;
+		<< ", genes: \n";
+	myPop.getFittest().print();
 
 	return 0;
 }

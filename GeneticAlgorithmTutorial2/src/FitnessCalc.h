@@ -9,9 +9,9 @@ class Individual;
 class FitnessCalc {
 public:
 	static int numChars;
-	static char* solution;
+	static int* solution;
 
-	static void setSolution(char* newSolution, int length);
+	static void setSolution(int* newSolution, int length);
 	static void setSolution(const std::string& newSolution);
 
     static int getFitness(const Individual& individual);

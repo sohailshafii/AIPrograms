@@ -65,9 +65,10 @@ float Algorithm::randomValue() {
 void Algorithm::mutate(Individual &indiv) {
 	Individual newSol;
 	int numGenes = indiv.size();
+
 	for (int i = 0; i < numGenes; i++) {
 		if (Algorithm::randomValue() <= mutationRate) {
-			char gene = round(Algorithm::randomValue());
+			int gene = (int)round(Algorithm::randomValue());
 			indiv.setGene(i, gene);
 		}
 	}

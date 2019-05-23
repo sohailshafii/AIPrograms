@@ -21,11 +21,11 @@ public:
 		defaultGeneLength = length;
 	}
 
-	char getGene(int index) const {
+	int getGene(int index) const {
 		return genes[index];
 	}
 
-	void setGene(int index, char value) {
+	void setGene(int index, int value) {
 		genes[index] = value;
 		fitness = 0;
 	}
@@ -41,7 +41,7 @@ public:
 		return fitness;
 	}
 
-	std::string toString() const;
+	void print() const;
 
 private:
 	void allocateAndCopyFrom(const Individual& other);
@@ -50,7 +50,7 @@ private:
 	static float randUnitVal();
 
 	static int defaultGeneLength;
-	char* genes;
+	int* genes;
 	int numGenes;
 	int fitness;
 
