@@ -10,6 +10,10 @@ public:
 	Population(int populationSize, bool
 		initialize);
 
+	Population(const Population &p2);
+	Population& operator=(
+		const Population& other);
+
 	~Population();
 
 	Individual& getIndividual(int index) {
@@ -39,6 +43,8 @@ public:
 	}
 
 private:
+
+	void allocateAndCopyFrom(const Population &other);
 
 	Individual* individuals;
 	int populationSize;
