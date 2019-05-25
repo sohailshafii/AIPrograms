@@ -1,13 +1,30 @@
+//https://towardsdatascience.com/how-to-build-your-own-neural-network-from-scratch-in-python-68998a08e4f6
+
 #pragma once
 
 #include "Common.h"
 
-// assuming 0 bias
+// assuming 0 bias, and assume that this is a 
+// 2-layer neural network
 class NeuralNetwork {
 public:
+	NeuralNetwork(float *x, float *y,
+		int arraySize);
+	~NeuralNetwork();
 
+	void feedForward();
 
 private:
+	int arraySize;
+
+	float *input;
+	float *weights1, *weights2;
+	float *y;
+	float *output;
+
+	float *layer1;
+
+	float sigmoid(float x);
 
 	// x would be 4x1, y would be 4x1
 	// weights are four items each
