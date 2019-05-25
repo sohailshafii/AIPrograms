@@ -5,89 +5,110 @@
 #include <iostream>
 #include "Common.h"
 
-NeuralNetwork::NeuralNetwork(float *x, float *y,
-	int arraySize) {
-	this->arraySize = arraySize;
+NeuralNetwork::NeuralNetwork(float **x, float *y,
+	int numRows, int numColumns) {
+	this->numRows = numRows;
+	this->numColumns = numColumns;
 
-	this->input = new float[arraySize];
-	this->y = new float[arraySize];
-	this->weights1 = new float[arraySize];
-	this->weights2 = new float[arraySize];
-	this->output = new float[arraySize];
+	this->input = new float*[numRows];
+	this->weights1 = new float*[numColumns];
+	this->weights2 = new float[numRows];
 
-	this->layer1 = new float[arraySize];
-	this->dWeights1 = new float[arraySize];
-	this->dWeights2 = new float[arraySize];
+	this->y = new float[numRows];
+	this->output = new float[numRows];
 
-	for (int i = 0; i < arraySize; i++) {
-		this->input[i] = x[i];
-		this->weights1[i] = randomUnitValue();
-		this->weights2[i] = randomUnitValue();
-		this->y[i] = y[i];
-		this->output[i] = 0.0f;
+	this->layer1 = new float[numRows];
+	/*this->dWeights1 = new float[arraySize];
+	this->dWeights2 = new float[arraySize];*/
+
+	for (int row = 0; row < numRows; row++) {
+		this->input[row] = new float[numColumns];
+		for(int column = 0; column < numColumns; column++) {
+			this->input[row][column] = x[row][column];
+		}
+		this->y[row] = y[row];
+		this->output[row] = randomUnitValue();
+		this->weights2[row] = randomUnitValue();
+	}
+
+	for (int column = 0; column < numColumns; column++) {
+		this->weights1[column] = new float[numRows];
+		for (int row = 0; row < numRows; row++) {
+			this->weights1[column][row] = randomUnitValue();
+		}
 	}
 }
 
 NeuralNetwork::~NeuralNetwork() {
-	if (input != nullptr) {
-		delete [] input;
+	if (this->input != nullptr) {
+		for (int i = 0; i < numRows; i++) {
+			delete [] this->input[i];
+		}
+		delete [] this->input;
 	}
-	if (weights1 != nullptr) {
-		delete [] weights1;
-	}
-	if (weights2 != nullptr) {
-		delete [] weights2;
-	}
-	if (y != nullptr) {
-		delete [] y;
-	}
-	if (output != nullptr) {
-		delete [] output;
+	if (this->weights1 != nullptr) {
+		for (int i = 0; i < numColumns; i++) {
+			delete [] this->weights1[i];
+		}
+		delete [] this->weights1;
 	}
 
-	if (layer1 != nullptr) {
-		delete [] layer1;
+	if (this->weights2 != nullptr) {
+		delete [] this->weights2;
 	}
-
-	if (dWeights1 != nullptr) {
+	if (this->y != nullptr) {
+		delete [] this->y;
+	}
+	if (this->output != nullptr) {
+		delete [] this->output;
+	}
+	if (this->layer1 != nullptr) {
+		delete [] this->layer1;
+	}
+	/*if (dWeights1 != nullptr) {
 		delete [] dWeights1;
 	}
 	if (dWeights2 != nullptr) {
 		delete [] dWeights2;
-	}
+	}*/
 }
 
 void NeuralNetwork::configure(int iterations) {
-	std::cout << "Input: ";
-	for (int i = 0; i < arraySize; i++) {
-		std::cout << input[i] << ", ";
+	std::cout << "Input:\n";
+	for (int row = 0; row < numRows; row++) {
+		auto inputRow = input[row];
+		for (int column = 0; column < numColumns; column++) {
+			std::cout << inputRow[column] << ", ";
+		}
+		std::cout << std::endl;
 	}
 	std::cout << std::endl;
 	std::cout << "Y: ";
-	for (int i = 0; i < arraySize; i++) {
-		std::cout << y[i] << ", ";
+	for (int row = 0; row < numRows; row++) {
+		std::cout << y[row] << ", ";
 	}
 	std::cout << std::endl;
 
 	for (int i = 0; i < iterations; i++) {
 		feedForward();
-		backProp();
+		//backProp();
 	} 
 
 	std::cout << "After " << iterations << 
 		" iterations, output is:\n";
-	for (int i = 0; i < arraySize; i++) {
-		std::cout << output[i] << ", ";
+	for (int row = 0; row < numRows; row++) {
+		std::cout << output[row] << ", ";
 	}
-	std::cout << "\nCurrent loss: "
-		<< computeCurrentLoss() << ".\n";
+	std::cout << std::endl;
+	//std::cout << "\nCurrent loss: "
+//		<< computeCurrentLoss() << ".\n";
 }
 
 void NeuralNetwork::feedForward() {
-	for (int i = 0; i < arraySize; i++) {
+	/*for (int i = 0; i < arraySize; i++) {
 		this->layer1[i] = sigmoid(this->input[i] * this->weights1[i]);
 		this->output[i] = sigmoid(this->layer1[i] * this->weights2[i]);
-	}
+	}*/
 }
 
 float NeuralNetwork::sigmoid(float x) const {
@@ -106,16 +127,15 @@ float NeuralNetwork::derivSigmoid(float x) const {
 // we have to find the minimum of the loss function
 // so we need to take the derivative of what's inside
 // the sum, which is (y_hat - y)^2 per neural bit
-float NeuralNetwork::computeCurrentLoss() const {
-	float loss = 0.0f;
+/*	float loss = 0.0f;
 	for (int i = 0; i < arraySize; i++) {
 		float diff = this->output[i] - y[i];
 		loss += diff*diff;
 	}
 	return loss;
-}
+}*/
 
-void NeuralNetwork::backProp() {
+/*void NeuralNetwork::backProp() {
 	for (int i = 0; i < arraySize; i++) {
 		float diffYOutput = 2.0*(y[i] - output[i]);
 		float derivSigmoidOutTerm = 
@@ -130,5 +150,5 @@ void NeuralNetwork::backProp() {
 		weights1[i] += dWeights1[i];
 		weights2[i] += dWeights2[i];
 	}
-}
+}*/
 
