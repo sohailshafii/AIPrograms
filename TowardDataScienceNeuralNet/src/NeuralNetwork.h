@@ -30,7 +30,7 @@ private:
 	void feedForward();
 	float sigmoid(float x) const;
 	float derivSigmoid(float x) const;
-	//float computeCurrentLoss() const;
+	float computeCurrentLoss() const;
 
 	//void backProp();
 

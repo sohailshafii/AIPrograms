@@ -109,6 +109,22 @@ void NeuralNetwork::feedForward() {
 		this->layer1[i] = sigmoid(this->input[i] * this->weights1[i]);
 		this->output[i] = sigmoid(this->layer1[i] * this->weights2[i]);
 	}*/
+
+	// compute first layer
+	for (int row = 0; row < numRows; row++) {
+		auto inputRow = input[row];
+		float dotProduct = 0.0f;
+		for (int column = 0; column; column++) {
+			dotProduct = inputRow[column] *
+				weights1[column][row];
+		}
+		layer1[row] = sigmoid(dotProduct);
+	}
+
+	// and now second layer
+	for (int row = 0; row < numRows; row++) {
+		output[row] = sigmoid(layer1[row] * weights2[row]);
+	}
 }
 
 float NeuralNetwork::sigmoid(float x) const {
@@ -127,13 +143,14 @@ float NeuralNetwork::derivSigmoid(float x) const {
 // we have to find the minimum of the loss function
 // so we need to take the derivative of what's inside
 // the sum, which is (y_hat - y)^2 per neural bit
-/*	float loss = 0.0f;
-	for (int i = 0; i < arraySize; i++) {
-		float diff = this->output[i] - y[i];
+float NeuralNetwork::computeCurrentLoss() const {
+	float loss = 0.0f;
+	for (int row = 0; row < numRows; row++) {
+		float diff = this->output[row] - y[row];
 		loss += diff*diff;
 	}
 	return loss;
-}*/
+}
 
 /*void NeuralNetwork::backProp() {
 	for (int i = 0; i < arraySize; i++) {
