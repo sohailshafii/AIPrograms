@@ -17,13 +17,15 @@ NeuralNetwork::NeuralNetwork(float **x, float *y,
 	this->y = new float[numRows];
 	this->output = new float[numRows];
 
-	this->layer1 = new float[numRows];
+	this->layer1 = new float*[numRows];
 
 	this->dWeights1 = new float*[numColumns];
 	this->dWeights2 = new float[numRows];
 
 	for (int row = 0; row < numRows; row++) {
 		this->input[row] = new float[numColumns];
+		this->layer1[row] = new float[numRows];
+
 		for(int column = 0; column < numColumns; column++) {
 			this->input[row][column] = x[row][column];
 		}
@@ -49,8 +51,8 @@ NeuralNetwork::~NeuralNetwork() {
 		delete [] this->input;
 	}
 	if (this->weights1 != nullptr) {
-		for (int row = 0; row < numColumns; row++) {
-			delete [] this->weights1[row];
+		for (int column = 0; column < numColumns; column++) {
+			delete [] this->weights1[column];
 		}
 		delete [] this->weights1;
 	}
@@ -65,6 +67,9 @@ NeuralNetwork::~NeuralNetwork() {
 		delete [] this->output;
 	}
 	if (this->layer1 != nullptr) {
+		for (int row = 0; row < numRows; row++) {
+			delete [] this->layer1[row];
+		}
 		delete [] this->layer1;
 	}
 
@@ -107,30 +112,34 @@ void NeuralNetwork::configure(int iterations) {
 		std::cout << output[row] << ", ";
 	}
 	std::cout << std::endl;
-	//std::cout << "\nCurrent loss: "
-//		<< computeCurrentLoss() << ".\n";
+	std::cout << "\nCurrent loss: "
+		<< computeCurrentLoss() << ".\n";
 }
 
 void NeuralNetwork::feedForward() {
-	/*for (int i = 0; i < arraySize; i++) {
-		this->layer1[i] = sigmoid(this->input[i] * this->weights1[i]);
-		this->output[i] = sigmoid(this->layer1[i] * this->weights2[i]);
-	}*/
-
 	// compute first layer
 	for (int row = 0; row < numRows; row++) {
 		auto inputRow = input[row];
-		float dotProduct = 0.0f;
-		for (int column = 0; column; column++) {
-			dotProduct = inputRow[column] *
-				weights1[column][row];
+		// note that layer1 is symmetric
+		for (int column = 0; column < numRows; column++) {
+			float dotProduct = 0.0f;
+			for (int dotIndex = 0; dotIndex < numColumns;
+				dotIndex++) {
+				dotProduct = inputRow[dotIndex] *
+					weights1[dotIndex][column];
+			}
+			layer1[row][column] = sigmoid(dotProduct);
 		}
-		layer1[row] = sigmoid(dotProduct);
 	}
 
 	// and now second layer
 	for (int row = 0; row < numRows; row++) {
-		output[row] = sigmoid(layer1[row] * weights2[row]);
+		float dotProduct = 0.0f;
+		auto layer1Row = layer1[row];
+		for (int dotIndex = 0; dotIndex < numColumns; dotIndex++) {
+			dotProduct += layer1Row[dotIndex]*weights2[dotIndex];
+		}
+		output[row] = sigmoid(dotProduct);
 	}
 }
 
@@ -159,8 +168,20 @@ float NeuralNetwork::computeCurrentLoss() const {
 	return loss;
 }
 
-/*void NeuralNetwork::backProp() {
-	for (int i = 0; i < arraySize; i++) {
+void NeuralNetwork::backProp() {
+	
+	for (int row = 0; row < numRows; row++) {
+		float diffY = 2.0f*(y[row] - output[row]);
+		auto currLayerRow = layer1[row];
+
+		float dotProduct = 0.0f;
+		for (int dotIndex = 0; dotIndex < numRows;
+			dotIndex++) {
+			//dotProduct += layer1
+		}
+	}
+
+	/*for (int i = 0; i < arraySize; i++) {
 		float diffYOutput = 2.0*(y[i] - output[i]);
 		float derivSigmoidOutTerm = 
 			diffYOutput * derivSigmoid(output[i]);
@@ -173,6 +194,6 @@ float NeuralNetwork::computeCurrentLoss() const {
 		// use partial derivatives to (hopefully) move toward minimum
 		weights1[i] += dWeights1[i];
 		weights2[i] += dWeights2[i];
-	}
-}*/
+	}*/
+}
 

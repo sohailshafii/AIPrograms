@@ -23,7 +23,7 @@ private:
 	float *y;
 	float *output;
 
-	float *layer1;
+	float **layer1;
 
 	float **dWeights1, *dWeights2;
 
@@ -32,7 +32,7 @@ private:
 	float derivSigmoid(float x) const;
 	float computeCurrentLoss() const;
 
-	//void backProp();
+	void backProp();
 
 	// x would be 4x1, y would be 4x1
 	// weights are four items each
