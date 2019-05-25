@@ -7,6 +7,7 @@ int main() {
 	float y[4] = {0.0f, 1.0f, 1.0f, 0.0};
 
 	NeuralNetwork neuralNet(x, y, 4);
+	neuralNet.configure(10500);
 
 	return 0;
 }

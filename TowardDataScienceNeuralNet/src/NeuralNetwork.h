@@ -5,14 +5,15 @@
 #include "Common.h"
 
 // assuming 0 bias, and assume that this is a 
-// 2-layer neural network
+// 2-layer neural network. fine-tuning weights and biases
+// for each input is known as "training" a neural network
 class NeuralNetwork {
 public:
 	NeuralNetwork(float *x, float *y,
 		int arraySize);
 	~NeuralNetwork();
 
-	void feedForward();
+	void configure(int iterations);	
 
 private:
 	int arraySize;
@@ -24,7 +25,14 @@ private:
 
 	float *layer1;
 
-	float sigmoid(float x);
+	float *dWeights1, *dWeights2;
+
+	void feedForward();
+	float sigmoid(float x) const;
+	float derivSigmoid(float x) const;
+	float computeCurrentLoss() const;
+
+	void backProp();
 
 	// x would be 4x1, y would be 4x1
 	// weights are four items each
