@@ -25,7 +25,7 @@ private:
 
 	float *layer1;
 
-	//float *dWeights1, *dWeights2;
+	float **dWeights1, *dWeights2;
 
 	void feedForward();
 	float sigmoid(float x) const;

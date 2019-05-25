@@ -18,8 +18,9 @@ NeuralNetwork::NeuralNetwork(float **x, float *y,
 	this->output = new float[numRows];
 
 	this->layer1 = new float[numRows];
-	/*this->dWeights1 = new float[arraySize];
-	this->dWeights2 = new float[arraySize];*/
+
+	this->dWeights1 = new float*[numColumns];
+	this->dWeights2 = new float[numRows];
 
 	for (int row = 0; row < numRows; row++) {
 		this->input[row] = new float[numColumns];
@@ -33,6 +34,7 @@ NeuralNetwork::NeuralNetwork(float **x, float *y,
 
 	for (int column = 0; column < numColumns; column++) {
 		this->weights1[column] = new float[numRows];
+		this->dWeights1[column] = new float[numRows];
 		for (int row = 0; row < numRows; row++) {
 			this->weights1[column][row] = randomUnitValue();
 		}
@@ -41,14 +43,14 @@ NeuralNetwork::NeuralNetwork(float **x, float *y,
 
 NeuralNetwork::~NeuralNetwork() {
 	if (this->input != nullptr) {
-		for (int i = 0; i < numRows; i++) {
-			delete [] this->input[i];
+		for (int row = 0; row < numRows; row++) {
+			delete [] this->input[row];
 		}
 		delete [] this->input;
 	}
 	if (this->weights1 != nullptr) {
-		for (int i = 0; i < numColumns; i++) {
-			delete [] this->weights1[i];
+		for (int row = 0; row < numColumns; row++) {
+			delete [] this->weights1[row];
 		}
 		delete [] this->weights1;
 	}
@@ -65,12 +67,17 @@ NeuralNetwork::~NeuralNetwork() {
 	if (this->layer1 != nullptr) {
 		delete [] this->layer1;
 	}
-	/*if (dWeights1 != nullptr) {
-		delete [] dWeights1;
+
+	if (dWeights1 != nullptr) {
+		for (int column = 0;
+			column < numColumns; column++) {
+			delete [] this->dWeights1[column];
+		}
+		delete [] this->dWeights1;
 	}
 	if (dWeights2 != nullptr) {
 		delete [] dWeights2;
-	}*/
+	}
 }
 
 void NeuralNetwork::configure(int iterations) {
