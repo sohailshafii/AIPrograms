@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Common.h"
+#include "Matrix.h"
 
 // assuming 0 bias, and assume that this is a 
 // 2-layer neural network. fine-tuning weights and biases

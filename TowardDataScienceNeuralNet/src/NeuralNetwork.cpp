@@ -103,7 +103,7 @@ void NeuralNetwork::configure(int iterations) {
 
 	for (int i = 0; i < iterations; i++) {
 		feedForward();
-		//backProp();
+		backProp();
 	} 
 
 	std::cout << "After " << iterations << 
@@ -117,11 +117,13 @@ void NeuralNetwork::configure(int iterations) {
 }
 
 void NeuralNetwork::feedForward() {
+	int numRowsLayer1 = numRows;
+	int numColumnsLayer1 = numColumns;
 	// compute first layer
-	for (int row = 0; row < numRows; row++) {
+	for (int row = 0; row < numRowsLayer1; row++) {
 		auto inputRow = input[row];
 		// note that layer1 is symmetric
-		for (int column = 0; column < numRows; column++) {
+		for (int column = 0; column < numColumnsLayer1; column++) {
 			float dotProduct = 0.0f;
 			for (int dotIndex = 0; dotIndex < numColumns;
 				dotIndex++) {
@@ -136,7 +138,7 @@ void NeuralNetwork::feedForward() {
 	for (int row = 0; row < numRows; row++) {
 		float dotProduct = 0.0f;
 		auto layer1Row = layer1[row];
-		for (int dotIndex = 0; dotIndex < numColumns; dotIndex++) {
+		for (int dotIndex = 0; dotIndex < numRows; dotIndex++) {
 			dotProduct += layer1Row[dotIndex]*weights2[dotIndex];
 		}
 		output[row] = sigmoid(dotProduct);
@@ -171,15 +173,35 @@ float NeuralNetwork::computeCurrentLoss() const {
 void NeuralNetwork::backProp() {
 	
 	for (int row = 0; row < numRows; row++) {
-		float diffY = 2.0f*(y[row] - output[row]);
 		auto currLayerRow = layer1[row];
 
 		float dotProduct = 0.0f;
 		for (int dotIndex = 0; dotIndex < numRows;
 			dotIndex++) {
-			//dotProduct += layer1
+			dotProduct += currLayerRow[dotIndex]
+				*2.0f*(y[dotIndex] - output[dotIndex])*
+				derivSigmoid(output[dotIndex]);
+		}
+		dWeights2[row] = dotProduct;
+	}
+
+	// weights 2 -- would be nice if we had a matrix class!
+	float temp[numRows][numRows];
+	for (int row = 0; row < numRows; row++) {
+		for (int col = 0; col < numRows;
+			col++) {
+
+			float dotProduct = 0.0f;
+			for (int dotIndex = 0; dotIndex < numRows;
+				dotIndex++) {
+				dotProduct += derivSigmoid(output[dotIndex])
+					*2.0f*(y[dotIndex] - output[dotIndex])*
+					weights2[dotIndex];
+			}
+			temp[row][col] = dotProduct;
 		}
 	}
+	//float temp2[numRows]
 
 	/*for (int i = 0; i < arraySize; i++) {
 		float diffYOutput = 2.0*(y[i] - output[i]);

@@ -9,7 +9,8 @@ set (CMAKE_CXX_STANDARD 14)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 set(SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/main.cpp ${PROJECT_SOURCE_DIR}/src/NeuralNetwork.cpp
-	${PROJECT_SOURCE_DIR}/src/NeuralNetwork.h ${PROJECT_SOURCE_DIR}/src/Common.h)
+	${PROJECT_SOURCE_DIR}/src/NeuralNetwork.h ${PROJECT_SOURCE_DIR}/src/Matrix.cpp
+	${PROJECT_SOURCE_DIR}/src/Matrix.h ${PROJECT_SOURCE_DIR}/src/Common.h)
 
 add_executable(TowardDataScienceNeuralNet ${SOURCE_FILES})
 
