@@ -10,8 +10,8 @@ public:
 	Matrix& operator=(const Matrix& rhs);
 
   	Matrix transpose() const;
-  	void makeTranspose();
   	void makeIdentity();
+    void fillWithZeros();
 
 	Matrix operator+(const Matrix& rhs) const;
   	Matrix operator-(const Matrix& rhs) const;
@@ -34,11 +34,13 @@ public:
   	int getNumRows() const { return numRows; }
   	int getNumColumns() const { return numColumns; }
 
+    float* operator[] (unsigned int row);
+
   	float& operator()(unsigned int row, unsigned int col);
   	const float& operator()(unsigned int row, unsigned int col) const;
 
 private:
-	unsigned int numRows, numColumns;
+	unsigned int numRows, numColumns, numElements;
 	float *m;
 
 	void AllocateAndCopyFrom(const Matrix& other);

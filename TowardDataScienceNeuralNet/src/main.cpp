@@ -8,6 +8,8 @@ int main() {
     // 0 1 1   
     // 1 0 1    
     // 1 1 1 
+	Matrix m(4, 4);
+
     float **x = new float*[4];
     for (int i = 0; i < 4; i++) {
     	x[i] = new float[3];

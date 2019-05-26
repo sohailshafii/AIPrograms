@@ -8,7 +8,8 @@ Matrix::Matrix(unsigned int numRows, unsigned int numColumns) {
 	this->numRows = numRows;
 	this->numColumns = numColumns;
 
-	m = new float[numRows*numColumns];
+	numElements = numRows*numColumns;
+	m = new float[numElements];
 	makeIdentity();
 }
 
@@ -36,33 +37,50 @@ Matrix Matrix::transpose() const {
   	return transposed;	
 }
 
-void Matrix::makeTranspose() {
-	// TODO
+void Matrix::makeIdentity() {
+	fillWithZeros();
+	for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
+		int oneDimIndex = rowIndex*numColumns + rowIndex;
+		m[oneDimIndex] = 1.0f;
+	}
 }
 
-void Matrix::makeIdentity() {
-	// TODO
+void Matrix::fillWithZeros() {
+	for (int elementIndex = 0; elementIndex <
+		numElements; elementIndex++) {
+		m[elementIndex] = 0.0f;
+	}
 }
 
 void Matrix::AllocateAndCopyFrom(const Matrix& other) {
 	this->numRows = other.numRows;
 	this->numColumns = other.numColumns;
 
-	auto numElements = numRows*numColumns;
+	numElements = numRows*numColumns;
 	m = new float[numElements];
 	memcpy(m, other.m, numElements*sizeof(float));
 }
 
 Matrix Matrix::operator+(const Matrix& rhs) const {
 	Matrix sum(rhs.numRows, rhs.numColumns);
-	// TODO
+	
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		sum.m[elementIndex] = this->m[elementIndex]
+			+ rhs.m[elementIndex];
+	}
 
 	return sum;
 }
 
 Matrix Matrix::operator-(const Matrix& rhs) const {
 	Matrix diff(rhs.numRows, rhs.numColumns);
-	// TODO
+
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		diff.m[elementIndex] = this->m[elementIndex]
+			- rhs.m[elementIndex];
+	}
 
 	return diff;
 }
@@ -75,69 +93,120 @@ Matrix Matrix::operator*(const Matrix& rhs) const {
 }
 
 Matrix& Matrix::operator+=(const Matrix& rhs) {
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		m[elementIndex] += rhs.m[elementIndex];
+	}
 	return *this;
 }
 
 Matrix& Matrix::operator-=(const Matrix& rhs) {
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		m[elementIndex] -= rhs.m[elementIndex];
+	}
 	return *this;
 }
 
 Matrix& Matrix::operator*=(const Matrix& rhs) {
+	// TODO
 	return *this;
 }
 
 Matrix Matrix::operator+(float scalar) const {
 	Matrix sum(*this);
-	// TODO
+
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		sum.m[elementIndex] = this->m[elementIndex]
+			+ scalar;
+	}
 
 	return sum;
 }
 
 Matrix Matrix::operator-(float scalar) const {
 	Matrix diff(*this);
-	// TODO
+
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		diff.m[elementIndex] = this->m[elementIndex]
+			- scalar;
+	}
 
 	return diff;
 }
 
 Matrix Matrix::operator*(float scalar)  const {
 	Matrix product(*this);
-	// TODO
+
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		product.m[elementIndex] = this->m[elementIndex]
+			* scalar;
+	}
 
 	return product;
 }
 
 Matrix Matrix::operator/(float scalar) const {
 	Matrix div(*this);
-	// TODO
+
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		div.m[elementIndex] = this->m[elementIndex]
+			/ scalar;
+	}
 
 	return div;
 }
 
 Matrix& Matrix::operator+=(float scalar) {
-	// TODO
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		m[elementIndex] += scalar;
+	}
+
 	return *this;
 }
 
 Matrix& Matrix::operator-=(float scalar) {
-	// TODO
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		m[elementIndex] -= scalar;
+	}
+
 	return *this;
 }
 
 Matrix& Matrix::operator*=(float scalar) {
-	// TODO
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		m[elementIndex] *= scalar;
+	}
+
 	return *this;
 }
 
 Matrix& Matrix::operator/=(float scalar) {
-	// TODO
+	for (int elementIndex = 0; elementIndex < numElements;
+		elementIndex++) {
+		m[elementIndex] /= scalar;
+	}
+
 	return *this;
 }
 
-float& Matrix::operator()(unsigned int row, unsigned int col) {
-	return m[0]; // TODO  	
+float* Matrix::operator[] (unsigned int row) {
+	return &m[row*numColumns];
 }
 
-const float& Matrix::operator()(unsigned int row, unsigned int col) const {
-	return m[0]; // TODO  	
+float& Matrix::operator()(unsigned int row,
+	unsigned int col) {
+	return m[row*numColumns + col]; // TODO  	
+}
+
+const float& Matrix::operator()(unsigned int row,
+	unsigned int col) const {
+	return m[row*numColumns + col]; // TODO  	
 }
