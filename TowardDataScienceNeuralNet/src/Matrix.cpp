@@ -1,8 +1,7 @@
 
 #include "Matrix.h"
 #include <cstring>
-
-// TODO
+#include <iostream>
 
 Matrix::Matrix(unsigned int numRows, unsigned int numColumns) {
 	this->numRows = numRows;
@@ -32,8 +31,13 @@ Matrix& Matrix::operator=(const Matrix& rhs) {
 }
 
 Matrix Matrix::transpose() const {
-  	Matrix transposed(*this);
-  	// TODO
+  	Matrix transposed(this->numColumns,
+  		this->numRows);
+  	for (int row = 0; row < numRows; row++) {
+  		for (int column = 0; column < numColumns; column++) {
+  			transposed[row][column] = (*this)(column, row); 
+  		}
+  	}
   	return transposed;	
 }
 
@@ -86,8 +90,31 @@ Matrix Matrix::operator-(const Matrix& rhs) const {
 }
 
 Matrix Matrix::operator*(const Matrix& rhs) const {
-	Matrix product(rhs.numRows, rhs.numColumns);
-	// TODO
+	unsigned int resultRows = this->numRows,
+		resultCols = rhs.numColumns;
+	Matrix product(resultRows, resultCols);
+	product.fillWithZeros();
+
+	if (this->numColumns != rhs.numRows) {
+		std::cerr << "Can't multiply a (" << numRows
+			<< " x " << numColumns << ") matrix "
+			<< "with a (" << rhs.numRows <<
+			" x " << rhs.numColumns << ") matrix.\n";
+	}
+	else {
+		for (int row = 0; row < resultRows; row++) {
+			auto currRow = product[row];
+
+			for (int column = 0; column < resultCols;
+				column++) {
+				for (int multIndex = 0; multIndex < 
+					numColumns; multIndex++) {
+					currRow[column] += ((*this)(row, multIndex) *
+						rhs(multIndex, column));
+				}
+			}
+		}
+	}
 
 	return product;
 }
@@ -109,7 +136,19 @@ Matrix& Matrix::operator-=(const Matrix& rhs) {
 }
 
 Matrix& Matrix::operator*=(const Matrix& rhs) {
-	// TODO
+	Matrix product(numRows, numColumns);
+	product.fillWithZeros();
+
+	if (this->numRows != rhs.numRows ||
+		this->numColumns != rhs.numColumns) {
+		std::cerr << "Can't self multiply a (" << numRows
+			<< " x " << numColumns << ") matrix "
+			<< "with a (" << rhs.numRows <<
+			" x " << rhs.numColumns << ") matrix.\n";
+	}
+	else {
+		*this = product*rhs;
+	}
 	return *this;
 }
 
@@ -197,16 +236,20 @@ Matrix& Matrix::operator/=(float scalar) {
 	return *this;
 }
 
-float* Matrix::operator[] (unsigned int row) {
-	return &m[row*numColumns];
+float* Matrix::getRow(unsigned int rowIndex) {
+	return &m[rowIndex*numColumns];
+}
+
+float* Matrix::operator[](unsigned int rowIndex) {
+	return &m[rowIndex*numColumns];
 }
 
 float& Matrix::operator()(unsigned int row,
 	unsigned int col) {
-	return m[row*numColumns + col]; // TODO  	
+	return m[row*numColumns + col];	
 }
 
 const float& Matrix::operator()(unsigned int row,
 	unsigned int col) const {
-	return m[row*numColumns + col]; // TODO  	
+	return m[row*numColumns + col];   	
 }

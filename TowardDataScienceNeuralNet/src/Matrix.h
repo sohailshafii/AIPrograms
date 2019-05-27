@@ -1,6 +1,7 @@
 #pragma once
 
 
+// row-order matrix
 class Matrix {
 public:
 	Matrix(unsigned int numRows, unsigned int numColumns);
@@ -34,7 +35,8 @@ public:
   	int getNumRows() const { return numRows; }
   	int getNumColumns() const { return numColumns; }
 
-    float* operator[] (unsigned int row);
+    float* getRow(unsigned int rowIndex);
+    float* operator[](unsigned int rowIndex);
 
   	float& operator()(unsigned int row, unsigned int col);
   	const float& operator()(unsigned int row, unsigned int col) const;
