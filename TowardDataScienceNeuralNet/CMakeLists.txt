@@ -15,7 +15,8 @@ set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fno-omit-frame-point
 
 set(SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/main.cpp ${PROJECT_SOURCE_DIR}/src/NeuralNetwork.cpp
 	${PROJECT_SOURCE_DIR}/src/NeuralNetwork.h ${PROJECT_SOURCE_DIR}/src/Matrix.cpp
-	${PROJECT_SOURCE_DIR}/src/Matrix.h ${PROJECT_SOURCE_DIR}/src/Common.h)
+	${PROJECT_SOURCE_DIR}/src/Matrix.h ${PROJECT_SOURCE_DIR}/src/Common.h 
+	${PROJECT_SOURCE_DIR}/src/Common.cpp)
 
 add_executable(TowardDataScienceNeuralNet ${SOURCE_FILES})
 

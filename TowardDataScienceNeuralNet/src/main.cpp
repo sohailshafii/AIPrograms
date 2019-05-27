@@ -3,16 +3,19 @@
 #include "NeuralNetwork.h"
 #include "Matrix.h"
 #include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
 
 void runTests() {
 	Matrix m1(2, 3), m2(3, 2);
 
-	m1(0,0) = 1.0f; m1(0,1) = 2.0f; m1(0,2) = 0.0f;
-	m1(1,0) = 5.0f; m1(1,1) = 6.0f; m1(1,2) = 2.0f;
+	m1(0, 0) = 1.0f; m1(0, 1) = 2.0f; m1(0, 2) = 0.0f;
+	m1(1, 0) = 5.0f; m1(1, 1) = 6.0f; m1(1, 2) = 2.0f;
 
-	m2(0,0) = 1.0f; m2(0,1) = -2.0f;
-	m2(1,0) = 8.0f; m2(1,1) = 3.0f;
-	m2(2,0) = 9.0f; m2(2,1) = 6.0f;
+	m2(0, 0) = 1.0f; m2(0, 1) = -2.0f;
+	m2(1, 0) = 8.0f; m2(1, 1) = 3.0f;
+	m2(2, 0) = 9.0f; m2(2, 1) = 6.0f;
 
 	Matrix product = m1*m2;
 	if (product(0, 0) != 17.0f || product(0, 1) != 4.0f ||
@@ -31,28 +34,30 @@ void runTests() {
 }
 
 int main() {
+	srand(time(NULL));
+
 	runTests();
 
 	// input format:
 	// 0 0 1   
-    // 0 1 1   
-    // 1 0 1    
-    // 1 1 1 
+	// 0 1 1   
+	// 1 0 1    
+	// 1 1 1 
 
 	Matrix x(4, 3);
-    x[0][0] = 0.0f; x[0][1] = 0.0f; x[0][2] = 1.0f;
-    x[1][0] = 0.0f; x[1][1] = 1.0f; x[1][2] = 1.0f;
-    x[2][0] = 1.0f; x[2][1] = 0.0f; x[2][2] = 1.0f;
-    x[3][0] = 1.0f; x[3][1] = 1.0f; x[3][2] = 1.0f;
+	x[0][0] = 0.0f; x[0][1] = 0.0f; x[0][2] = 1.0f;
+	x[1][0] = 0.0f; x[1][1] = 1.0f; x[1][2] = 1.0f;
+	x[2][0] = 1.0f; x[2][1] = 0.0f; x[2][2] = 1.0f;
+	x[3][0] = 1.0f; x[3][1] = 1.0f; x[3][2] = 1.0f;
 
 	Matrix y(4, 1);
-	y[0][0] = 0.0f; 
-	y[1][0] = 1.0f; 
-	y[2][0] = 1.0f; 
+	y[0][0] = 0.0f;
+	y[1][0] = 1.0f;
+	y[2][0] = 1.0f;
 	y[3][0] = 0.0f;
 
 	NeuralNetwork neuralNet(x, y);
-	neuralNet.configure(10000);
+	neuralNet.configure(20000);
 
 	return 0;
 }

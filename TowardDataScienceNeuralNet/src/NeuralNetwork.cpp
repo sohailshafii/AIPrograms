@@ -5,8 +5,6 @@
 #include <iostream>
 #include "Common.h"
 
-
-
 NeuralNetwork::NeuralNetwork(const Matrix &x, const Matrix &y) {
 	this->input = new Matrix(x);
 	this->weights1 = new Matrix(x.getNumColumns(),
@@ -136,17 +134,12 @@ void NeuralNetwork::backProp() {
 	auto numRows = tempOutput->getNumRows();
 	for (int row = 0; row < numRows; row++) {
 		(*tempOutput)[row][0] = 
-			2.0*((*y)[row][0]-(*output)[row][0])*
+			2.0f*((*y)[row][0]-(*output)[row][0])*
 			derivSigmoid((*output)[row][0]);
 	}
 	*dWeights2 = layer1->transpose()*(*tempOutput);
-	//dWeights2->print();
 
-	//std::cout << tempOutput->getNumRows() << " " << tempOutput->getNumColumns() <<
-	//", " << weights2->getNumRows() << " " << weights2->getNumColumns() << std::endl;
 	Matrix tempMult = (*tempOutput)*(weights2->transpose());
-	//std::cout << tempMult.getNumRows() << " " << tempMult.getNumColumns() <<
-	//	std::endl;
 	numRows = layer1Derivs->getNumRows();
 	auto numCols = layer1Derivs->getNumColumns();
 	for (int row = 0; row < numRows; row++) {
@@ -160,52 +153,6 @@ void NeuralNetwork::backProp() {
 		}
 	}
 	*dWeights1 = input->transpose()*tempMult;
-
-	/*for (int row = 0; row < numRows; row++) {
-		auto currLayerRow = layer1[row];
-
-		float dotProduct = 0.0f;
-		for (int dotIndex = 0; dotIndex < numRows;
-			dotIndex++) {
-			dotProduct += currLayerRow[dotIndex]
-				*2.0f*(y[dotIndex] - output[dotIndex])*
-				derivSigmoid(output[dotIndex]);
-		}
-		dWeights2[row] = dotProduct;
-	}
-
-	// weights 2 -- would be nice if we had a matrix class!
-	float temp[numRows][numRows];
-	for (int row = 0; row < numRows; row++) {
-		for (int col = 0; col < numRows;
-			col++) {
-
-			float dotProduct = 0.0f;
-			for (int dotIndex = 0; dotIndex < numRows;
-				dotIndex++) {
-				dotProduct += derivSigmoid(output[dotIndex])
-					*2.0f*(y[dotIndex] - output[dotIndex])*
-					weights2[dotIndex];
-			}
-			temp[row][col] = dotProduct;
-		}
-	}*/
-	//float temp2[numRows]
-
-	/*for (int i = 0; i < arraySize; i++) {
-		float diffYOutput = 2.0*(y[i] - output[i]);
-		float derivSigmoidOutTerm = 
-			diffYOutput * derivSigmoid(output[i]);
-
-		weights2[i] = derivSigmoidOutTerm * layer1[i];
-		weights1[i] = derivSigmoidOutTerm
-			* weights2[i] * derivSigmoid(layer1[i])
-			* input[i];
-
-		// use partial derivatives to (hopefully) move toward minimum
-		weights1[i] += dWeights1[i];
-		weights2[i] += dWeights2[i];
-	}*/
 
 	(*weights2) += (*dWeights2);
 	(*weights1) += (*dWeights1);

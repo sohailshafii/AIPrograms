@@ -1,3 +1,4 @@
+//https://towardsdatascience.com/how-to-build-your-own-neural-network-from-scratch-in-python-68998a08e4f6
 
 #include "Matrix.h"
 #include "Common.h"
@@ -15,7 +16,7 @@ Matrix::Matrix(unsigned int numRows, unsigned int numColumns) {
 
 Matrix::~Matrix() {
 	if (m != nullptr) {
-		delete [] m;
+		delete[] m;
 	}
 }
 
@@ -32,21 +33,24 @@ Matrix& Matrix::operator=(const Matrix& rhs) {
 }
 
 Matrix Matrix::transpose() const {
-  	Matrix transposed(this->numColumns,
-  		this->numRows);
-  	for (int row = 0; row < numRows; row++) {
-  		for (int column = 0; column < numColumns; column++) {
-  			transposed[row][column] = (*this)(column, row); 
-  		}
-  	}
-  	return transposed;	
+	auto transposedNumRows = this->numColumns;
+	auto transposedNumColumns = this->numRows;
+	Matrix transposed(transposedNumRows,
+		transposedNumColumns);
+
+	for (unsigned int row = 0; row < transposedNumRows; row++) {
+		for (unsigned int column = 0; column < transposedNumColumns; column++) {
+			transposed[row][column] = (*this)(column, row);
+		}
+	}
+	return transposed;
 }
 
 void Matrix::makeIdentity() {
 	fillWithZeros();
-	for (int rowIndex = 0, oneDimIndex = 0; rowIndex < numRows;
+	for (unsigned int rowIndex = 0, oneDimIndex = 0; rowIndex < numRows;
 		rowIndex++) {
-		for (int colIndex = 0; colIndex < numColumns;
+		for (unsigned int colIndex = 0; colIndex < numColumns;
 			colIndex++, oneDimIndex++) {
 			if (rowIndex == colIndex) {
 				m[oneDimIndex] = 1.0f;
@@ -56,7 +60,7 @@ void Matrix::makeIdentity() {
 }
 
 void Matrix::fillWithZeros() {
-	for (int elementIndex = 0; elementIndex <
+	for (unsigned int elementIndex = 0; elementIndex <
 		numElements; elementIndex++) {
 		m[elementIndex] = 0.0f;
 	}
@@ -64,16 +68,16 @@ void Matrix::fillWithZeros() {
 
 void Matrix::fillWithRandomValues(float min, float max) {
 	float range = max - min;
-	for (int elementIndex = 0; elementIndex <
+	for (unsigned int elementIndex = 0; elementIndex <
 		numElements; elementIndex++) {
-		m[elementIndex] = range*randomUnitValue();
+		m[elementIndex] = Common::randomUnitValue();
 	}
 }
 
 void Matrix::print() const {
-	for (int rowIndex = 0, oneDimIndex = 0; rowIndex < numRows;
+	for (unsigned int rowIndex = 0, oneDimIndex = 0; rowIndex < numRows;
 		rowIndex++) {
-		for (int colIndex = 0; colIndex < numColumns;
+		for (unsigned int colIndex = 0; colIndex < numColumns;
 			colIndex++, oneDimIndex++) {
 			std::cout << m[oneDimIndex] << ", ";
 		}
@@ -87,13 +91,13 @@ void Matrix::allocateAndCopyFrom(const Matrix& other) {
 
 	numElements = numRows*numColumns;
 	m = new float[numElements];
-	memcpy(m, other.m, numElements*sizeof(float));
+	memcpy(m, other.m, numElements * sizeof(float));
 }
 
 Matrix Matrix::operator+(const Matrix& rhs) const {
 	Matrix sum(rhs.numRows, rhs.numColumns);
-	
-	for (int elementIndex = 0; elementIndex < numElements;
+
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		sum.m[elementIndex] = this->m[elementIndex]
 			+ rhs.m[elementIndex];
@@ -105,7 +109,7 @@ Matrix Matrix::operator+(const Matrix& rhs) const {
 Matrix Matrix::operator-(const Matrix& rhs) const {
 	Matrix diff(rhs.numRows, rhs.numColumns);
 
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		diff.m[elementIndex] = this->m[elementIndex]
 			- rhs.m[elementIndex];
@@ -127,12 +131,12 @@ Matrix Matrix::operator*(const Matrix& rhs) const {
 			" x " << rhs.numColumns << ") matrix.\n";
 	}
 	else {
-		for (int row = 0; row < resultRows; row++) {
+		for (unsigned int row = 0; row < resultRows; row++) {
 			auto currRow = product[row];
 
-			for (int column = 0; column < resultCols;
+			for (unsigned int column = 0; column < resultCols;
 				column++) {
-				for (int multIndex = 0; multIndex < 
+				for (unsigned int multIndex = 0; multIndex <
 					numColumns; multIndex++) {
 					currRow[column] += ((*this)(row, multIndex) *
 						rhs(multIndex, column));
@@ -145,7 +149,7 @@ Matrix Matrix::operator*(const Matrix& rhs) const {
 }
 
 Matrix& Matrix::operator+=(const Matrix& rhs) {
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		m[elementIndex] += rhs.m[elementIndex];
 	}
@@ -153,7 +157,7 @@ Matrix& Matrix::operator+=(const Matrix& rhs) {
 }
 
 Matrix& Matrix::operator-=(const Matrix& rhs) {
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		m[elementIndex] -= rhs.m[elementIndex];
 	}
@@ -180,7 +184,7 @@ Matrix& Matrix::operator*=(const Matrix& rhs) {
 Matrix Matrix::operator+(float scalar) const {
 	Matrix sum(*this);
 
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		sum.m[elementIndex] = this->m[elementIndex]
 			+ scalar;
@@ -192,7 +196,7 @@ Matrix Matrix::operator+(float scalar) const {
 Matrix Matrix::operator-(float scalar) const {
 	Matrix diff(*this);
 
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		diff.m[elementIndex] = this->m[elementIndex]
 			- scalar;
@@ -204,7 +208,7 @@ Matrix Matrix::operator-(float scalar) const {
 Matrix Matrix::operator*(float scalar)  const {
 	Matrix product(*this);
 
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		product.m[elementIndex] = this->m[elementIndex]
 			* scalar;
@@ -216,7 +220,7 @@ Matrix Matrix::operator*(float scalar)  const {
 Matrix Matrix::operator/(float scalar) const {
 	Matrix div(*this);
 
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		div.m[elementIndex] = this->m[elementIndex]
 			/ scalar;
@@ -226,7 +230,7 @@ Matrix Matrix::operator/(float scalar) const {
 }
 
 Matrix& Matrix::operator+=(float scalar) {
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		m[elementIndex] += scalar;
 	}
@@ -235,7 +239,7 @@ Matrix& Matrix::operator+=(float scalar) {
 }
 
 Matrix& Matrix::operator-=(float scalar) {
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		m[elementIndex] -= scalar;
 	}
@@ -244,7 +248,7 @@ Matrix& Matrix::operator-=(float scalar) {
 }
 
 Matrix& Matrix::operator*=(float scalar) {
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		m[elementIndex] *= scalar;
 	}
@@ -253,7 +257,7 @@ Matrix& Matrix::operator*=(float scalar) {
 }
 
 Matrix& Matrix::operator/=(float scalar) {
-	for (int elementIndex = 0; elementIndex < numElements;
+	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		m[elementIndex] /= scalar;
 	}
@@ -271,10 +275,10 @@ float* Matrix::operator[](unsigned int rowIndex) {
 
 float& Matrix::operator()(unsigned int row,
 	unsigned int col) {
-	return m[row*numColumns + col];	
+	return m[row*numColumns + col];
 }
 
 const float& Matrix::operator()(unsigned int row,
 	unsigned int col) const {
-	return m[row*numColumns + col];   	
+	return m[row*numColumns + col];
 }
