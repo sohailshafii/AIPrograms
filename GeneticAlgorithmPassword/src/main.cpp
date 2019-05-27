@@ -17,17 +17,17 @@ std::vector<PopulationData> evolveMultipleTimes(int numberOfGenerations,
 	std::vector<PopulationData> allGenerations;
 
 	PopulationData firstPopulation = PopulationData(populationSize,
-		numLuckyFewIndices+numBestSamples, numChildren, password.size());
+		numLuckyFewIndices + numBestSamples, numChildren, (unsigned int)password.size());
 	allGenerations.push_back(firstPopulation);
 
 	for (int i = 0; i < numberOfGenerations; i++) {
 		std::cout << "Evolving generation " << i << "...\n";
 		auto& currGeneration = allGenerations[i];
-		currGeneration.makeNextGeneration(password, 
+		currGeneration.makeNextGeneration(password,
 			numBestSamples, numLuckyFewIndices, chanceOfMutation);
 		PopulationData nextGen = PopulationData(
 			currGeneration, populationSize,
-			numLuckyFewIndices+numBestSamples, numChildren);
+			numLuckyFewIndices + numBestSamples, numChildren);
 		allGenerations.push_back(nextGen);
 		std::cout << "Evolved generation " << i << ".\n";
 	}
@@ -50,21 +50,21 @@ int main() {
 	// we select (bestSample + luckyFew) to breed the next generation
 	// we take a pair from each half of that generation to create a child,
 	// so the next generation's children needs to match the population size
-	if ( ((numBestSamples + numLuckyFewIndices)*0.5f*numberOfChildren)
+	if (((numBestSamples + numLuckyFewIndices)*0.5f*numberOfChildren)
 		!= populationSize) {
 		std::cerr << "Population size not stable!\n";
 	}
 	else {
 		std::vector<PopulationData> allEvolutions =
-			evolveMultipleTimes(numberOfGenerations, password, populationSize, 
+			evolveMultipleTimes(numberOfGenerations, password, populationSize,
 				numBestSamples, numLuckyFewIndices, numberOfChildren, chanceOfMutation);
-		
+
 		std::cout << "Performance of first generation:\n";
 		auto& firstGen = allEvolutions[0];
 		firstGen.printPopulation();
 
 		std::cout << "Performance of last generation:\n";
-		auto& lastGen = allEvolutions[allEvolutions.size()-1];
+		auto& lastGen = allEvolutions[allEvolutions.size() - 1];
 		lastGen.calculatePerf(password);
 		lastGen.printPopulation();
 	}

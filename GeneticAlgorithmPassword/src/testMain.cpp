@@ -13,7 +13,7 @@ int main() {
 	int numberOfChildren = 5;
 
 	PopulationData firstPopulation = PopulationData(populationSize,
-		numLuckyFewIndices+numBestSamples, numberOfChildren, testPassword.size());
+		numLuckyFewIndices + numBestSamples, numberOfChildren, (unsigned int)testPassword.size());
 
 	firstPopulation.testInitialData();
 	firstPopulation.testFitnessFunction(testPassword, "hel33");

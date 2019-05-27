@@ -46,7 +46,7 @@ public:
 private:
 	void allocateAndCopyFrom(const Individual& other);
 	void copyFrom(const Individual& other);
-	void allocateRandData();
+	//void allocateRandData();
 
 	static float randUnitVal();
 
@@ -55,6 +55,6 @@ private:
 	int numGenes;
 	int fitness;
 
-	static std::mt19937 *gen; 
-	static std::uniform_real_distribution<> *dis;
+	//static std::mt19937 *gen; 
+	//static std::uniform_real_distribution<> *dis;
 };

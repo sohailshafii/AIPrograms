@@ -6,11 +6,11 @@ Population::Population(int populationSize, bool
 	individuals = new Individual[populationSize];
 	if (initialize) {
 		// Loop and create individuals
-        for (int i = 0; i < populationSize; i++) {
-            Individual newIndividual;
-            newIndividual.generateIndividual();
-            saveIndividual(i, newIndividual);
-        }
+		for (int i = 0; i < populationSize; i++) {
+			Individual newIndividual;
+			newIndividual.generateIndividual();
+			saveIndividual(i, newIndividual);
+		}
 	}
 }
 
@@ -23,7 +23,7 @@ Population& Population::operator=(
 	if (this != &other) {
 		if (this->populationSize != other.populationSize) {
 			if (this->individuals != nullptr) {
-				delete [] individuals;
+				delete[] individuals;
 			}
 			allocateAndCopyFrom(other);
 		}
@@ -48,6 +48,6 @@ void Population::copyFrom(const Population &other) {
 
 Population::~Population() {
 	if (individuals != nullptr) {
-		delete [] individuals;
+		delete[] individuals;
 	}
 }

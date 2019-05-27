@@ -14,7 +14,7 @@ public:
 		float performance;
 	};
 
-	PopulationData():currentGeneration(nullptr),
+	PopulationData() :currentGeneration(nullptr),
 		breeders(nullptr), nextGeneration(nullptr) {
 
 	}

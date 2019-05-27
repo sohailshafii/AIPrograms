@@ -38,28 +38,32 @@ Population Algorithm::evolvePopulation(Population& pop) {
 }
 
 Individual Algorithm::crossover(Individual &indiv1,
-		Individual &indiv2) {
- 	Individual newSol;
-    // Loop through genes
-    int indiv1Size = indiv1.size();
-    for (int i = 0; i < indiv1Size; i++) {
-        // Crossover
-        if (Algorithm::randomValue() <= uniformRate) {
-            newSol.setGene(i, indiv1.getGene(i));
-        } else {
-            newSol.setGene(i, indiv2.getGene(i));
-        }
-    }
-    return newSol;
+	Individual &indiv2) {
+	Individual newSol;
+	// Loop through genes
+	int indiv1Size = indiv1.size();
+	for (int i = 0; i < indiv1Size; i++) {
+		// Crossover
+		if (Algorithm::randomValue() <= uniformRate) {
+			newSol.setGene(i, indiv1.getGene(i));
+		}
+		else {
+			newSol.setGene(i, indiv2.getGene(i));
+		}
+	}
+	return newSol;
 }
 
 float Algorithm::randomValue() {
-	static std::random_device rd;  
+	// std::random causes memory errors with
+	// dr memory, use C++ rand
+	//static std::random_device rd;
 	// Standard mersenne_twister_engine seeded with rd()
-	static std::mt19937 gen(rd());
-	static std::uniform_real_distribution<>dis(0.0f, 1.0f);
+	//static std::mt19937 gen(rd());
+	//static std::uniform_real_distribution<>dis(0.0f, 1.0f);
 
-	return dis(gen);
+	//return dis(gen);
+	return (float)rand() / (float)RAND_MAX;
 }
 
 void Algorithm::mutate(Individual &indiv) {

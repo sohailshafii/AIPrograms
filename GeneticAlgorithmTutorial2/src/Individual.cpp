@@ -6,11 +6,11 @@
 
 int Individual::defaultGeneLength = 64;
 
-std::mt19937 *Individual::gen; 
-std::uniform_real_distribution<> *Individual::dis;
+//std::mt19937 *Individual::gen;
+//std::uniform_real_distribution<> *Individual::dis;
 
 Individual::Individual() {
-	allocateRandData();
+	//allocateRandData();
 	genes = new int[defaultGeneLength];
 	numGenes = defaultGeneLength;
 	fitness = 0;
@@ -18,7 +18,7 @@ Individual::Individual() {
 
 Individual::~Individual() {
 	if (genes != nullptr) {
-		delete [] genes;
+		delete[] genes;
 	}
 }
 
@@ -31,7 +31,7 @@ Individual& Individual::operator=(
 	if (this != &other) {
 		if (this->numGenes != other.numGenes) {
 			if (genes != nullptr) {
-				delete [] genes;
+				delete[] genes;
 			}
 			allocateAndCopyFrom(other);
 		}
@@ -63,23 +63,23 @@ void Individual::generateIndividual() {
 
 void Individual::print() const {
 	int numGenes = size();
-    for (int i = 0; i < numGenes; i++) {
-        std::cout << genes[i] << ", ";
-    }
-    std::cout << std::endl;
+	for (int i = 0; i < numGenes; i++) {
+		std::cout << genes[i] << ", ";
+	}
+	std::cout << std::endl;
 }
-
-void Individual::allocateRandData() {
+/*void Individual::allocateRandData() {
 	if (gen != nullptr) {
 		return;
 	}
 	// Will be used to obtain a seed for the random number engine
-	std::random_device rd;  
+	std::random_device rd;
 	// Standard mersenne_twister_engine seeded with rd()
 	gen = new std::mt19937(rd());
 	dis = new std::uniform_real_distribution<>(0.0f, 1.0f);
-}
+}*/
 
 float Individual::randUnitVal() {
-	return (*dis)(*gen);
+	//return (*dis)(*gen);
+	return (float)rand() / (float)RAND_MAX;
 }

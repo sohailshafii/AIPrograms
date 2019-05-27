@@ -26,12 +26,12 @@ public:
 
 		for (int i = 0; i < populationSize; i++) {
 			auto& current = individuals[i];
-            if (fittest.getFitness() <= current.getFitness()) {
-                fittest = current;
-            }
-        }
+			if (fittest.getFitness() <= current.getFitness()) {
+				fittest = current;
+			}
+		}
 
-        return fittest;
+		return fittest;
 	}
 
 	int getPopulationSize() const {
