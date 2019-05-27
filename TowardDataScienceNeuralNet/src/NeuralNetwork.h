@@ -26,14 +26,14 @@ private:
 	Matrix *dWeights1;
 	Matrix *dWeights2;
 
-	/*
+	
 
 	void feedForward();
 	float sigmoid(float x) const;
 	float derivSigmoid(float x) const;
 	float computeCurrentLoss() const;
 
-	void backProp();*/
+	void backProp();
 
 	// x would be 4x1, y would be 4x1
 	// weights are four items each

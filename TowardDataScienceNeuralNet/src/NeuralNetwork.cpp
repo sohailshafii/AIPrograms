@@ -17,7 +17,7 @@ NeuralNetwork::NeuralNetwork(const Matrix &x, const Matrix &y) {
 	this->weights2->fillWithRandomValues(0.0f, 1.0f);
 
 	this->y = new Matrix(y);
-	this->output = new Matrix(y);
+	this->output = new Matrix(x.getNumRows(), 1);
 	this->output->fillWithZeros();
 
 	this->layer1 = new Matrix(x.getNumRows(), x.getNumRows());
@@ -55,63 +55,43 @@ NeuralNetwork::~NeuralNetwork() {
 	}
 }
 
-/*void NeuralNetwork::configure(int iterations) {
+void NeuralNetwork::configure(int iterations) {
 	std::cout << "Input:\n";
-	for (int row = 0; row < numRows; row++) {
-		auto inputRow = input[row];
-		for (int column = 0; column < numColumns; column++) {
-			std::cout << inputRow[column] << ", ";
-		}
-		std::cout << std::endl;
-	}
+	input->print();
 	std::cout << std::endl;
 	std::cout << "Y: ";
-	for (int row = 0; row < numRows; row++) {
-		std::cout << y[row] << ", ";
-	}
-	std::cout << std::endl;
+	y->print();
 
 	for (int i = 0; i < iterations; i++) {
 		feedForward();
 		backProp();
 	} 
 
-	std::cout << "After " << iterations << 
-		" iterations, output is:\n";
-	for (int row = 0; row < numRows; row++) {
-		std::cout << output[row] << ", ";
-	}
-	std::cout << std::endl;
+	std::cout << "Output:\n";
+	output->print();
 	std::cout << "\nCurrent loss: "
 		<< computeCurrentLoss() << ".\n";
 }
 
 void NeuralNetwork::feedForward() {
-	int numRowsLayer1 = numRows;
-	int numColumnsLayer1 = numColumns;
-	// compute first layer
-	for (int row = 0; row < numRowsLayer1; row++) {
-		auto inputRow = input[row];
-		// note that layer1 is symmetric
-		for (int column = 0; column < numColumnsLayer1; column++) {
-			float dotProduct = 0.0f;
-			for (int dotIndex = 0; dotIndex < numColumns;
-				dotIndex++) {
-				dotProduct = inputRow[dotIndex] *
-					weights1[dotIndex][column];
-			}
-			layer1[row][column] = sigmoid(dotProduct);
+	*layer1 = (*input)*(*weights1);
+	auto numRows = layer1->getNumRows();
+	auto numCols = layer1->getNumColumns();
+	for (int row = 0; row < numRows; row++) {
+		auto currRow = (*layer1)[row];
+		for (int col = 0; col < numCols; col++) {
+			currRow[col] = sigmoid(currRow[col]);
 		}
 	}
 
-	// and now second layer
+	*output = (*layer1)*(*weights2);
+	numRows = output->getNumRows();
+	numCols = output->getNumColumns();
 	for (int row = 0; row < numRows; row++) {
-		float dotProduct = 0.0f;
-		auto layer1Row = layer1[row];
-		for (int dotIndex = 0; dotIndex < numRows; dotIndex++) {
-			dotProduct += layer1Row[dotIndex]*weights2[dotIndex];
+		auto currRow = (*output)[row];
+		for (int col = 0; col < numCols; col++) {
+			currRow[col] = sigmoid(currRow[col]);
 		}
-		output[row] = sigmoid(dotProduct);
 	}
 }
 
@@ -133,8 +113,9 @@ float NeuralNetwork::derivSigmoid(float x) const {
 // the sum, which is (y_hat - y)^2 per neural bit
 float NeuralNetwork::computeCurrentLoss() const {
 	float loss = 0.0f;
+	auto numRows = this->output->getNumRows();
 	for (int row = 0; row < numRows; row++) {
-		float diff = this->output[row] - y[row];
+		float diff = (*output)[row][0] - (*y)[row][0];
 		loss += diff*diff;
 	}
 	return loss;
@@ -142,7 +123,7 @@ float NeuralNetwork::computeCurrentLoss() const {
 
 void NeuralNetwork::backProp() {
 	
-	for (int row = 0; row < numRows; row++) {
+	/*for (int row = 0; row < numRows; row++) {
 		auto currLayerRow = layer1[row];
 
 		float dotProduct = 0.0f;
@@ -187,5 +168,4 @@ void NeuralNetwork::backProp() {
 		weights1[i] += dWeights1[i];
 		weights2[i] += dWeights2[i];
 	}*/
-//}
-
+}

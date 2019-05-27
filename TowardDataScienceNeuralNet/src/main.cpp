@@ -45,14 +45,14 @@ int main() {
     x[2][0] = 1.0f; x[2][1] = 0.0f; x[2][2] = 1.0f;
     x[3][0] = 1.0f; x[3][1] = 1.0f; x[3][2] = 1.0f;
 
-	Matrix y(1, 4);
+	Matrix y(4, 1);
 	y[0][0] = 0.0f; 
-	y[0][1] = 1.0f; 
-	y[0][2] = 1.0f; 
-	y[0][3] = 0.0f;
+	y[1][0] = 1.0f; 
+	y[2][0] = 1.0f; 
+	y[3][0] = 0.0f;
 
 	NeuralNetwork neuralNet(x, y);
-	//neuralNet.configure(10500);
+	neuralNet.configure(1);
 
 	return 0;
 }

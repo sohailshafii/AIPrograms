@@ -70,6 +70,17 @@ void Matrix::fillWithRandomValues(float min, float max) {
 	}
 }
 
+void Matrix::print() const {
+	for (int rowIndex = 0, oneDimIndex = 0; rowIndex < numRows;
+		rowIndex++) {
+		for (int colIndex = 0; colIndex < numColumns;
+			colIndex++, oneDimIndex++) {
+			std::cout << m[oneDimIndex] << ", ";
+		}
+		std::cout << std::endl;
+	}
+}
+
 void Matrix::allocateAndCopyFrom(const Matrix& other) {
 	this->numRows = other.numRows;
 	this->numColumns = other.numColumns;
@@ -251,11 +262,11 @@ Matrix& Matrix::operator/=(float scalar) {
 }
 
 float* Matrix::getRow(unsigned int rowIndex) {
-	return &m[rowIndex*numColumns];
+	return m + rowIndex*numColumns;
 }
 
 float* Matrix::operator[](unsigned int rowIndex) {
-	return &m[rowIndex*numColumns];
+	return m + rowIndex*numColumns;
 }
 
 float& Matrix::operator()(unsigned int row,
