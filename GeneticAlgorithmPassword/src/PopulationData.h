@@ -19,20 +19,21 @@ public:
 
 	}
 
-	PopulationData(int popSize, int numBreeders,
-		int numberOfChildren, int passwordLength);
+	PopulationData(unsigned int popSize, unsigned  int numBreeders,
+		unsigned int numberOfChildren, unsigned  int passwordLength);
 	PopulationData(const PopulationData& prevPopData,
-		int popSize, int numBreeders, int numberOfChildren);
+		unsigned int popSize, unsigned  int numBreeders,
+		unsigned int numberOfChildren);
 	PopulationData(const PopulationData &p2);
 
 	PopulationData& operator=(const PopulationData& other);
 
 	~PopulationData();
 
-	void makeRandomPopulation(int passwordLength);
+	void makeRandomPopulation(unsigned int passwordLength);
 
 	void makeNextGeneration(const std::string &password,
-		int numBestSamples, int numLuckyFewIndices,
+		unsigned int numBestSamples, unsigned int numLuckyFewIndices,
 		float chanceOfMutation);
 
 	void calculatePerf(const std::string& password);
@@ -45,14 +46,14 @@ public:
 		testPassword);
 
 private:
-	std::string generateAWord(int length);
+	std::string generateAWord(unsigned int length);
 
 	void computePerfPopulation(const std::string& password);
 	float fitnessFunction(const std::string& password,
 		const std::string& testWord) const;
 
 	void selectBreedersFromPopulation(
-		int numBestSamples, int numLuckyFewIndices);
+		unsigned int numBestSamples, unsigned int numLuckyFewIndices);
 	std::string createChild(const std::string& individual1,
 		const std::string& individual2);
 	void createChildren();
@@ -63,7 +64,7 @@ private:
 
 	void allocateAndCopyFrom(const PopulationData& other);
 	void copyFrom(const PopulationData& other);
-	static void allocateRandData();
+	//static void allocateRandData();
 
 	static float randUnitVal();
 	static char randomLetterAscii();
@@ -72,10 +73,10 @@ private:
 	MemberData* breeders;
 	MemberData* nextGeneration;
 
-	int populationSize;
-	int numBreeders;
-	int numberOfChildren;
+	unsigned int populationSize;
+	unsigned int numBreeders;
+	unsigned int numberOfChildren;
 
-	static std::mt19937 *gen; 
-	static std::uniform_real_distribution<> *dis;
+	//static std::mt19937 *gen; 
+	//static std::uniform_real_distribution<> *dis;
 };

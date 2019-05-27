@@ -11,12 +11,6 @@
 
 #include "PopulationData.h"
 
-float fitnessFunction(const std::string& password,
-	const std::string& testWord);
-std::string createChild(const std::string& individual1,
-	const std::string& individual2);
-std::string mutateWord(const std::string& word);
-
 std::vector<PopulationData> evolveMultipleTimes(int numberOfGenerations,
 	std::string& password, int populationSize, int numBestSamples, int numLuckyFewIndices,
 	int numChildren, float chanceOfMutation) {
