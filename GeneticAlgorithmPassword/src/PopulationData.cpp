@@ -12,7 +12,7 @@ std::uniform_real_distribution<> *PopulationData::dis;
 
 PopulationData::PopulationData(int popSize, int numBreeders,
 	int numberOfChildren, int passwordLength) {
-	PopulationData::AllocateRandData();
+	PopulationData::allocateRandData();
 
 	populationSize = popSize;
 	this->numBreeders = numBreeders;
@@ -27,7 +27,7 @@ PopulationData::PopulationData(int popSize, int numBreeders,
 
 PopulationData::PopulationData(const PopulationData& prevPopData,
 	int popSize, int numBreeders, int numberOfChildren) {
-	AllocateRandData();
+	allocateRandData();
 
 	populationSize = popSize;
 	this->numBreeders = numBreeders;
@@ -42,8 +42,8 @@ PopulationData::PopulationData(const PopulationData& prevPopData,
 }
 
 PopulationData::PopulationData(const PopulationData &p2) {
-	AllocateAndCopyFrom(p2);
-	AllocateRandData();
+	allocateAndCopyFrom(p2);
+	allocateRandData();
 }
 
 PopulationData::~PopulationData() { 
@@ -61,32 +61,52 @@ PopulationData::~PopulationData() {
 PopulationData& PopulationData::operator=(const PopulationData& other)
 {
 	if (this != &other) {
-		AllocateAndCopyFrom(other);
+		if (this->populationSize != other.populationSize ||
+			this->numBreeders != other.numBreeders ||
+			this->numberOfChildren != other.numberOfChildren) {
+			if (currentGeneration != nullptr) {
+				delete [] currentGeneration;
+			}
+			if (breeders != nullptr) {
+				delete [] breeders;
+			}
+			if (nextGeneration != nullptr) {
+				delete [] nextGeneration;
+			}
+			allocateAndCopyFrom(other);
+		}
+		else {
+			copyFrom(other);
+		}
 	}
 	return *this;
 }		
 
-void PopulationData::AllocateAndCopyFrom(const PopulationData& other) {
+void PopulationData::allocateAndCopyFrom(const PopulationData& other) {
 	this->populationSize = other.populationSize;
 	this->numBreeders = other.numBreeders;
 	this->numberOfChildren = other.numberOfChildren;
 
 	this->currentGeneration = new MemberData[populationSize];
+	this->breeders = new MemberData[numBreeders];
+	this->nextGeneration = new MemberData[populationSize];
+	copyFrom(other);
+}
+
+void PopulationData::copyFrom(const PopulationData& other) {
 	for (int i = 0; i < populationSize; i++) {
 		this->currentGeneration[i] =
 			other.currentGeneration[i];
 	}
-	this->breeders = new MemberData[numBreeders];
 	for (int i = 0; i < numBreeders; i++) {
 		this->breeders[i] = other.breeders[i];
 	}
-	this->nextGeneration = new MemberData[populationSize];
 	for (int i = 0; i < populationSize; i++) {
 		this->nextGeneration[i] = other.nextGeneration[i];
 	}
 }
 
-void PopulationData::AllocateRandData() {
+void PopulationData::allocateRandData() {
 	if (gen != nullptr) {
 		return;
 	}

@@ -21,7 +21,15 @@ Population::Population(const Population &p2) {
 Population& Population::operator=(
 	const Population& other) {
 	if (this != &other) {
-		allocateAndCopyFrom(other);
+		if (this->populationSize != other.populationSize) {
+			if (this->individuals != nullptr) {
+				delete [] individuals;
+			}
+			allocateAndCopyFrom(other);
+		}
+		else {
+			copyFrom(other);
+		}
 	}
 	return *this;
 }
@@ -29,6 +37,10 @@ Population& Population::operator=(
 void Population::allocateAndCopyFrom(const Population &other) {
 	this->populationSize = other.populationSize;
 	this->individuals = new Individual[populationSize];
+	copyFrom(other);
+}
+
+void Population::copyFrom(const Population &other) {
 	for (int i = 0; i < populationSize; i++) {
 		this->individuals[i] = other.individuals[i];
 	}

@@ -11,7 +11,6 @@ std::uniform_real_distribution<> *Individual::dis;
 
 Individual::Individual() {
 	allocateRandData();
-
 	genes = new int[defaultGeneLength];
 	numGenes = defaultGeneLength;
 	fitness = 0;
@@ -30,7 +29,15 @@ Individual::Individual(const Individual &p2) {
 Individual& Individual::operator=(
 	const Individual& other) {
 	if (this != &other) {
-		allocateAndCopyFrom(other);
+		if (this->numGenes != other.numGenes) {
+			if (genes != nullptr) {
+				delete [] genes;
+			}
+			allocateAndCopyFrom(other);
+		}
+		else {
+			copyFrom(other);
+		}
 	}
 	return *this;
 }
@@ -38,8 +45,12 @@ Individual& Individual::operator=(
 void Individual::allocateAndCopyFrom(
 	const Individual& other) {
 	genes = new int[other.numGenes];
-	memcpy(genes, other.genes, sizeof(int)*other.numGenes);
 	numGenes = other.numGenes;
+	copyFrom(other);
+}
+
+void Individual::copyFrom(const Individual& other) {
+	memcpy(genes, other.genes, sizeof(int)*other.numGenes);
 	fitness = other.fitness;
 }
 

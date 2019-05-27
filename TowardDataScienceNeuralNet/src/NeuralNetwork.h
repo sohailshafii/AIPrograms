@@ -26,7 +26,8 @@ private:
 	Matrix *dWeights1;
 	Matrix *dWeights2;
 
-	
+	// temp matrices for calculations
+	Matrix *tempOutput;
 
 	void feedForward();
 	float sigmoid(float x) const;

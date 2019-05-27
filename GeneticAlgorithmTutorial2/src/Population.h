@@ -50,8 +50,8 @@ public:
 	}
 
 private:
-
 	void allocateAndCopyFrom(const Population &other);
+	void copyFrom(const Population &other);
 
 	Individual* individuals;
 	int populationSize;

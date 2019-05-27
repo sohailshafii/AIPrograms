@@ -14,6 +14,11 @@ public:
 		float performance;
 	};
 
+	PopulationData():currentGeneration(nullptr),
+		breeders(nullptr), nextGeneration(nullptr) {
+
+	}
+
 	PopulationData(int popSize, int numBreeders,
 		int numberOfChildren, int passwordLength);
 	PopulationData(const PopulationData& prevPopData,
@@ -56,8 +61,9 @@ private:
 	void mutateNextPopulation(
 		float chanceOfMutation);
 
-	void AllocateAndCopyFrom(const PopulationData& other);
-	static void AllocateRandData();
+	void allocateAndCopyFrom(const PopulationData& other);
+	void copyFrom(const PopulationData& other);
+	static void allocateRandData();
 
 	static float randUnitVal();
 	static char randomLetterAscii();

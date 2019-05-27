@@ -45,6 +45,7 @@ public:
 
 private:
 	void allocateAndCopyFrom(const Individual& other);
+	void copyFrom(const Individual& other);
 	void allocateRandData();
 
 	static float randUnitVal();

@@ -25,6 +25,8 @@ NeuralNetwork::NeuralNetwork(const Matrix &x, const Matrix &y) {
 	this->dWeights1 = new Matrix(x.getNumColumns(),
 		x.getNumRows());
 	this->dWeights2 = new Matrix(x.getNumRows(), 1);
+
+	this->tempOutput = new Matrix(*output);
 }
 
 NeuralNetwork::~NeuralNetwork() {
@@ -52,6 +54,10 @@ NeuralNetwork::~NeuralNetwork() {
 	}
 	if (dWeights2 != nullptr) {
 		delete dWeights2;
+	}
+
+	if (tempOutput != nullptr) {
+		delete tempOutput;
 	}
 }
 
