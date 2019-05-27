@@ -10,30 +10,30 @@
 // for each input is known as "training" a neural network
 class NeuralNetwork {
 public:
-	NeuralNetwork(float **x, float *y,
-		int numRows, int numColumns);
+	NeuralNetwork(const Matrix &x, const Matrix &y);
 	~NeuralNetwork();
 
 	void configure(int iterations);	
 
 private:
-	int numRows, numColumns;
+	Matrix *input;
+	Matrix *weights1;
+	Matrix *weights2;
+	Matrix *y;
+	Matrix *output;
 
-	float **input;
-	float **weights1, *weights2;
-	float *y;
-	float *output;
+	Matrix *layer1;
+	Matrix *dWeights1;
+	Matrix *dWeights2;
 
-	float **layer1;
-
-	float **dWeights1, *dWeights2;
+	/*
 
 	void feedForward();
 	float sigmoid(float x) const;
 	float derivSigmoid(float x) const;
 	float computeCurrentLoss() const;
 
-	void backProp();
+	void backProp();*/
 
 	// x would be 4x1, y would be 4x1
 	// weights are four items each

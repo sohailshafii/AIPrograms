@@ -1,5 +1,6 @@
 
 #include "Matrix.h"
+#include "Common.h"
 #include <cstring>
 #include <iostream>
 
@@ -19,12 +20,12 @@ Matrix::~Matrix() {
 }
 
 Matrix::Matrix(const Matrix &rhs) {
-	AllocateAndCopyFrom(rhs);
+	allocateAndCopyFrom(rhs);
 }
 
 Matrix& Matrix::operator=(const Matrix& rhs) {
 	if (&rhs != this) {
-		AllocateAndCopyFrom(rhs);
+		allocateAndCopyFrom(rhs);
 	}
 
 	return *this;
@@ -43,9 +44,14 @@ Matrix Matrix::transpose() const {
 
 void Matrix::makeIdentity() {
 	fillWithZeros();
-	for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
-		int oneDimIndex = rowIndex*numColumns + rowIndex;
-		m[oneDimIndex] = 1.0f;
+	for (int rowIndex = 0, oneDimIndex = 0; rowIndex < numRows;
+		rowIndex++) {
+		for (int colIndex = 0; colIndex < numColumns;
+			colIndex++, oneDimIndex++) {
+			if (rowIndex == colIndex) {
+				m[oneDimIndex] = 1.0f;
+			}
+		}
 	}
 }
 
@@ -56,7 +62,15 @@ void Matrix::fillWithZeros() {
 	}
 }
 
-void Matrix::AllocateAndCopyFrom(const Matrix& other) {
+void Matrix::fillWithRandomValues(float min, float max) {
+	float range = max - min;
+	for (int elementIndex = 0; elementIndex <
+		numElements; elementIndex++) {
+		m[elementIndex] = range*randomUnitValue();
+	}
+}
+
+void Matrix::allocateAndCopyFrom(const Matrix& other) {
 	this->numRows = other.numRows;
 	this->numColumns = other.numColumns;
 

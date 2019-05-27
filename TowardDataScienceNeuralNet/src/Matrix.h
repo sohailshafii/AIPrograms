@@ -13,8 +13,9 @@ public:
   	Matrix transpose() const;
   	void makeIdentity();
     void fillWithZeros();
+    void fillWithRandomValues(float min, float max);
 
-	Matrix operator+(const Matrix& rhs) const;
+    Matrix operator+(const Matrix& rhs) const;
   	Matrix operator-(const Matrix& rhs) const;
   	Matrix operator*(const Matrix& rhs) const;
 
@@ -45,5 +46,5 @@ private:
 	unsigned int numRows, numColumns, numElements;
 	float *m;
 
-	void AllocateAndCopyFrom(const Matrix& other);
+	void allocateAndCopyFrom(const Matrix& other);
 };

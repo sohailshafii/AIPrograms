@@ -38,26 +38,21 @@ int main() {
     // 0 1 1   
     // 1 0 1    
     // 1 1 1 
-	Matrix m(4, 4);
 
-    float **x = new float*[4];
-    for (int i = 0; i < 4; i++) {
-    	x[i] = new float[3];
-    }
+	Matrix x(4, 3);
     x[0][0] = 0.0f; x[0][1] = 0.0f; x[0][2] = 1.0f;
     x[1][0] = 0.0f; x[1][1] = 1.0f; x[1][2] = 1.0f;
     x[2][0] = 1.0f; x[2][1] = 0.0f; x[2][2] = 1.0f;
     x[3][0] = 1.0f; x[3][1] = 1.0f; x[3][2] = 1.0f;
 
-	float y[4] = {0.0f, 1.0f, 1.0f, 0.0};
+	Matrix y(1, 4);
+	y[0][0] = 0.0f; 
+	y[0][1] = 1.0f; 
+	y[0][2] = 1.0f; 
+	y[0][3] = 0.0f;
 
-	NeuralNetwork neuralNet(x, y, 4, 3);
-	neuralNet.configure(10500);
-
-	for(int i = 0; i < 4; i++) {
-		delete [] x[i];
-	}
-	delete [] x;
+	NeuralNetwork neuralNet(x, y);
+	//neuralNet.configure(10500);
 
 	return 0;
 }
