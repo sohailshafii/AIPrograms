@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 2.6)
 project (TowardDataScienceNeuralNet)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 set (TowardDataScienceNeuralNet_VERSION_MAJOR 1)
 set (TowardDataScienceNeuralNet_VERSION_MINOR 0)
 

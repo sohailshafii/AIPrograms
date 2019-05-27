@@ -26,11 +26,14 @@ class NeuralNetwork:
 
     def backprop(self):
         # application of the chain rule to find derivative of the loss function with respect to weights2 and weights1
+        #print "deriv shape: " + str(sigmoid_derivative(self.output).shape)
+        #print "mult shape: " + str((2*(self.y - self.output)).shape)
+        print "mult shape 2: " + str((2*(self.y - self.output) * sigmoid_derivative(self.output)).shape)
         d_weights2 = np.dot(self.layer1.T, (2*(self.y - self.output) * sigmoid_derivative(self.output)))
         d_weights1 = np.dot(self.input.T,  (np.dot(2*(self.y - self.output) * sigmoid_derivative(self.output), self.weights2.T) * sigmoid_derivative(self.layer1)))
-
-        print "d_weights2 shape: " + str(d_weights2.shape)
-        print "d_weights1 shape: " + str(d_weights1.shape)
+        print "d_weights2: " + str(d_weights2)
+        #print "d_weights2 shape: " + str(d_weights2.shape)
+        #print "d_weights1 shape: " + str(d_weights1.shape)
         # update the weights with the derivative (slope) of the loss function
         self.weights1 += d_weights1
         self.weights2 += d_weights2

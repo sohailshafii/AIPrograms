@@ -27,6 +27,7 @@ NeuralNetwork::NeuralNetwork(const Matrix &x, const Matrix &y) {
 	this->dWeights2 = new Matrix(x.getNumRows(), 1);
 
 	this->tempOutput = new Matrix(*output);
+	this->layer1Derivs = new Matrix(*layer1);
 }
 
 NeuralNetwork::~NeuralNetwork() {
@@ -58,6 +59,9 @@ NeuralNetwork::~NeuralNetwork() {
 
 	if (tempOutput != nullptr) {
 		delete tempOutput;
+	}
+	if (layer1Derivs != nullptr) {
+		delete layer1Derivs;
 	}
 }
 
@@ -128,7 +132,35 @@ float NeuralNetwork::computeCurrentLoss() const {
 }
 
 void NeuralNetwork::backProp() {
-	
+	// compute partial deriv weights 2
+	auto numRows = tempOutput->getNumRows();
+	for (int row = 0; row < numRows; row++) {
+		(*tempOutput)[row][0] = 
+			2.0*((*y)[row][0]-(*output)[row][0])*
+			derivSigmoid((*output)[row][0]);
+	}
+	*dWeights2 = layer1->transpose()*(*tempOutput);
+	//dWeights2->print();
+
+	//std::cout << tempOutput->getNumRows() << " " << tempOutput->getNumColumns() <<
+	//", " << weights2->getNumRows() << " " << weights2->getNumColumns() << std::endl;
+	Matrix tempMult = (*tempOutput)*(weights2->transpose());
+	//std::cout << tempMult.getNumRows() << " " << tempMult.getNumColumns() <<
+	//	std::endl;
+	numRows = layer1Derivs->getNumRows();
+	auto numCols = layer1Derivs->getNumColumns();
+	for (int row = 0; row < numRows; row++) {
+		auto currRow = (*layer1Derivs)[row];
+		auto currRowLayer1 = (*layer1)[row];
+		auto tempMultRow = tempMult[row];
+
+		for (int col = 0; col < numCols; col++) {
+			currRow[col] = derivSigmoid(currRowLayer1[col]);
+			tempMultRow[col] *= currRow[col];
+		}
+	}
+	*dWeights1 = input->transpose()*tempMult;
+
 	/*for (int row = 0; row < numRows; row++) {
 		auto currLayerRow = layer1[row];
 
@@ -174,4 +206,7 @@ void NeuralNetwork::backProp() {
 		weights1[i] += dWeights1[i];
 		weights2[i] += dWeights2[i];
 	}*/
+
+	(*weights2) += (*dWeights2);
+	(*weights1) += (*dWeights1);
 }

@@ -52,7 +52,7 @@ int main() {
 	y[3][0] = 0.0f;
 
 	NeuralNetwork neuralNet(x, y);
-	neuralNet.configure(1);
+	neuralNet.configure(10000);
 
 	return 0;
 }
