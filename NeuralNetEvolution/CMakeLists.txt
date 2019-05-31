@@ -8,7 +8,8 @@ set (CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-set(SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/main.cpp)
+set(SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/main.cpp
+${PROJECT_SOURCE_DIR}/src/NeuralNetwork.cpp ${PROJECT_SOURCE_DIR}/src/Individual.cpp)
 
 add_executable(NeuralNetEvolution ${SOURCE_FILES})
 
