@@ -7,4 +7,14 @@ public:
 
 	NeuralNetwork(int numInput, int numHidden,
 		int numOutput);
+
+	void Train(double** trainData, int popSize, int maxGeneration,
+		double exitError, double mutateRate, double mutateChange,
+		double tau, double **bestWeightsToSet);
+
+	void SetWeights(double *bestWeights);
+	double GetAccuracy(double **testData) const;
+
+private:
+
 };

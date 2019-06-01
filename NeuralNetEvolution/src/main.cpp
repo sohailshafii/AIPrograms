@@ -91,6 +91,29 @@ int main() {
 	const int numOutput = 3;
 	NeuralNetwork neuralNet(numInput, numHidden, numOutput);
 
+	// training parameters specific to EO
+	int popSize = 8;
+	int maxGeneration = 500;
+	double exitError = 0.0;
+	double mutateRate = 0.20;
+	double mutateChange = 0.01;
+	double tau = 0.40;
+	double* bestWeights;
+	neuralNet.Train(trainData, popSize, maxGeneration,
+		exitError, mutateRate, mutateChange, tau,
+		&bestWeights);
+
+	neuralNet.SetWeights(bestWeights);
+	double trainAcc = neuralNet.GetAccuracy(trainData);
+	std::cout << "\nAccuracy of training data = "
+		<< std::setprecision(4) << trainAcc;
+
+	double testAcc = neuralNet.GetAccuracy(testData);
+	std::cout << "\nAccuracy of test data = "
+		<< std::setprecision(4) << testAcc;
+
+	std::cout << "\nEnd Neural Net training demo.\n";
+
 	for (int i = 0; i < 24; i++) {
 		delete [] trainData[i];
 	}
