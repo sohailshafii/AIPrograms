@@ -46,6 +46,9 @@ void ShowMatrix(double** matrix, int numRows,
 }
 
 int main() {
+	srand(time(NULL));
+
+	// Fisher's data set
 	double** trainData = new double*[24];
 	trainData[0] = new double[7] { 6.3, 2.9, 5.6, 1.8, 1, 0, 0 };
 	trainData[1] = new double[7] { 6.9, 3.1, 4.9, 1.5, 0, 1, 0 };
@@ -86,6 +89,9 @@ int main() {
 	std::cout << "Test data:\n";
 	ShowMatrix(testData, 6, 7, 1, true);
 
+	// 4-6-3 fully connected feed-forward neural network
+	// four-inputs and three possible output classes.
+	// six hidden nodes, which is arbitrary
 	const int numInput = 4;
 	const int numHidden = 6;
 	const int numOutput = 3;
@@ -97,6 +103,9 @@ int main() {
 	double exitError = 0.0;
 	double mutateRate = 0.20;
 	double mutateChange = 0.01;
+	// selection pressure -- likelihood that the
+	// two best individuals in the population will be
+	// selected as parents for reprdouction
 	double tau = 0.40;
 	double* bestWeights;
 	neuralNet.Train(trainData, popSize, maxGeneration,

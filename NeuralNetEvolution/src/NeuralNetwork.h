@@ -17,4 +17,15 @@ public:
 
 private:
 
+	int numInput;
+	int numHidden;
+	int numOutput;
+	double* inputs;
+	double** ihWeights;
+	double* hBiases;
+	double* hOutputs;
+	double** hoWeights;
+	double* oBiases;
+	double* outputs;
+
 };
