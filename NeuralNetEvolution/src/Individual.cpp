@@ -65,5 +65,3 @@ void Individual::AllocateAndCopyFrom(const Individual& other) {
 	numGenes = other.numGenes;
 	memcpy(chromosome, other.chromosome, sizeof(double)*other.numGenes);
 }
-
-// TODO: comparator

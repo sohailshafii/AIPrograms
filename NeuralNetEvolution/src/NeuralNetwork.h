@@ -13,10 +13,10 @@ public:
 	void SetWeights(double *bestWeights);
 	double* GetWeights();
 
-	double* ComputeOutputs(double* xValues);
-	double* Train(double** trainData, int popSize,
-		int maxGeneration, double exitError,
-		double mutateRate, double mutateChange, double tau);
+	void ComputeOutputs(double* xValues, double* outputs) const;
+	double* Train(double** trainData, int numTrainData, int popSize,
+		int maxGeneration, double exitError, double mutateRate, 
+		double mutateChange, double tau);
 
 	Individual* Select(int n, Individual* population,
 		int popSize, double tau);
@@ -37,7 +37,7 @@ private:
 	static void Place(const Individual &child1,
 		const Individual child2, Individual* population,
 		int popSize);
-	double MeanSquaredError(double** trainData,
+	double MeanSquaredError(double** trainData, int numTrainData,
 		double* weights);
 
 	static int MaxIndex(double* vector);

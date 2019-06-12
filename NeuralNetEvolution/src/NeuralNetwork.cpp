@@ -18,12 +18,12 @@ double* NeuralNetwork::GetWeights() {
 	return nullptr;
 }
 
-double* NeuralNetwork::ComputeOutputs(double* xValues) {
-	return nullptr;
+void NeuralNetwork::ComputeOutputs(double* xValues, double *outputs) const {
+	
 }
 
-double* NeuralNetwork::Train(double** trainData, int popSize,
-	int maxGeneration, double exitError, double mutateRate,
+double* NeuralNetwork::Train(double** trainData, int numTrainData,
+	int popSize, int maxGeneration, double exitError, double mutateRate,
 	double mutateChange, double tau) {
 	// use evolutionary optimization to train NN
 	int numWeights = numInput * numHidden +
@@ -42,7 +42,7 @@ double* NeuralNetwork::Train(double** trainData, int popSize,
 		population[i] = Individual(numWeights,
 			minX, maxX, mutateRate, mutateChange);
 		double error = MeanSquaredError(trainData,
-			population[i].chromosome);
+			numTrainData, population[i].chromosome);
 		population[i].error = error;
 
 		if (population[i].error < bestError) {
@@ -51,8 +51,6 @@ double* NeuralNetwork::Train(double** trainData, int popSize,
 				numWeights * sizeof(double));
 		}
 	}
-
-	// TODO: sort population
 
 	// main EO processing loop
 	int gen = 0; bool done = false;
@@ -64,9 +62,9 @@ double* NeuralNetwork::Train(double** trainData, int popSize,
 		delete[] parents;
 
 		children[0].error = MeanSquaredError(trainData,
-			children[0].chromosome);
+			numTrainData, children[0].chromosome);
 		children[1].error = MeanSquaredError(trainData,
-			children[1].chromosome);
+			numTrainData, children[1].chromosome);
 
 		Place(children[0], children[1], population, popSize);
 		delete[] children;
@@ -74,7 +72,7 @@ double* NeuralNetwork::Train(double** trainData, int popSize,
 		Individual immigrant(numWeights, minX, maxX,
 			mutateRate, mutateChange);
 		immigrant.error = MeanSquaredError(trainData,
-			immigrant.chromosome);
+			numTrainData, immigrant.chromosome);
 		population[popSize - 3] = immigrant; // third worst
 
 		for (int i = popSize - 3; i < popSize; ++i) {
@@ -191,8 +189,33 @@ void NeuralNetwork::Mutate(const Individual &child, double maxGene,
 }
 
 double NeuralNetwork::GetAccuracy(double **testData) const {
-	// TODO
-	return 0.0;
+	// percentage correct using winner takes all
+	int numCorrect = 0;
+	int numWrong = 0;
+	// again, this is stupid and I wish the original tutorial didn't allocate
+	// so much
+	double *xValues = new double[numInput];
+	double *tValues = new double[numOutput];
+	double *yValues = new double[numOutput];
+
+	ComputeOutputs(xValues, yValues);
+
+	int maxIndex = MaxIndex(yValues);
+
+	if (tValues[maxIndex] == 1.0) {
+		++numCorrect;
+	}
+	else {
+		++numWrong;
+	}
+		
+
+	delete[] xValues;
+	delete[] tValues;
+	delete[] yValues;
+
+	return ((double)numCorrect + 1.0)/
+		(double)(numCorrect + numWrong);
 }
 
 double** NeuralNetwork::MakeMatrix(int rows, int cols) {
@@ -220,8 +243,30 @@ void NeuralNetwork::Place(const Individual &child1,
 }
 
 double NeuralNetwork::MeanSquaredError(double** trainData,
-	double* weights) {
-	return 0.0;
+	int numTrainData, double* weights) {
+	SetWeights(weights);
+
+	// TODO: caching, bad to allocate junk
+	double* xValues = new double[numInput]; // inputs
+	double* tValues = new double[numOutput]; // targets
+	double sumSquaredError = 0.0;
+	double *yValues = new double[numOutput];
+	for (int i = 0; i < numTrainData; ++i) {
+		// assume data has x-vals followed by y-vals
+		memcpy(xValues, trainData[i], numInput * sizeof(double));
+		memcpy(tValues, &trainData[i][numInput], numOutput * sizeof(double));
+		this->ComputeOutputs(xValues, yValues);
+		for (int j = 0; j < numOutput; ++j) {
+			double yDiff = yValues[j] - tValues[j];
+			sumSquaredError += yDiff*yDiff;
+		}
+	}
+
+	delete[] xValues;
+	delete[] tValues;
+	delete[] yValues;
+
+	return sumSquaredError/(double)numTrainData;
 }
 
 int NeuralNetwork::MaxIndex(double* vector) {
