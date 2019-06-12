@@ -2,20 +2,45 @@
 
 #pragma once
 
+#include "Individual.h"
+#include <array>
+
 class NeuralNetwork {
 public:
-
 	NeuralNetwork(int numInput, int numHidden,
 		int numOutput);
 
-	void Train(double** trainData, int popSize, int maxGeneration,
-		double exitError, double mutateRate, double mutateChange,
-		double tau, double **bestWeightsToSet);
-
 	void SetWeights(double *bestWeights);
+	double* GetWeights();
+
+	double* ComputeOutputs(double* xValues);
+	double* Train(double** trainData, int popSize,
+		int maxGeneration, double exitError,
+		double mutateRate, double mutateChange, double tau);
+
+	Individual* Select(int n, Individual* population,
+		int popSize, double tau);
+	Individual* Reproduce(const Individual& parent1,
+		const Individual& parent2, double minGene,
+		double maxGene, double mutateRate, double mutateChange);
+
+	void Mutate(const Individual &child, double maxGene,
+		double mutateRate, double mutateChange);
+
 	double GetAccuracy(double **testData) const;
 
 private:
+	static double** MakeMatrix(int rows, int cols);
+	static double HyperTanFunction(double x);
+	static double* SoftMax(double* oSums);
+
+	static void Place(const Individual &child1,
+		const Individual child2, Individual* population,
+		int popSize);
+	double MeanSquaredError(double** trainData,
+		double* weights);
+
+	static int MaxIndex(double* vector);
 
 	int numInput;
 	int numHidden;
@@ -27,5 +52,4 @@ private:
 	double** hoWeights;
 	double* oBiases;
 	double* outputs;
-
 };

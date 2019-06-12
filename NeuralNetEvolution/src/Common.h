@@ -2,6 +2,4 @@
 
 #include <cstdlib>
 
-double randVal() {
-	return (double)rand() / (double)RAND_MAX;
-}
+double randVal();

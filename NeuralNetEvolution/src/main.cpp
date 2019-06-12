@@ -8,8 +8,8 @@
 
 void ShowVector(std::vector<double> vec, int valsPerRow,
 	int decimals, bool newLine) {
-	int numElements = vec.size();
-	for (int i = 0; i < numElements; i++) {
+	size_t numElements = vec.size();
+	for (size_t i = 0; i < numElements; i++) {
 		if (i % valsPerRow) std::cout << std::endl;
 		auto currElement = vec[i];
 		if (currElement >= 0.0) {
@@ -107,12 +107,10 @@ int main() {
 	// two best individuals in the population will be
 	// selected as parents for reprdouction
 	double tau = 0.40;
-	double* bestWeights;
-	neuralNet.Train(trainData, popSize, maxGeneration,
-		exitError, mutateRate, mutateChange, tau,
-		&bestWeights);
+	/*double* bestWeights = neuralNet.Train(trainData, popSize, maxGeneration,
+		exitError, mutateRate, mutateChange, tau);
 
-	neuralNet.SetWeights(bestWeights);
+	/*neuralNet.SetWeights(bestWeights);
 	double trainAcc = neuralNet.GetAccuracy(trainData);
 	std::cout << "\nAccuracy of training data = "
 		<< std::setprecision(4) << trainAcc;
@@ -131,7 +129,7 @@ int main() {
 	for (int i = 0; i < 6; i++) {
 		delete [] testData[i];
 	}
-	delete [] testData;
+	delete [] testData;*/
 
 	return 0;
 }
