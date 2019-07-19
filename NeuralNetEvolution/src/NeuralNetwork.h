@@ -27,7 +27,7 @@ public:
 	void Mutate(const Individual &child, double maxGene,
 		double mutateRate, double mutateChange);
 
-	double GetAccuracy(double **testData) const;
+	double GetAccuracy(double **testData, int numTestData) const;
 
 private:
 	static double** MakeMatrix(int rows, int cols);
