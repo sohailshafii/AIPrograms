@@ -35,7 +35,7 @@ private:
 	static double* SoftMax(double* oSums);
 
 	static void Place(const Individual &child1,
-		const Individual child2, Individual* population,
+		const Individual& child2, Individual* population,
 		int popSize);
 	double MeanSquaredError(double** trainData, int numTrainData,
 		double* weights);

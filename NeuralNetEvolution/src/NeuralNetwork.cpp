@@ -155,14 +155,14 @@ Individual* NeuralNetwork::Reproduce(const Individual& parent1,
 		child1.chromosome[i] = parent1.chromosome[i];
 	}
 	for (int i = cross + 1; i < numGenes; ++i) {
-		child1.chromosome[i] = parent2.chromosome[i];
+		child2.chromosome[i] = parent1.chromosome[i];
 	}
 
 	for (int i = 0; i <= cross; ++i) {
 		child2.chromosome[i] = parent2.chromosome[i];
 	}
 	for (int i = cross + 1; i < numGenes; ++i) {
-		child2.chromosome[i] = parent1.chromosome[i];
+		child1.chromosome[i] = parent2.chromosome[i];
 	}
 
 	Mutate(child1, maxGene, mutateRate, mutateChange);
@@ -181,8 +181,7 @@ void NeuralNetwork::Mutate(const Individual &child, double maxGene,
 	double loVal = -hiVal;
 	for (int i = 0; i < child.numGenes; i++) {
 		if (randVal() < mutateRate) {
-			double delta = (hiVal - loVal)
-				*randVal() + loVal;
+			double delta = (hiVal - loVal)*randVal() + loVal;
 			child.chromosome[i] += delta;
 		}
 	}
@@ -231,7 +230,7 @@ double* NeuralNetwork::SoftMax(double* oSums) {
 }
 
 void NeuralNetwork::Place(const Individual &child1,
-	const Individual child2, Individual* population,
+	const Individual& child2, Individual* population,
 	int popSize) {
 	std::sort(population,
 		population + popSize,
