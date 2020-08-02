@@ -155,14 +155,14 @@ Individual* NeuralNetwork::Reproduce(const Individual& parent1,
 		child1.chromosome[i] = parent1.chromosome[i];
 	}
 	for (int i = cross + 1; i < numGenes; ++i) {
-		child1.chromosome[i] = parent2.chromosome[i];
+		child2.chromosome[i] = parent1.chromosome[i];
 	}
 
 	for (int i = 0; i <= cross; ++i) {
 		child2.chromosome[i] = parent2.chromosome[i];
 	}
 	for (int i = cross + 1; i < numGenes; ++i) {
-		child2.chromosome[i] = parent1.chromosome[i];
+		child1.chromosome[i] = parent2.chromosome[i];
 	}
 
 	Mutate(child1, maxGene, mutateRate, mutateChange);
@@ -181,14 +181,13 @@ void NeuralNetwork::Mutate(const Individual &child, double maxGene,
 	double loVal = -hiVal;
 	for (int i = 0; i < child.numGenes; i++) {
 		if (randVal() < mutateRate) {
-			double delta = (hiVal - loVal)
-				*randVal() + loVal;
+			double delta = (hiVal - loVal)*randVal() + loVal;
 			child.chromosome[i] += delta;
 		}
 	}
 }
 
-double NeuralNetwork::GetAccuracy(double **testData) const {
+double NeuralNetwork::GetAccuracy(double **testData, int numTestData) const {
 	// percentage correct using winner takes all
 	int numCorrect = 0;
 	int numWrong = 0;
@@ -198,17 +197,21 @@ double NeuralNetwork::GetAccuracy(double **testData) const {
 	double *tValues = new double[numOutput];
 	double *yValues = new double[numOutput];
 
-	ComputeOutputs(xValues, yValues);
+	for (int i = 0; i < numTestData; ++i) {
+		memcpy(xValues, testData[i], numInput * sizeof(double));
+		memcpy(tValues, &testData[i][numInput], numOutput);
 
-	int maxIndex = MaxIndex(yValues);
+		ComputeOutputs(xValues, yValues);
 
-	if (tValues[maxIndex] == 1.0) {
-		++numCorrect;
-	}
-	else {
-		++numWrong;
-	}
+		int maxIndex = MaxIndex(yValues);
 		
+		if (tValues[maxIndex] == 1.0) {
+			++numCorrect;
+		}
+		else {
+			++numWrong;
+		}
+	}
 
 	delete[] xValues;
 	delete[] tValues;
@@ -231,7 +234,7 @@ double* NeuralNetwork::SoftMax(double* oSums) {
 }
 
 void NeuralNetwork::Place(const Individual &child1,
-	const Individual child2, Individual* population,
+	const Individual& child2, Individual* population,
 	int popSize) {
 	std::sort(population,
 		population + popSize,
@@ -269,7 +272,18 @@ double NeuralNetwork::MeanSquaredError(double** trainData,
 	return sumSquaredError/(double)numTrainData;
 }
 
-int NeuralNetwork::MaxIndex(double* vector) {
+int NeuralNetwork::MaxIndex(double* vector, int vectorLength) {
+	int bigIndex = 0;
+	double biggestVal = vector[0];
+
+	for (int i = 0; i < vectorLength; ++i) {
+		if (vector[i] > biggestVal) {
+			biggestVal = vector[i];
+			bigIndex = i;
+		}
+	}
+
+	return bigIndex;
 	return 0;
 }
 

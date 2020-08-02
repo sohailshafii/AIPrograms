@@ -27,7 +27,7 @@ public:
 	void Mutate(const Individual &child, double maxGene,
 		double mutateRate, double mutateChange);
 
-	double GetAccuracy(double **testData) const;
+	double GetAccuracy(double **testData, int numTestData) const;
 
 private:
 	static double** MakeMatrix(int rows, int cols);
@@ -35,7 +35,7 @@ private:
 	static double* SoftMax(double* oSums);
 
 	static void Place(const Individual &child1,
-		const Individual child2, Individual* population,
+		const Individual& child2, Individual* population,
 		int popSize);
 	double MeanSquaredError(double** trainData, int numTrainData,
 		double* weights);
