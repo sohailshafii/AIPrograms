@@ -165,9 +165,6 @@ Matrix& Matrix::operator-=(const Matrix& rhs) {
 }
 
 Matrix& Matrix::operator*=(const Matrix& rhs) {
-	Matrix product(numRows, numColumns);
-	product.fillWithZeros();
-
 	if (this->numRows != rhs.numRows ||
 		this->numColumns != rhs.numColumns) {
 		std::cerr << "Can't self multiply a (" << numRows
@@ -176,7 +173,7 @@ Matrix& Matrix::operator*=(const Matrix& rhs) {
 			" x " << rhs.numColumns << ") matrix.\n";
 	}
 	else {
-		*this = product*rhs;
+		*this = *this*rhs;
 	}
 	return *this;
 }
