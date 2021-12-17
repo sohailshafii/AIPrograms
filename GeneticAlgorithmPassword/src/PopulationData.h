@@ -19,62 +19,60 @@ public:
 
 	}
 
-	PopulationData(unsigned int popSize, unsigned  int numBreeders,
-		unsigned int numberOfChildren, unsigned  int passwordLength);
+	PopulationData(unsigned int popSize, unsigned int numBestBreeders,
+		unsigned int numLuckyBreeders, unsigned int numberOfChildren,
+		unsigned  int passwordLength);
 	PopulationData(const PopulationData& prevPopData,
-		unsigned int popSize, unsigned  int numBreeders,
-		unsigned int numberOfChildren);
+		unsigned int popSize, unsigned  int numBestBreeders,
+		unsigned int numLuckyBreeders, unsigned int numberOfChildren);
 	PopulationData(const PopulationData &p2);
 
 	PopulationData& operator=(const PopulationData& other);
 
 	~PopulationData();
 
-	void makeRandomPopulation(unsigned int passwordLength);
+	void MakeRandomPopulation(unsigned int passwordLength);
 
-	void makeNextGeneration(const std::string &password,
-		unsigned int numBestSamples, unsigned int numLuckyFewIndices,
+	void MakeNextGeneration(const std::string &password,
 		float chanceOfMutation);
 
-	void calculatePerf(const std::string& password);
+	void CalculatePerf(const std::string& password);
 	void printPopulation() const;
 
-	void testInitialData() const;
-	void testFitnessFunction(const std::string&
+	void TestInitialData() const;
+	void TestFitnessFunction(const std::string&
 		testPassword, const std::string& halfFitnessVersion) const;
-	void measurePerfAndTestSort(const std::string&
+	void MeasurePerfAndTestSort(const std::string&
 		testPassword);
 
 private:
-	std::string generateAWord(unsigned int length);
+	std::string GenerateAWord(unsigned int length);
 
-	void computePerfPopulation(const std::string& password);
-	float fitnessFunction(const std::string& password,
+	void ComputePerfPopulation(const std::string& password);
+	float FitnessFunction(const std::string& password,
 		const std::string& testWord) const;
 
-	void selectBreedersFromPopulation(
-		unsigned int numBestSamples, unsigned int numLuckyFewIndices);
-	std::string createChild(const std::string& individual1,
+	void SelectBreedersFromPopulation();
+	std::string CreateChild(const std::string& individual1,
 		const std::string& individual2);
-	void createChildren();
+	void CreateChildren();
 
-	std::string mutateWord(const std::string& word);
-	void mutateNextPopulation(
-		float chanceOfMutation);
+	std::string MutateWord(const std::string& word);
+	void MutateNextPopulation(float chanceOfMutation);
 
-	void allocateAndCopyFrom(const PopulationData& other);
-	void copyFrom(const PopulationData& other);
+	void AllocateAndCopyFrom(const PopulationData& other);
+	void CopyFrom(const PopulationData& other);
 	//static void allocateRandData();
 
-	static float randUnitVal();
-	static char randomLetterAscii();
+	static float RandUnitVal();
+	static char RandomLetterAscii();
 
 	MemberData* currentGeneration;
 	MemberData* breeders;
 	MemberData* nextGeneration;
 
 	unsigned int populationSize;
-	unsigned int numBreeders;
+	unsigned int numBestBreeders, numLuckyBreeders;
 	unsigned int numberOfChildren;
 
 	//static std::mt19937 *gen; 

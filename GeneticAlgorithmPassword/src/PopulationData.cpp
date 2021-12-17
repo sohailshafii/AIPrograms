@@ -13,40 +13,42 @@
 //std::uniform_real_distribution<> *PopulationData::dis;
 
 PopulationData::PopulationData(unsigned int popSize,
-	unsigned int numBreeders, unsigned int numberOfChildren,
-	unsigned int passwordLength) {
+	unsigned int numBestBreeders, unsigned int numLuckyBreeders,
+	unsigned int numberOfChildren, unsigned int passwordLength) {
 	//PopulationData::allocateRandData();
 
 	populationSize = popSize;
-	this->numBreeders = numBreeders;
+	this->numBestBreeders = numBestBreeders;
+	this->numLuckyBreeders = numLuckyBreeders;
 	this->numberOfChildren = numberOfChildren;
 
 	currentGeneration = new MemberData[popSize];
 	// make random generation since no previous one was provided
-	makeRandomPopulation(passwordLength);
-	breeders = new MemberData[numBreeders];
+	MakeRandomPopulation(passwordLength);
+	breeders = new MemberData[numBestBreeders + numLuckyBreeders];
 	nextGeneration = new MemberData[populationSize];
 }
 
 PopulationData::PopulationData(const PopulationData& prevPopData,
-	unsigned int popSize, unsigned int numBreeders,
-	unsigned int numberOfChildren) {
+	unsigned int popSize, unsigned int numBestBreeders,
+	unsigned int numLuckyBreeders, unsigned int numberOfChildren) {
 	//allocateRandData();
 
 	populationSize = popSize;
-	this->numBreeders = numBreeders;
+	this->numBestBreeders = numBestBreeders;
+	this->numLuckyBreeders = numLuckyBreeders;
 	this->numberOfChildren = numberOfChildren;
 
 	currentGeneration = new MemberData[popSize];
 	for (unsigned int i = 0; i < popSize; i++) {
 		currentGeneration[i] = prevPopData.nextGeneration[i];
 	}
-	breeders = new MemberData[numBreeders];
+	breeders = new MemberData[numBestBreeders + numLuckyBreeders];
 	nextGeneration = new MemberData[populationSize];
 }
 
 PopulationData::PopulationData(const PopulationData &p2) {
-	allocateAndCopyFrom(p2);
+	AllocateAndCopyFrom(p2);
 	//allocateRandData();
 }
 
@@ -66,7 +68,8 @@ PopulationData& PopulationData::operator=(const PopulationData& other)
 {
 	if (this != &other) {
 		if (this->populationSize != other.populationSize ||
-			this->numBreeders != other.numBreeders ||
+			this->numBestBreeders != other.numBestBreeders ||
+			this->numLuckyBreeders != other.numLuckyBreeders ||
 			this->numberOfChildren != other.numberOfChildren) {
 			if (currentGeneration != nullptr) {
 				delete[] currentGeneration;
@@ -77,32 +80,33 @@ PopulationData& PopulationData::operator=(const PopulationData& other)
 			if (nextGeneration != nullptr) {
 				delete[] nextGeneration;
 			}
-			allocateAndCopyFrom(other);
+			AllocateAndCopyFrom(other);
 		}
 		else {
-			copyFrom(other);
+			CopyFrom(other);
 		}
 	}
 	return *this;
 }
 
-void PopulationData::allocateAndCopyFrom(const PopulationData& other) {
+void PopulationData::AllocateAndCopyFrom(const PopulationData& other) {
 	this->populationSize = other.populationSize;
-	this->numBreeders = other.numBreeders;
+	this->numBestBreeders = other.numBestBreeders;
+	this->numLuckyBreeders = other.numLuckyBreeders;
 	this->numberOfChildren = other.numberOfChildren;
 
 	this->currentGeneration = new MemberData[populationSize];
-	this->breeders = new MemberData[numBreeders];
+	this->breeders = new MemberData[numBestBreeders + numLuckyBreeders];
 	this->nextGeneration = new MemberData[populationSize];
-	copyFrom(other);
+	CopyFrom(other);
 }
 
-void PopulationData::copyFrom(const PopulationData& other) {
+void PopulationData::CopyFrom(const PopulationData& other) {
 	for (unsigned int i = 0; i < populationSize; i++) {
 		this->currentGeneration[i] =
 			other.currentGeneration[i];
 	}
-	for (unsigned int i = 0; i < numBreeders; i++) {
+	for (unsigned int i = 0; i < numBestBreeders + numLuckyBreeders; i++) {
 		this->breeders[i] = other.breeders[i];
 	}
 	for (unsigned int i = 0; i < populationSize; i++) {
@@ -121,23 +125,22 @@ void PopulationData::copyFrom(const PopulationData& other) {
 	dis = new std::uniform_real_distribution<>(0.0f, 1.0f);
 }*/
 
-void PopulationData::makeRandomPopulation(unsigned int passwordLength) {
+void PopulationData::MakeRandomPopulation(unsigned int passwordLength) {
 	for (unsigned int i = 0; i < populationSize; i++) {
-		currentGeneration[i].word = generateAWord(passwordLength);
+		currentGeneration[i].word = GenerateAWord(passwordLength);
 	}
 }
 
-void PopulationData::makeNextGeneration(const std::string &password,
-	unsigned int numBestSamples, unsigned int numLuckyFewIndices,
+void PopulationData::MakeNextGeneration(const std::string& password,
 	float chanceOfMutation) {
-	computePerfPopulation(password);
-	selectBreedersFromPopulation(numBestSamples, numLuckyFewIndices);
-	createChildren();
-	mutateNextPopulation(chanceOfMutation);
+	ComputePerfPopulation(password);
+	SelectBreedersFromPopulation();
+	CreateChildren();
+	MutateNextPopulation(chanceOfMutation);
 }
 
-void PopulationData::calculatePerf(const std::string& password) {
-	computePerfPopulation(password);
+void PopulationData::CalculatePerf(const std::string& password) {
+	ComputePerfPopulation(password);
 }
 
 void PopulationData::printPopulation() const {
@@ -149,19 +152,19 @@ void PopulationData::printPopulation() const {
 	}
 }
 
-std::string PopulationData::generateAWord(unsigned int length) {
+std::string PopulationData::GenerateAWord(unsigned int length) {
 	std::string generatedWord = "";
 	for (unsigned int i = 0; i < length; i++) {
-		generatedWord += randomLetterAscii();
+		generatedWord += RandomLetterAscii();
 	}
 
 	return generatedWord;
 }
 
-void PopulationData::computePerfPopulation(const std::string& password) {
+void PopulationData::ComputePerfPopulation(const std::string& password) {
 	for (unsigned int i = 0; i < populationSize; i++) {
 		auto& individual = currentGeneration[i];
-		individual.performance = fitnessFunction(password,
+		individual.performance = FitnessFunction(password,
 			individual.word);
 	}
 	std::sort(currentGeneration,
@@ -171,7 +174,7 @@ void PopulationData::computePerfPopulation(const std::string& password) {
 	});
 }
 
-float PopulationData::fitnessFunction(const std::string& password,
+float PopulationData::FitnessFunction(const std::string& password,
 	const std::string& testWord) const {
 	if (password.size() != testWord.size()) {
 		std::cout << "Word and password incompatible!\n";
@@ -189,29 +192,39 @@ float PopulationData::fitnessFunction(const std::string& password,
 	}
 }
 
-void PopulationData::selectBreedersFromPopulation(
-	unsigned int numBestSamples, unsigned int numLuckyFewIndices) {
-
+void PopulationData::SelectBreedersFromPopulation() {
 	int pickedIndex = 0;
 	// pick from the front as those are the best
-	for (unsigned int i = 0; i < numBestSamples; i++) {
+	for (unsigned int i = 0; i < numBestBreeders; i++) {
 		breeders[pickedIndex] = currentGeneration[pickedIndex];
 		pickedIndex++;
 	}
 
-	for (unsigned int i = 0; i < numLuckyFewIndices; i++) {
-		breeders[pickedIndex] = currentGeneration[rand()
-			% populationSize];
+	for (unsigned int i = 0; i < numLuckyBreeders; i++) {
+		int newRandomIndex;
+		bool duplicateFound = true;
+		// make sure lucky index doesn't overlap with best ones
+		while (duplicateFound) {
+			newRandomIndex = rand() % populationSize;
+			duplicateFound = false;
+			for (int j = 0; j < pickedIndex; j++) {
+				if (&breeders[pickedIndex] == &breeders[newRandomIndex]) {
+					duplicateFound = true;
+					break;
+				}
+			}
+		}
+		breeders[pickedIndex] = currentGeneration[newRandomIndex];
 		pickedIndex++;
 	}
 
 	auto seed =
 		(unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
-	std::shuffle(breeders, breeders + numBreeders,
+	std::shuffle(breeders, breeders + numBestBreeders + numLuckyBreeders,
 		std::default_random_engine(seed));
 }
 
-std::string PopulationData::createChild(const std::string& individual1,
+std::string PopulationData::CreateChild(const std::string& individual1,
 	const std::string& individual2) {
 	std::string child = "";
 	auto numCharacters = individual1.size();
@@ -222,20 +235,21 @@ std::string PopulationData::createChild(const std::string& individual1,
 	return child;
 }
 
-void PopulationData::createChildren() {
-	auto numHalfPop = numBreeders / 2;
+void PopulationData::CreateChildren() {
+	unsigned int numTotalBreeders = numBestBreeders + numLuckyBreeders;
+	auto numHalfPop = numTotalBreeders / 2;
 	auto childIndex = 0;
 	for (unsigned int i = 0; i < numHalfPop; i++) {
 		for (unsigned int j = 0; j < numberOfChildren; j++) {
-			auto nextChild = createChild(breeders[i].word,
-				breeders[numBreeders - 1 - i].word);
+			auto nextChild = CreateChild(breeders[i].word,
+				breeders[numTotalBreeders - 1 - i].word);
 			nextGeneration[childIndex].word = nextChild;
 			childIndex++;
 		}
 	}
 }
 
-std::string PopulationData::mutateWord(const std::string& word) {
+std::string PopulationData::MutateWord(const std::string& word) {
 	size_t wordLength = word.size();
 	auto randVal = rand();
 	size_t test = randVal % wordLength;
@@ -244,52 +258,52 @@ std::string PopulationData::mutateWord(const std::string& word) {
 	std::string modifiedWord;
 
 	if (indexModification == 0) {
-		modifiedWord += PopulationData::randomLetterAscii();
+		modifiedWord += PopulationData::RandomLetterAscii();
 		modifiedWord += word.substr(1);
 	}
 	else {
 		modifiedWord += word.substr(0, indexModification);
-		modifiedWord += PopulationData::randomLetterAscii();
+		modifiedWord += PopulationData::RandomLetterAscii();
 		modifiedWord += word.substr(indexModification + 1);
 	}
 	return modifiedWord;
 }
 
-void PopulationData::mutateNextPopulation(
+void PopulationData::MutateNextPopulation(
 	float chanceOfMutation) {
 	for (unsigned int i = 0; i < populationSize; i++) {
-		// TODO: best way to generate between 0-1?
 		int randValue = rand();
-		float chance = PopulationData::randUnitVal();
+		float chance = PopulationData::RandUnitVal();
 		chance *= 100.0f;
 		if (chance < chanceOfMutation) {
-			nextGeneration[i].word = mutateWord(
+			nextGeneration[i].word = MutateWord(
 				nextGeneration[i].word);
 		}
 	}
 }
 
-void PopulationData::testInitialData() const {
+void PopulationData::TestInitialData() const {
 	assert(currentGeneration != nullptr);
 	assert(breeders != nullptr);
 	assert(nextGeneration != nullptr);
 
 	assert(populationSize != 0);
-	assert(numBreeders != 0);
+	assert(numBestBreeders != 0);
+	assert(numLuckyBreeders != 0);
 	assert(numberOfChildren != 0);
 
-	assert((numBreeders*numberOfChildren / 2)
+	assert(((numBestBreeders + numLuckyBreeders) * numberOfChildren / 2)
 		== populationSize);
 
 	//assert(PopulationData::gen != nullptr); 
 	//assert(PopulationData::dis != nullptr);
 }
 
-void PopulationData::testFitnessFunction(const std::string&
+void PopulationData::TestFitnessFunction(const std::string&
 	testPassword, const std::string& halfFitnessVersion) const {
-	float perfectFitness = fitnessFunction(testPassword, testPassword);
-	float halfFitness = fitnessFunction(testPassword, halfFitnessVersion);
-	float badFitness = fitnessFunction(testPassword, "test");
+	float perfectFitness = FitnessFunction(testPassword, testPassword);
+	float halfFitness = FitnessFunction(testPassword, halfFitnessVersion);
+	float badFitness = FitnessFunction(testPassword, "test");
 
 	std::cout << "Perfect fitness: " << perfectFitness << ", "
 		<< "half fitness: " << halfFitness << ", bad fitness: "
@@ -300,9 +314,9 @@ void PopulationData::testFitnessFunction(const std::string&
 	assert(badFitness < 0.0f);
 }
 
-void PopulationData::measurePerfAndTestSort(const std::string&
+void PopulationData::MeasurePerfAndTestSort(const std::string&
 	testPassword) {
-	computePerfPopulation(testPassword);
+	ComputePerfPopulation(testPassword);
 
 	bool properOrder = true;
 	for (unsigned int i = 1; i < populationSize - 1; i++) {
@@ -317,13 +331,13 @@ void PopulationData::measurePerfAndTestSort(const std::string&
 	assert(properOrder);
 }
 
-float PopulationData::randUnitVal() {
+float PopulationData::RandUnitVal() {
 	//return (float)(*dis)(*gen);
 	return (float)rand() / (float)RAND_MAX;
 }
 
-char PopulationData::randomLetterAscii() {
-	float unitVal = PopulationData::randUnitVal();
+char PopulationData::RandomLetterAscii() {
+	float unitVal = PopulationData::RandUnitVal();
 	return (char)(97 + (int)(26.0f*unitVal));
 }
 

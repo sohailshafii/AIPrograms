@@ -12,12 +12,12 @@ int main() {
 	int numLuckyFewIndices = 20;
 	int numberOfChildren = 5;
 
-	PopulationData firstPopulation = PopulationData(populationSize,
-		numLuckyFewIndices + numBestSamples, numberOfChildren, (unsigned int)testPassword.size());
+	PopulationData firstPopulation = PopulationData(populationSize, numBestSamples,
+		numLuckyFewIndices, numberOfChildren, (unsigned int)testPassword.size());
 
-	firstPopulation.testInitialData();
-	firstPopulation.testFitnessFunction(testPassword, "hel33");
-	firstPopulation.measurePerfAndTestSort(testPassword);
+	firstPopulation.TestInitialData();
+	firstPopulation.TestFitnessFunction(testPassword, "hel33");
+	firstPopulation.MeasurePerfAndTestSort(testPassword);
 
 	return 0;
 }

@@ -11,23 +11,23 @@
 
 #include "PopulationData.h"
 
-std::vector<PopulationData> evolveMultipleTimes(int numberOfGenerations,
+std::vector<PopulationData> EvolveMultipleTimes(int numberOfGenerations,
 	std::string& password, int populationSize, int numBestSamples, int numLuckyFewIndices,
 	int numChildren, float chanceOfMutation) {
 	std::vector<PopulationData> allGenerations;
 
-	PopulationData firstPopulation = PopulationData(populationSize,
-		numLuckyFewIndices + numBestSamples, numChildren, (unsigned int)password.size());
+	PopulationData firstPopulation = PopulationData(populationSize, numBestSamples,
+		numLuckyFewIndices, numChildren, (unsigned int)password.size());
 	allGenerations.push_back(firstPopulation);
 
 	for (int i = 0; i < numberOfGenerations; i++) {
 		std::cout << "Evolving generation " << i << "...\n";
 		auto& currGeneration = allGenerations[i];
-		currGeneration.makeNextGeneration(password,
-			numBestSamples, numLuckyFewIndices, chanceOfMutation);
+		currGeneration.MakeNextGeneration(password,
+			chanceOfMutation);
 		PopulationData nextGen = PopulationData(
-			currGeneration, populationSize,
-			numLuckyFewIndices + numBestSamples, numChildren);
+			currGeneration, populationSize, numBestSamples,
+			numLuckyFewIndices,  numChildren);
 		allGenerations.push_back(nextGen);
 		std::cout << "Evolved generation " << i << ".\n";
 	}
@@ -56,7 +56,7 @@ int main() {
 	}
 	else {
 		std::vector<PopulationData> allEvolutions =
-			evolveMultipleTimes(numberOfGenerations, password, populationSize,
+			EvolveMultipleTimes(numberOfGenerations, password, populationSize,
 				numBestSamples, numLuckyFewIndices, numberOfChildren, chanceOfMutation);
 
 		std::cout << "Performance of first generation:\n";
@@ -65,7 +65,7 @@ int main() {
 
 		std::cout << "Performance of last generation:\n";
 		auto& lastGen = allEvolutions[allEvolutions.size() - 1];
-		lastGen.calculatePerf(password);
+		lastGen.CalculatePerf(password);
 		lastGen.printPopulation();
 	}
 	return 0;
