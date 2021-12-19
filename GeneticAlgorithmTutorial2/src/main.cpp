@@ -9,23 +9,23 @@
 #include <ctime>
 
 int main() {
-	srand(time(NULL));
-	FitnessCalc::setSolution("1111000000000000000000000000000000000000000000000000000000001111");
+	srand((unsigned int)time(NULL));
+	FitnessCalc::SetSolution("1111000000000000000000000000000000000000000000000000000000001111");
 
 	Population myPop(50, true);
 
 	int generationCount = 0;
-	while (myPop.getFittest().getFitness() < FitnessCalc::getMaxFitness()) {
+	while (myPop.GetFittest().GetFitness() < FitnessCalc::GetMaxFitness()) {
 		generationCount++;
 		std::cout << " Generation: " << generationCount << ", fittest: "
-			<< myPop.getFittest().getFitness() << " vs " <<
-			FitnessCalc::getMaxFitness() << ".\n";
-		myPop = Algorithm::evolvePopulation(myPop);
+			<< myPop.GetFittest().GetFitness() << " vs " <<
+			FitnessCalc::GetMaxFitness() << ".\n";
+		myPop = Algorithm::EvolvePopulation(myPop);
 		std::cout << "Evolved!\n";
 	}
 	std::cout << "Solution found! Generation: " << generationCount
 		<< ", genes: \n";
-	myPop.getFittest().print();
+	myPop.GetFittest().Print();
 
 	return 0;
 }

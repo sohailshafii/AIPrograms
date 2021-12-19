@@ -11,44 +11,43 @@ public:
 	Individual();
 	~Individual();
 
-	Individual(const Individual &p2);
-	Individual& operator=(
-		const Individual& other);
+	Individual(Individual  const & p2);
+	Individual& operator=(Individual const & other);
 
-	void generateIndividual();
+	void GenerateIndividual();
 
-	static void setDefaultGeneLength(int length) {
+	static void SetDefaultGeneLength(int length) {
 		defaultGeneLength = length;
 	}
 
-	int getGene(int index) const {
+	int GetGene(int index) const {
 		return genes[index];
 	}
 
-	void setGene(int index, int value) {
+	void SetGene(int index, int value) {
 		genes[index] = value;
 		fitness = 0;
 	}
 
-	int size() const {
+	int Size() const {
 		return numGenes;
 	}
 
-	int getFitness() {
+	int GetFitness() {
 		if (fitness == 0) {
-			fitness = FitnessCalc::getFitness(*this);
+			fitness = FitnessCalc::GetFitness(*this);
 		}
 		return fitness;
 	}
 
-	void print() const;
+	void Print() const;
 
 private:
-	void allocateAndCopyFrom(const Individual& other);
-	void copyFrom(const Individual& other);
+	void AllocateAndCopyFrom(Individual const & other);
+	void CopyFrom(Individual const & other);
 	//void allocateRandData();
 
-	static float randUnitVal();
+	static float RandUnitVal();
 
 	static int defaultGeneLength;
 	int* genes;

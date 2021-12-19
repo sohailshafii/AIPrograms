@@ -11,9 +11,9 @@ public:
 	static unsigned int numChars;
 	static int* solution;
 
-	static void setSolution(int* newSolution, int length);
-	static void setSolution(const std::string& newSolution);
+	static void SetSolution(int* newSolution, int length);
+	static void SetSolution(std::string const & newSolution);
 
-	static int getFitness(const Individual& individual);
-	static int getMaxFitness();
+	static int GetFitness(Individual const & individual);
+	static int GetMaxFitness();
 };

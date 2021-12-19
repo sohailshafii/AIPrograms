@@ -1,21 +1,21 @@
 #include "Population.h"
 
-Population::Population(int populationSize, bool
-	initialize) {
+Population::Population(int populationSize,
+	bool initialize) {
 	this->populationSize = populationSize;
 	individuals = new Individual[populationSize];
 	if (initialize) {
 		// Loop and create individuals
 		for (int i = 0; i < populationSize; i++) {
 			Individual newIndividual;
-			newIndividual.generateIndividual();
-			saveIndividual(i, newIndividual);
+			newIndividual.GenerateIndividual();
+			SaveIndividual(i, newIndividual);
 		}
 	}
 }
 
-Population::Population(const Population &p2) {
-	allocateAndCopyFrom(p2);
+Population::Population(Population  const & p2) {
+	AllocateAndCopyFrom(p2);
 }
 
 Population& Population::operator=(
@@ -25,22 +25,22 @@ Population& Population::operator=(
 			if (this->individuals != nullptr) {
 				delete[] individuals;
 			}
-			allocateAndCopyFrom(other);
+			AllocateAndCopyFrom(other);
 		}
 		else {
-			copyFrom(other);
+			CopyFrom(other);
 		}
 	}
 	return *this;
 }
 
-void Population::allocateAndCopyFrom(const Population &other) {
+void Population::AllocateAndCopyFrom(Population  const & other) {
 	this->populationSize = other.populationSize;
 	this->individuals = new Individual[populationSize];
-	copyFrom(other);
+	CopyFrom(other);
 }
 
-void Population::copyFrom(const Population &other) {
+void Population::CopyFrom(Population  const & other) {
 	for (int i = 0; i < populationSize; i++) {
 		this->individuals[i] = other.individuals[i];
 	}

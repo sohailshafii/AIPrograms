@@ -6,7 +6,7 @@
 unsigned int FitnessCalc::numChars = 64;
 int* FitnessCalc::solution = new int[64];
 
-void FitnessCalc::setSolution(int* newSolution, int length) {
+void FitnessCalc::SetSolution(int* newSolution, int length) {
 	if (solution != nullptr) {
 		delete[] solution;
 	}
@@ -15,7 +15,7 @@ void FitnessCalc::setSolution(int* newSolution, int length) {
 	memcpy(solution, newSolution, length * sizeof(int));
 }
 
-void FitnessCalc::setSolution(const std::string& newSolution) {
+void FitnessCalc::SetSolution(std::string const & newSolution) {
 	if (solution != nullptr) {
 		delete[] solution;
 	}
@@ -26,29 +26,23 @@ void FitnessCalc::setSolution(const std::string& newSolution) {
 	// Loop through each character of our string and save it in our byte 
 	// array
 	for (unsigned int i = 0; i < numChars; i++) {
-		auto currChar = charVersion[i];
-		if (currChar == '1') {
-			solution[i] = 1;
-		}
-		else {
-			solution[i] = 0;
-		}
+		solution[i] = (charVersion[i] == '1') ? 1 : 0;
 	}
 }
 
-int FitnessCalc::getFitness(const Individual& individual) {
+int FitnessCalc::GetFitness(Individual const & individual) {
 	unsigned int fitness = 0;
-	unsigned int individualSize = individual.size();
+	unsigned int individualSize = individual.Size();
 
 	// Loop through our individuals genes and compare them to our cadidates
 	for (unsigned int i = 0; i < individualSize && i < numChars; i++) {
-		if (individual.getGene(i) == solution[i]) {
+		if (individual.GetGene(i) == solution[i]) {
 			fitness++;
 		}
 	}
 	return fitness;
 }
 
-int FitnessCalc::getMaxFitness() {
+int FitnessCalc::GetMaxFitness() {
 	return numChars;
 }

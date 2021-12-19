@@ -29,7 +29,7 @@ PopulationData::PopulationData(unsigned int popSize,
 	nextGeneration = new MemberData[populationSize];
 }
 
-PopulationData::PopulationData(const PopulationData& prevPopData,
+PopulationData::PopulationData(PopulationData const & prevPopData,
 	unsigned int popSize, unsigned int numBestBreeders,
 	unsigned int numLuckyBreeders, unsigned int numberOfChildren) {
 	//allocateRandData();
@@ -47,7 +47,7 @@ PopulationData::PopulationData(const PopulationData& prevPopData,
 	nextGeneration = new MemberData[populationSize];
 }
 
-PopulationData::PopulationData(const PopulationData &p2) {
+PopulationData::PopulationData(PopulationData const & p2) {
 	AllocateAndCopyFrom(p2);
 	//allocateRandData();
 }
@@ -64,7 +64,7 @@ PopulationData::~PopulationData() {
 	}
 }
 
-PopulationData& PopulationData::operator=(const PopulationData& other)
+PopulationData& PopulationData::operator=(PopulationData const & other)
 {
 	if (this != &other) {
 		if (this->populationSize != other.populationSize ||
@@ -89,7 +89,7 @@ PopulationData& PopulationData::operator=(const PopulationData& other)
 	return *this;
 }
 
-void PopulationData::AllocateAndCopyFrom(const PopulationData& other) {
+void PopulationData::AllocateAndCopyFrom(PopulationData const & other) {
 	this->populationSize = other.populationSize;
 	this->numBestBreeders = other.numBestBreeders;
 	this->numLuckyBreeders = other.numLuckyBreeders;
@@ -101,7 +101,7 @@ void PopulationData::AllocateAndCopyFrom(const PopulationData& other) {
 	CopyFrom(other);
 }
 
-void PopulationData::CopyFrom(const PopulationData& other) {
+void PopulationData::CopyFrom(PopulationData const & other) {
 	for (unsigned int i = 0; i < populationSize; i++) {
 		this->currentGeneration[i] =
 			other.currentGeneration[i];
@@ -131,7 +131,7 @@ void PopulationData::MakeRandomPopulation(unsigned int passwordLength) {
 	}
 }
 
-void PopulationData::MakeNextGeneration(const std::string& password,
+void PopulationData::MakeNextGeneration(std::string const & password,
 	float chanceOfMutation) {
 	ComputePerfPopulation(password);
 	SelectBreedersFromPopulation();
@@ -139,7 +139,7 @@ void PopulationData::MakeNextGeneration(const std::string& password,
 	MutateNextPopulation(chanceOfMutation);
 }
 
-void PopulationData::CalculatePerf(const std::string& password) {
+void PopulationData::CalculatePerf(std::string const & password) {
 	ComputePerfPopulation(password);
 }
 
@@ -161,7 +161,7 @@ std::string PopulationData::GenerateAWord(unsigned int length) {
 	return generatedWord;
 }
 
-void PopulationData::ComputePerfPopulation(const std::string& password) {
+void PopulationData::ComputePerfPopulation(std::string const & password) {
 	for (unsigned int i = 0; i < populationSize; i++) {
 		auto& individual = currentGeneration[i];
 		individual.performance = FitnessFunction(password,
@@ -174,8 +174,8 @@ void PopulationData::ComputePerfPopulation(const std::string& password) {
 	});
 }
 
-float PopulationData::FitnessFunction(const std::string& password,
-	const std::string& testWord) const {
+float PopulationData::FitnessFunction(std::string const & password,
+	std::string const & testWord) const {
 	if (password.size() != testWord.size()) {
 		std::cout << "Word and password incompatible!\n";
 		return -1.0f;
@@ -224,8 +224,8 @@ void PopulationData::SelectBreedersFromPopulation() {
 		std::default_random_engine(seed));
 }
 
-std::string PopulationData::CreateChild(const std::string& individual1,
-	const std::string& individual2) {
+std::string PopulationData::CreateChild(std::string const & individual1,
+	std::string const & individual2) {
 	std::string child = "";
 	auto numCharacters = individual1.size();
 	for (size_t i = 0; i < numCharacters; i++) {
@@ -249,7 +249,7 @@ void PopulationData::CreateChildren() {
 	}
 }
 
-std::string PopulationData::MutateWord(const std::string& word) {
+std::string PopulationData::MutateWord(std::string const & word) {
 	size_t wordLength = word.size();
 	auto randVal = rand();
 	size_t test = randVal % wordLength;
@@ -299,8 +299,8 @@ void PopulationData::TestInitialData() const {
 	//assert(PopulationData::dis != nullptr);
 }
 
-void PopulationData::TestFitnessFunction(const std::string&
-	testPassword, const std::string& halfFitnessVersion) const {
+void PopulationData::TestFitnessFunction(std::string const & testPassword,
+	std::string const & halfFitnessVersion) const {
 	float perfectFitness = FitnessFunction(testPassword, testPassword);
 	float halfFitness = FitnessFunction(testPassword, halfFitnessVersion);
 	float badFitness = FitnessFunction(testPassword, "test");
@@ -314,8 +314,7 @@ void PopulationData::TestFitnessFunction(const std::string&
 	assert(badFitness < 0.0f);
 }
 
-void PopulationData::MeasurePerfAndTestSort(const std::string&
-	testPassword) {
+void PopulationData::MeasurePerfAndTestSort(std::string const & testPassword) {
 	ComputePerfPopulation(testPassword);
 
 	bool properOrder = true;

@@ -4,11 +4,11 @@
 #include "Algorithm.h"
 #include <cmath>
 
-Population Algorithm::evolvePopulation(Population& pop) {
-	Population newPopulation(pop.getPopulationSize(), false);
+Population Algorithm::EvolvePopulation(Population & pop) {
+	Population newPopulation(pop.GetPopulationSize(), false);
 
 	if (elitism) {
-		newPopulation.saveIndividual(0, pop.getFittest());
+		newPopulation.SaveIndividual(0, pop.GetFittest());
 	}
 
 	// crossover
@@ -20,41 +20,41 @@ Population Algorithm::evolvePopulation(Population& pop) {
 		elitismOffset = 0;
 	}
 
-	int numPop = pop.getPopulationSize();
+	int numPop = pop.GetPopulationSize();
 	for (int i = elitismOffset; i < numPop; i++) {
-		Individual indiv1 = tournamentSelection(pop);
-		Individual indiv2 = tournamentSelection(pop);
-		Individual newIndiv = crossover(indiv1, indiv2);
-		newPopulation.saveIndividual(i, newIndiv);
+		Individual indiv1 = TournamentSelection(pop);
+		Individual indiv2 = TournamentSelection(pop);
+		Individual newIndiv = Crossover(indiv1, indiv2);
+		newPopulation.SaveIndividual(i, newIndiv);
 	}
 
 	// mutate
-	int newPopSize = newPopulation.getPopulationSize();
+	int newPopSize = newPopulation.GetPopulationSize();
 	for (int i = elitismOffset; i < newPopSize; i++) {
-		mutate(newPopulation.getIndividual(i));
+		Mutate(newPopulation.GetIndividual(i));
 	}
 
 	return newPopulation;
 }
 
-Individual Algorithm::crossover(Individual &indiv1,
-	Individual &indiv2) {
+Individual Algorithm::Crossover(Individual & indiv1,
+	Individual & indiv2) {
 	Individual newSol;
 	// Loop through genes
-	int indiv1Size = indiv1.size();
+	int indiv1Size = indiv1.Size();
 	for (int i = 0; i < indiv1Size; i++) {
 		// Crossover
-		if (Algorithm::randomValue() <= uniformRate) {
-			newSol.setGene(i, indiv1.getGene(i));
+		if (Algorithm::RandomValue() <= uniformRate) {
+			newSol.SetGene(i, indiv1.GetGene(i));
 		}
 		else {
-			newSol.setGene(i, indiv2.getGene(i));
+			newSol.SetGene(i, indiv2.GetGene(i));
 		}
 	}
 	return newSol;
 }
 
-float Algorithm::randomValue() {
+float Algorithm::RandomValue() {
 	// std::random causes memory errors with
 	// dr memory, use C++ rand
 	//static std::random_device rd;
@@ -66,25 +66,28 @@ float Algorithm::randomValue() {
 	return (float)rand() / (float)RAND_MAX;
 }
 
-void Algorithm::mutate(Individual &indiv) {
+void Algorithm::Mutate(Individual & indiv) {
 	Individual newSol;
-	int numGenes = indiv.size();
+	int numGenes = indiv.Size();
 
 	for (int i = 0; i < numGenes; i++) {
-		if (Algorithm::randomValue() <= mutationRate) {
-			int gene = (int)round(Algorithm::randomValue());
-			indiv.setGene(i, gene);
+		if (Algorithm::RandomValue() <= mutationRate) {
+			int gene = (int)round(Algorithm::RandomValue());
+			indiv.SetGene(i, gene);
 		}
 	}
 }
 
-Individual Algorithm::tournamentSelection(Population& pop) {
+/// <summary>
+/// Get fittest from a random selection of individuals. 
+/// </summary>
+Individual Algorithm::TournamentSelection(Population& pop) {
 	Population tournament(tournamentSize, false);
-	int popSize = pop.getPopulationSize();
+	int popSize = pop.GetPopulationSize();
 	for (int i = 0; i < tournamentSize; i++) {
-		int randomId = (int)(Algorithm::randomValue() * popSize);
-		tournament.saveIndividual(i, pop.getIndividual(randomId));
+		int randomId = (int)(Algorithm::RandomValue() * popSize);
+		tournament.SaveIndividual(i, pop.GetIndividual(randomId));
 	}
-	Individual fittest = tournament.getFittest();
+	Individual fittest = tournament.GetFittest();
 	return fittest;
 }

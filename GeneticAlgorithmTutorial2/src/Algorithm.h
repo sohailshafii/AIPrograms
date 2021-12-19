@@ -7,20 +7,19 @@
 
 class Algorithm {
 public:
-
-	static Population evolvePopulation(Population& pop);
-	static Individual crossover(Individual &indiv1,
-		Individual &indiv2);
-	static void mutate(Individual &indiv);
-	static Individual tournamentSelection(Population& pop);
-
-	static float randomValue();
+	static Population EvolvePopulation(Population & pop);
 
 private:
-
 	static constexpr double uniformRate = 0.5;
 	static constexpr double mutationRate = 0.0015;
 	static constexpr int tournamentSize = 5;
 	static constexpr bool elitism = true;
+
+	static Individual Crossover(Individual & indiv1,
+		Individual & indiv2);
+	static void Mutate(Individual & indiv);
+	static Individual TournamentSelection(Population & pop);
+
+	static float RandomValue();
 
 };

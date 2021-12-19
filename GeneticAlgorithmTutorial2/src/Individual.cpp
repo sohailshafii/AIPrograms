@@ -23,7 +23,7 @@ Individual::~Individual() {
 }
 
 Individual::Individual(const Individual &p2) {
-	allocateAndCopyFrom(p2);
+	AllocateAndCopyFrom(p2);
 }
 
 Individual& Individual::operator=(
@@ -33,41 +33,41 @@ Individual& Individual::operator=(
 			if (genes != nullptr) {
 				delete[] genes;
 			}
-			allocateAndCopyFrom(other);
+			AllocateAndCopyFrom(other);
 		}
 		else {
-			copyFrom(other);
+			CopyFrom(other);
 		}
 	}
 	return *this;
 }
 
-void Individual::allocateAndCopyFrom(
+void Individual::AllocateAndCopyFrom(
 	const Individual& other) {
 	genes = new int[other.numGenes];
 	numGenes = other.numGenes;
-	copyFrom(other);
+	CopyFrom(other);
 }
 
-void Individual::copyFrom(const Individual& other) {
+void Individual::CopyFrom(const Individual& other) {
 	memcpy(genes, other.genes, sizeof(int)*other.numGenes);
 	fitness = other.fitness;
 }
 
-void Individual::generateIndividual() {
+void Individual::GenerateIndividual() {
 	for (int i = 0; i < numGenes; i++) {
-		auto randomVar = Individual::randUnitVal();
+		auto randomVar = Individual::RandUnitVal();
 		genes[i] = (int)(round(randomVar));
 	}
 }
 
-void Individual::print() const {
-	int numGenes = size();
+void Individual::Print() const {
 	for (int i = 0; i < numGenes; i++) {
 		std::cout << genes[i] << ", ";
 	}
 	std::cout << std::endl;
 }
+
 /*void Individual::allocateRandData() {
 	if (gen != nullptr) {
 		return;
@@ -79,7 +79,7 @@ void Individual::print() const {
 	dis = new std::uniform_real_distribution<>(0.0f, 1.0f);
 }*/
 
-float Individual::randUnitVal() {
+float Individual::RandUnitVal() {
 	//return (*dis)(*gen);
 	return (float)rand() / (float)RAND_MAX;
 }

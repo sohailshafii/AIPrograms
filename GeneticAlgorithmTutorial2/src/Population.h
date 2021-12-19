@@ -7,26 +7,24 @@
 
 class Population {
 public:
+	Population(int populationSize,
+		bool initialize);
 
-	Population(int populationSize, bool
-		initialize);
-
-	Population(const Population &p2);
-	Population& operator=(
-		const Population& other);
+	Population(Population  const & p2);
+	Population& operator=(Population const & other);
 
 	~Population();
 
-	Individual& getIndividual(int index) {
+	Individual& GetIndividual(int index) {
 		return individuals[index];
 	}
 
-	Individual& getFittest() {
+	Individual& GetFittest() {
 		Individual& fittest = individuals[0];
 
 		for (int i = 0; i < populationSize; i++) {
 			auto& current = individuals[i];
-			if (fittest.getFitness() <= current.getFitness()) {
+			if (fittest.GetFitness() <= current.GetFitness()) {
 				fittest = current;
 			}
 		}
@@ -34,24 +32,24 @@ public:
 		return fittest;
 	}
 
-	int getPopulationSize() const {
+	int GetPopulationSize() const {
 		return populationSize;
 	}
 
-	void saveIndividual(int index,
+	void SaveIndividual(int index,
 		Individual& indiv) {
 		individuals[index] = indiv;
 	}
 
 	void PrintPropulation() {
 		for (int i = 0; i < populationSize; i++) {
-			individuals[i].print();
+			individuals[i].Print();
 		}
 	}
 
 private:
-	void allocateAndCopyFrom(const Population &other);
-	void copyFrom(const Population &other);
+	void AllocateAndCopyFrom(Population  const & other);
+	void CopyFrom(Population  const & other);
 
 	Individual* individuals;
 	int populationSize;

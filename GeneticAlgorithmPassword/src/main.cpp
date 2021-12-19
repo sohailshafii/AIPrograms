@@ -36,7 +36,7 @@ std::vector<PopulationData> EvolveMultipleTimes(int numberOfGenerations,
 }
 
 int main() {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	std::string password = "banana";
 	int populationSize = 100;
