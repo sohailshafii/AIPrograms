@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 3.0)
 project (TowardDataScienceNeuralNet)
 
 
@@ -9,9 +9,9 @@ set (CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-set(CMAKE_BUILD_TYPE Debug)
+#[[set(CMAKE_BUILD_TYPE Debug)
 set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
-set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
+set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")]]
 
 set(SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/main.cpp ${PROJECT_SOURCE_DIR}/src/NeuralNetwork.cpp
 	${PROJECT_SOURCE_DIR}/src/NeuralNetwork.h ${PROJECT_SOURCE_DIR}/src/Matrix.cpp
