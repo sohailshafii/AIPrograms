@@ -10,7 +10,7 @@
 // for each input is known as "training" a neural network
 class NeuralNetwork {
 public:
-	NeuralNetwork(const Matrix &x, const Matrix &y);
+	NeuralNetwork(Matrix const & x, Matrix const & y);
 	~NeuralNetwork();
 
 	void configure(int iterations);	
@@ -29,12 +29,12 @@ private:
 	// temp matrices for calculations
 	Matrix *tempOutput, *layer1Derivs;
 
-	void feedForward();
-	float sigmoid(float x) const;
-	float derivSigmoid(float x) const;
-	float computeCurrentLoss() const;
+	void FeedForward();
+	float Sigmoid(float x) const;
+	float DerivSigmoid(float x) const;
+	float ComputeCurrentLoss() const;
 
-	void backProp();
+	void BackProp();
 
 	// x would be 4x1, y would be 4x1
 	// weights are four items each

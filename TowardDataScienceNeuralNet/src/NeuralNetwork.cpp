@@ -5,24 +5,24 @@
 #include <iostream>
 #include "Common.h"
 
-NeuralNetwork::NeuralNetwork(const Matrix &x, const Matrix &y) {
+NeuralNetwork::NeuralNetwork(Matrix const & x, Matrix const & y) {
 	this->input = new Matrix(x);
-	this->weights1 = new Matrix(x.getNumColumns(),
-		x.getNumRows());
-	this->weights1->fillWithRandomValues(0.0f, 1.0f);
+	this->weights1 = new Matrix(x.GetNumColumns(),
+		x.GetNumRows());
+	this->weights1->FillWithRandomValues(0.0f, 1.0f);
 
-	this->weights2 = new Matrix(x.getNumRows(), 1);
-	this->weights2->fillWithRandomValues(0.0f, 1.0f);
+	this->weights2 = new Matrix(x.GetNumRows(), 1);
+	this->weights2->FillWithRandomValues(0.0f, 1.0f);
 
 	this->y = new Matrix(y);
-	this->output = new Matrix(x.getNumRows(), 1);
-	this->output->fillWithZeros();
+	this->output = new Matrix(x.GetNumRows(), 1);
+	this->output->FillWithZeros();
 
-	this->layer1 = new Matrix(x.getNumRows(), x.getNumRows());
+	this->layer1 = new Matrix(x.GetNumRows(), x.GetNumRows());
 
-	this->dWeights1 = new Matrix(x.getNumColumns(),
-		x.getNumRows());
-	this->dWeights2 = new Matrix(x.getNumRows(), 1);
+	this->dWeights1 = new Matrix(x.GetNumColumns(),
+		x.GetNumRows());
+	this->dWeights2 = new Matrix(x.GetNumRows(), 1);
 
 	this->tempOutput = new Matrix(*output);
 	this->layer1Derivs = new Matrix(*layer1);
@@ -65,50 +65,50 @@ NeuralNetwork::~NeuralNetwork() {
 
 void NeuralNetwork::configure(int iterations) {
 	std::cout << "Input:\n";
-	input->print();
+	input->Print();
 	std::cout << std::endl;
 	std::cout << "Y: ";
-	y->print();
+	y->Print();
 
 	for (int i = 0; i < iterations; i++) {
-		feedForward();
-		backProp();
+		FeedForward();
+		BackProp();
 	} 
 
 	std::cout << "Output:\n";
-	output->print();
+	output->Print();
 	std::cout << "\nCurrent loss: "
-		<< computeCurrentLoss() << ".\n";
+		<< ComputeCurrentLoss() << ".\n";
 }
 
-void NeuralNetwork::feedForward() {
+void NeuralNetwork::FeedForward() {
 	*layer1 = (*input)*(*weights1);
-	auto numRows = layer1->getNumRows();
-	auto numCols = layer1->getNumColumns();
+	auto numRows = layer1->GetNumRows();
+	auto numCols = layer1->GetNumColumns();
 	for (int row = 0; row < numRows; row++) {
 		auto currRow = (*layer1)[row];
 		for (int col = 0; col < numCols; col++) {
-			currRow[col] = sigmoid(currRow[col]);
+			currRow[col] = Sigmoid(currRow[col]);
 		}
 	}
 
 	*output = (*layer1)*(*weights2);
-	numRows = output->getNumRows();
-	numCols = output->getNumColumns();
+	numRows = output->GetNumRows();
+	numCols = output->GetNumColumns();
 	for (int row = 0; row < numRows; row++) {
 		auto currRow = (*output)[row];
 		for (int col = 0; col < numCols; col++) {
-			currRow[col] = sigmoid(currRow[col]);
+			currRow[col] = Sigmoid(currRow[col]);
 		}
 	}
 }
 
-float NeuralNetwork::sigmoid(float x) const {
+float NeuralNetwork::Sigmoid(float x) const {
 	return (1.0f/(1.0f + exp(-x)));
 }
 
-float NeuralNetwork::derivSigmoid(float x) const {
-	auto sigmoidVal = sigmoid(x);
+float NeuralNetwork::DerivSigmoid(float x) const {
+	auto sigmoidVal = Sigmoid(x);
 	return sigmoidVal*(1.0f - sigmoidVal);
 }
 
@@ -119,9 +119,9 @@ float NeuralNetwork::derivSigmoid(float x) const {
 // we have to find the minimum of the loss function
 // so we need to take the derivative of what's inside
 // the sum, which is (y_hat - y)^2 per neural bit
-float NeuralNetwork::computeCurrentLoss() const {
+float NeuralNetwork::ComputeCurrentLoss() const {
 	float loss = 0.0f;
-	auto numRows = this->output->getNumRows();
+	auto numRows = this->output->GetNumRows();
 	for (int row = 0; row < numRows; row++) {
 		float diff = (*output)[row][0] - (*y)[row][0];
 		loss += diff*diff;
@@ -129,30 +129,30 @@ float NeuralNetwork::computeCurrentLoss() const {
 	return loss;
 }
 
-void NeuralNetwork::backProp() {
+void NeuralNetwork::BackProp() {
 	// compute partial deriv weights 2
-	auto numRows = tempOutput->getNumRows();
+	auto numRows = tempOutput->GetNumRows();
 	for (int row = 0; row < numRows; row++) {
 		(*tempOutput)[row][0] = 
 			2.0f*((*y)[row][0]-(*output)[row][0])*
-			derivSigmoid((*output)[row][0]);
+			DerivSigmoid((*output)[row][0]);
 	}
-	*dWeights2 = layer1->transpose()*(*tempOutput);
+	*dWeights2 = layer1->Transpose()*(*tempOutput);
 
-	Matrix tempMult = (*tempOutput)*(weights2->transpose());
-	numRows = layer1Derivs->getNumRows();
-	auto numCols = layer1Derivs->getNumColumns();
+	Matrix tempMult = (*tempOutput)*(weights2->Transpose());
+	numRows = layer1Derivs->GetNumRows();
+	auto numCols = layer1Derivs->GetNumColumns();
 	for (int row = 0; row < numRows; row++) {
 		auto currRow = (*layer1Derivs)[row];
 		auto currRowLayer1 = (*layer1)[row];
 		auto tempMultRow = tempMult[row];
 
 		for (int col = 0; col < numCols; col++) {
-			currRow[col] = derivSigmoid(currRowLayer1[col]);
+			currRow[col] = DerivSigmoid(currRowLayer1[col]);
 			tempMultRow[col] *= currRow[col];
 		}
 	}
-	*dWeights1 = input->transpose()*tempMult;
+	*dWeights1 = input->Transpose()*tempMult;
 
 	(*weights2) += (*dWeights2);
 	(*weights1) += (*dWeights1);

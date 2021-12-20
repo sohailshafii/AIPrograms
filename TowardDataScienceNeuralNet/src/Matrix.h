@@ -1,51 +1,50 @@
 #pragma once
 
-
 // row-order matrix
 class Matrix {
 public:
 	Matrix(unsigned int numRows, unsigned int numColumns);
 	~Matrix();
 
-	Matrix(const Matrix &rhs);
-	Matrix& operator=(const Matrix& rhs);
+	Matrix(Matrix const & rhs);
+	Matrix& operator=(Matrix const & rhs);
 
-  Matrix transpose() const;
-  void makeIdentity();
-  void fillWithZeros();
-  void fillWithRandomValues(float min, float max);
-  void print() const;
+	Matrix Transpose() const;
+	void MakeIdentity();
+	void FillWithZeros();
+	void FillWithRandomValues(float min, float max);
+	void Print() const;
 
-  Matrix operator+(const Matrix& rhs) const;
-  Matrix operator-(const Matrix& rhs) const;
-  Matrix operator*(const Matrix& rhs) const;
+	Matrix operator+(Matrix const & rhs) const;
+	Matrix operator-(Matrix const & rhs) const;
+	Matrix operator*(Matrix const & rhs) const;
 
-  Matrix& operator+=(const Matrix& rhs);
-  Matrix& operator-=(const Matrix& rhs);
-  Matrix& operator*=(const Matrix& rhs);
+	Matrix& operator+=(Matrix const & rhs);
+	Matrix& operator-=(Matrix const & rhs);
+	Matrix& operator*=(Matrix const & rhs);
 
-  Matrix operator+(float scalar) const;
-  Matrix operator-(float scalar) const;
-  Matrix operator*(float scalar) const;
-  Matrix operator/(float scalar) const;
+	Matrix operator+(float scalar) const;
+	Matrix operator-(float scalar) const;
+	Matrix operator*(float scalar) const;
+	Matrix operator/(float scalar) const;
 
-  Matrix& operator+=(float scalar);
-  Matrix& operator-=(float scalar);
-  Matrix& operator*=(float scalar);
-  Matrix& operator/=(float scalar);
+	Matrix& operator+=(float scalar);
+	Matrix& operator-=(float scalar);
+	Matrix& operator*=(float scalar);
+	Matrix& operator/=(float scalar);
 
-  int getNumRows() const { return numRows; }
-  int getNumColumns() const { return numColumns; }
+	int GetNumRows() const { return numRows; }
+	int GetNumColumns() const { return numColumns; }
 
-  float* getRow(unsigned int rowIndex);
-  float* operator[](unsigned int rowIndex);
+	float* GetRow(unsigned int rowIndex);
+	float* operator[](unsigned int rowIndex);
 
-  float& operator()(unsigned int row, unsigned int col);
-  const float& operator()(unsigned int row, unsigned int col) const;
+	float& operator()(unsigned int row, unsigned int col);
+	const float& operator()(unsigned int row, unsigned int col) const;
 
 private:
 	unsigned int numRows, numColumns, numElements;
 	float *m;
 
-	void allocateAndCopyFrom(const Matrix& other);
+	void AllocateAndCopyFrom(Matrix const & other);
 };

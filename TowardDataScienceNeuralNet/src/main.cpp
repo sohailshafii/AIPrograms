@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 
-void runTests() {
+void RunMatrixTests() {
 	Matrix m1(2, 3), m2(3, 2);
 
 	m1(0, 0) = 1.0f; m1(0, 1) = 2.0f; m1(0, 2) = 0.0f;
@@ -21,8 +21,8 @@ void runTests() {
 	if (product(0, 0) != 17.0f || product(0, 1) != 4.0f ||
 		product(1, 0) != 71.0f || product(1, 1) != 20.0f) {
 		std::cout << "Matrix multiplication doesn't work! Result\n";
-		int numRows = product.getNumRows();
-		int numCols = product.getNumColumns();
+		int numRows = product.GetNumRows();
+		int numCols = product.GetNumColumns();
 		for (int row = 0; row < numRows; row++) {
 			for (int column = 0; column < numCols;
 				column++) {
@@ -34,9 +34,9 @@ void runTests() {
 }
 
 int main() {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
-	runTests();
+	RunMatrixTests();
 
 	// input format:
 	// 0 0 1   

@@ -11,7 +11,7 @@ Matrix::Matrix(unsigned int numRows, unsigned int numColumns) {
 
 	numElements = numRows*numColumns;
 	m = new float[numElements];
-	makeIdentity();
+	MakeIdentity();
 }
 
 Matrix::~Matrix() {
@@ -20,19 +20,19 @@ Matrix::~Matrix() {
 	}
 }
 
-Matrix::Matrix(const Matrix &rhs) {
-	allocateAndCopyFrom(rhs);
+Matrix::Matrix(Matrix const & rhs) {
+	AllocateAndCopyFrom(rhs);
 }
 
-Matrix& Matrix::operator=(const Matrix& rhs) {
+Matrix& Matrix::operator=(Matrix const & rhs) {
 	if (&rhs != this) {
-		allocateAndCopyFrom(rhs);
+		AllocateAndCopyFrom(rhs);
 	}
 
 	return *this;
 }
 
-Matrix Matrix::transpose() const {
+Matrix Matrix::Transpose() const {
 	auto transposedNumRows = this->numColumns;
 	auto transposedNumColumns = this->numRows;
 	Matrix transposed(transposedNumRows,
@@ -46,8 +46,8 @@ Matrix Matrix::transpose() const {
 	return transposed;
 }
 
-void Matrix::makeIdentity() {
-	fillWithZeros();
+void Matrix::MakeIdentity() {
+	FillWithZeros();
 	for (unsigned int rowIndex = 0, oneDimIndex = 0; rowIndex < numRows;
 		rowIndex++) {
 		for (unsigned int colIndex = 0; colIndex < numColumns;
@@ -59,14 +59,14 @@ void Matrix::makeIdentity() {
 	}
 }
 
-void Matrix::fillWithZeros() {
+void Matrix::FillWithZeros() {
 	for (unsigned int elementIndex = 0; elementIndex <
 		numElements; elementIndex++) {
 		m[elementIndex] = 0.0f;
 	}
 }
 
-void Matrix::fillWithRandomValues(float min, float max) {
+void Matrix::FillWithRandomValues(float min, float max) {
 	float range = max - min;
 	for (unsigned int elementIndex = 0; elementIndex <
 		numElements; elementIndex++) {
@@ -74,7 +74,7 @@ void Matrix::fillWithRandomValues(float min, float max) {
 	}
 }
 
-void Matrix::print() const {
+void Matrix::Print() const {
 	for (unsigned int rowIndex = 0, oneDimIndex = 0; rowIndex < numRows;
 		rowIndex++) {
 		for (unsigned int colIndex = 0; colIndex < numColumns;
@@ -85,7 +85,7 @@ void Matrix::print() const {
 	}
 }
 
-void Matrix::allocateAndCopyFrom(const Matrix& other) {
+void Matrix::AllocateAndCopyFrom(Matrix const & other) {
 	this->numRows = other.numRows;
 	this->numColumns = other.numColumns;
 
@@ -94,7 +94,7 @@ void Matrix::allocateAndCopyFrom(const Matrix& other) {
 	memcpy(m, other.m, numElements * sizeof(float));
 }
 
-Matrix Matrix::operator+(const Matrix& rhs) const {
+Matrix Matrix::operator+(Matrix const & rhs) const {
 	Matrix sum(rhs.numRows, rhs.numColumns);
 
 	for (unsigned int elementIndex = 0; elementIndex < numElements;
@@ -106,7 +106,7 @@ Matrix Matrix::operator+(const Matrix& rhs) const {
 	return sum;
 }
 
-Matrix Matrix::operator-(const Matrix& rhs) const {
+Matrix Matrix::operator-(Matrix const & rhs) const {
 	Matrix diff(rhs.numRows, rhs.numColumns);
 
 	for (unsigned int elementIndex = 0; elementIndex < numElements;
@@ -118,11 +118,11 @@ Matrix Matrix::operator-(const Matrix& rhs) const {
 	return diff;
 }
 
-Matrix Matrix::operator*(const Matrix& rhs) const {
+Matrix Matrix::operator*(Matrix const & rhs) const {
 	unsigned int resultRows = this->numRows,
 		resultCols = rhs.numColumns;
 	Matrix product(resultRows, resultCols);
-	product.fillWithZeros();
+	product.FillWithZeros();
 
 	if (this->numColumns != rhs.numRows) {
 		std::cerr << "Can't multiply a (" << numRows
@@ -148,7 +148,7 @@ Matrix Matrix::operator*(const Matrix& rhs) const {
 	return product;
 }
 
-Matrix& Matrix::operator+=(const Matrix& rhs) {
+Matrix& Matrix::operator+=(Matrix const & rhs) {
 	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		m[elementIndex] += rhs.m[elementIndex];
@@ -156,7 +156,7 @@ Matrix& Matrix::operator+=(const Matrix& rhs) {
 	return *this;
 }
 
-Matrix& Matrix::operator-=(const Matrix& rhs) {
+Matrix& Matrix::operator-=(Matrix const & rhs) {
 	for (unsigned int elementIndex = 0; elementIndex < numElements;
 		elementIndex++) {
 		m[elementIndex] -= rhs.m[elementIndex];
@@ -164,7 +164,7 @@ Matrix& Matrix::operator-=(const Matrix& rhs) {
 	return *this;
 }
 
-Matrix& Matrix::operator*=(const Matrix& rhs) {
+Matrix& Matrix::operator*=(Matrix const & rhs) {
 	if (this->numRows != rhs.numRows ||
 		this->numColumns != rhs.numColumns) {
 		std::cerr << "Can't self multiply a (" << numRows
@@ -262,7 +262,7 @@ Matrix& Matrix::operator/=(float scalar) {
 	return *this;
 }
 
-float* Matrix::getRow(unsigned int rowIndex) {
+float* Matrix::GetRow(unsigned int rowIndex) {
 	return m + rowIndex*numColumns;
 }
 
