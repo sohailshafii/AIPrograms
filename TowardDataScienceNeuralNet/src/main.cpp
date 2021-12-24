@@ -57,7 +57,7 @@ int main() {
 	y[3][0] = 0.0f;
 
 	NeuralNetwork neuralNet(x, y);
-	neuralNet.configure(20000);
+	neuralNet.Configure(20000);
 
 	return 0;
 }

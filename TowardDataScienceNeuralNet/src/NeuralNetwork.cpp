@@ -63,7 +63,7 @@ NeuralNetwork::~NeuralNetwork() {
 	}
 }
 
-void NeuralNetwork::configure(int iterations) {
+void NeuralNetwork::Configure(int iterations) {
 	std::cout << "Input:\n";
 	input->Print();
 	std::cout << std::endl;

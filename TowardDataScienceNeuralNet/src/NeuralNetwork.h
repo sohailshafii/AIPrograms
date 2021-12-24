@@ -13,7 +13,7 @@ public:
 	NeuralNetwork(Matrix const & x, Matrix const & y);
 	~NeuralNetwork();
 
-	void configure(int iterations);	
+	void Configure(int iterations);
 
 private:
 	Matrix *input;
