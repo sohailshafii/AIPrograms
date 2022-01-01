@@ -107,9 +107,9 @@ float NeuralNetwork::Sigmoid(float x) const {
 	return (1.0f/(1.0f + exp(-x)));
 }
 
+// in this case, x is the sigmoid value
 float NeuralNetwork::DerivSigmoid(float x) const {
-	auto sigmoidVal = Sigmoid(x);
-	return sigmoidVal*(1.0f - sigmoidVal);
+	return x * (1.0f - x);
 }
 
 // note that output y_hat = 
