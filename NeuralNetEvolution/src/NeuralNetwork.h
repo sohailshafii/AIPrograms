@@ -40,7 +40,7 @@ private:
 	double MeanSquaredError(double** trainData, int numTrainData,
 		double* weights);
 
-	static int MaxIndex(double* vector);
+	static int MaxIndex(double* vector, int vectorLength);
 
 	int numInput;
 	int numHidden;

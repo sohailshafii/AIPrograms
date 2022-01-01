@@ -203,7 +203,7 @@ double NeuralNetwork::GetAccuracy(double **testData, int numTestData) const {
 
 		ComputeOutputs(xValues, yValues);
 
-		int maxIndex = MaxIndex(yValues);
+		int maxIndex = MaxIndex(yValues, numOutput);
 		
 		if (tValues[maxIndex] == 1.0) {
 			++numCorrect;
