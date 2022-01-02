@@ -46,7 +46,7 @@ void ShowMatrix(double** matrix, int numRows,
 }
 
 int main() {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	// Fisher's data set
 	double** trainData = new double*[24];

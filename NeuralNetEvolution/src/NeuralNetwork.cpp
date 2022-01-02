@@ -4,6 +4,7 @@
 #include "Common.h"
 #include <limits>
 #include <iostream>
+#include <algorithm>
 
 NeuralNetwork::NeuralNetwork(int numInput, int numHidden,
 	int numOutput) {
