@@ -16,7 +16,7 @@ public:
 	void ComputeOutputs(double* xValues, double* outputs) const;
 	double* Train(double** trainData, int numTrainData, int popSize,
 		int maxGeneration, double exitError, double mutateRate, 
-		double mutateChange, double tau);
+		double mutateChange, double tau, int& numWeights);
 
 	Individual* Select(int n, Individual* population,
 		int popSize, double tau);

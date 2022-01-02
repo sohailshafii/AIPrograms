@@ -8,10 +8,20 @@
 
 NeuralNetwork::NeuralNetwork(int numInput, int numHidden,
 	int numOutput) {
-	// TODO
+	this->numInput = numInput;
+	this->numHidden = numHidden;
+	this->numOutput = numOutput;
+	inputs = new double[numInput];
+	ihWeights = MakeMatrix(numInput, numHidden);
+	hBiases = new double[numHidden];
+	hOutputs = new double[numHidden];
+	hoWeights = MakeMatrix(numHidden, numOutput);
+	oBiases = new double[numOutput];
+	outputs = new double[numOutput];
 }
 
 void NeuralNetwork::SetWeights(double *bestWeights) {
+	// set weights and biases from weights
 
 }
 
@@ -20,14 +30,13 @@ double* NeuralNetwork::GetWeights() {
 }
 
 void NeuralNetwork::ComputeOutputs(double* xValues, double *outputs) const {
-	
 }
 
 double* NeuralNetwork::Train(double** trainData, int numTrainData,
 	int popSize, int maxGeneration, double exitError, double mutateRate,
-	double mutateChange, double tau) {
+	double mutateChange, double tau, int & numWeights) {
 	// use evolutionary optimization to train NN
-	int numWeights = numInput * numHidden +
+	numWeights = numInput * numHidden +
 		numHidden * numOutput + numHidden +
 		numOutput;
 
@@ -56,6 +65,7 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 	// main EO processing loop
 	int gen = 0; bool done = false;
 	while (gen < maxGeneration && done == false) {
+		// TODO: caching
 		Individual* parents = Select(2, population, popSize, tau);
 		Individual* children = Reproduce(parents[0],
 			parents[1], minX, maxX, mutateRate,
@@ -223,7 +233,11 @@ double NeuralNetwork::GetAccuracy(double **testData, int numTestData) const {
 }
 
 double** NeuralNetwork::MakeMatrix(int rows, int cols) {
-	return nullptr;
+	double** result = new double* [rows];
+	for (int r = 0; r < rows; ++r) {
+		result[r] = new double[cols];
+	}
+	return result;
 }
 
 double NeuralNetwork::HyperTanFunction(double x) {

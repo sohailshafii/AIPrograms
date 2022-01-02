@@ -6,11 +6,13 @@
 #include "NeuralNetwork.h"
 #include "Individual.h"
 
-void ShowVector(std::vector<double> vec, int valsPerRow,
+void ShowVector(double* vec, int numWeights, int valsPerRow,
 	int decimals, bool newLine) {
-	size_t numElements = vec.size();
-	for (size_t i = 0; i < numElements; i++) {
-		if (i % valsPerRow) std::cout << std::endl;
+	for (size_t i = 0; i < numWeights; i++) {
+		if (i % valsPerRow)
+		{
+			std::cout << std::endl;
+		}
 		auto currElement = vec[i];
 		if (currElement >= 0.0) {
 			std::cout << " ";
@@ -107,9 +109,12 @@ int main() {
 	// two best individuals in the population will be
 	// selected as parents for reprdouction
 	double tau = 0.40;
+	int numWeights;
 	/*double* bestWeights = neuralNet.Train(trainData, popSize, maxGeneration,
-		exitError, mutateRate, mutateChange, tau);
+		exitError, mutateRate, mutateChange, tau, numWeights);
+	ShowVector(bestWeights, numWeights, 10, 3, true);
 
+	// TODO: num weights
 	/*neuralNet.SetWeights(bestWeights);
 	double trainAcc = neuralNet.GetAccuracy(trainData);
 	std::cout << "\nAccuracy of training data = "
