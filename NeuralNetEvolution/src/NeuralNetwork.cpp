@@ -5,6 +5,7 @@
 #include <limits>
 #include <iostream>
 #include <algorithm>
+#include <cmath>
 
 NeuralNetwork::NeuralNetwork(int numInput, int numHidden,
 	int numOutput) {
@@ -22,23 +23,106 @@ NeuralNetwork::NeuralNetwork(int numInput, int numHidden,
 
 void NeuralNetwork::SetWeights(double *bestWeights) {
 	// set weights and biases from weights
+	auto numWeights = GetNumWeights();
 
+	// points into weights param
+	int k = 0;
+	for (int i = 0; i < numInput; i++) {
+		for (int j = 0; j < numHidden; j++) {
+			ihWeights[i][j] = bestWeights[k++];
+		}
+	}
+
+	for (int i = 0; i < numHidden; i++) {
+		hBiases[i] = bestWeights[k++];
+	}
+
+	for (int i = 0; i < numHidden; i++) {
+		for (int j = 0; j < numOutput; j++) {
+			hoWeights[i][j] = bestWeights[k++];
+		}
+	}
+
+	for (int i = 0; i < numOutput; i++) {
+		oBiases[i] = bestWeights[k++];
+	}
 }
 
 double* NeuralNetwork::GetWeights() {
-	return nullptr;
+	int numWeights = GetNumWeights();
+	double* result = new double[numWeights];
+	int k = 0;
+	for (int i = 0; i < numInput; i++) {
+		for (int j = 0; j < numHidden; j++) {
+			result[k++] = ihWeights[i][j];
+		}
+	}
+
+	for (int i = 0; i < numHidden; i++) {
+		result[k++] = hBiases[i];
+	}
+
+	for (int i = 0; i < numHidden; i++) {
+		for (int j = 0; j < numOutput; j++) {
+			result[k++] = hoWeights[i][j];
+		}
+	}
+
+	for (int i = 0; i < numOutput; i++) {
+		result[k++] = oBiases[i];
+	}
+
+	return result;
 }
 
-void NeuralNetwork::ComputeOutputs(double* xValues, double *outputs) const {
+void NeuralNetwork::ComputeOutputs(double* xValues, double *yValues) const {
+	// feed-forward mechanism for NN classifier
+	// xValues has numInput values, outputs has numOutputs values
+
+	// TODO cache arrays
+	double* hSums = new double[numHidden];
+	double* oSums = new double[numOutput];
+
+	for (int i = 0; i < numInput; i++) {
+		inputs[i] = xValues[i];
+	}
+
+	for (int j = 0; j < numHidden; j++) {
+		hSums[j] = 0.0;
+		for (int i = 0; i < numInput; i++) {
+			hSums[j] += inputs[i] * ihWeights[i][j];
+		}
+	}
+
+	for (int i = 0; i < numHidden; i++) {
+		hSums[i] += hBiases[i];
+		hOutputs[i] = HyperTanFunction(hSums[i]);
+	}
+
+	for (int j = 0; j < numOutput; j++) {
+		oSums[j] = 0.0;
+		for (int i = 0; i < numHidden; i++) {
+			oSums[j] += hOutputs[i] * hoWeights[i][j];
+		}
+	}
+
+	for (int i = 0; i < numOutput; i++) {
+		oSums[i] += oBiases[i];
+	}
+
+	// TODO: cache
+	double* softOut = SoftMax(oSums);
+	memcpy(outputs, softOut, numOutput * sizeof(double));
+	memcpy(yValues, outputs, numOutput * sizeof(double));
+
+	delete[] softOut;
 }
 
 double* NeuralNetwork::Train(double** trainData, int numTrainData,
 	int popSize, int maxGeneration, double exitError, double mutateRate,
 	double mutateChange, double tau, int & numWeights) {
 	// use evolutionary optimization to train NN
-	numWeights = numInput * numHidden +
-		numHidden * numOutput + numHidden +
-		numOutput;
+	numWeights = GetNumWeights();
 
 	double minX = -10.0;
 	double maxX = 10.0;
@@ -151,8 +235,8 @@ Individual* NeuralNetwork::Select(int n, Individual* population,
 	return results;
 }
 
-Individual* NeuralNetwork::Reproduce(const Individual& parent1,
-	const Individual& parent2, double minGene,
+Individual* NeuralNetwork::Reproduce(Individual const & parent1,
+	Individual const & parent2, double minGene,
 	double maxGene, double mutateRate, double mutateChange) {
 	int numGenes = parent1.numGenes;
 	// crossover point: 0 means "between 0 and 1"
@@ -210,7 +294,7 @@ double NeuralNetwork::GetAccuracy(double **testData, int numTestData) const {
 
 	for (int i = 0; i < numTestData; ++i) {
 		memcpy(xValues, testData[i], numInput * sizeof(double));
-		memcpy(tValues, &testData[i][numInput], numOutput);
+		memcpy(tValues, &testData[i][numInput], numOutput * sizeof(double));
 
 		ComputeOutputs(xValues, yValues);
 
@@ -241,11 +325,38 @@ double** NeuralNetwork::MakeMatrix(int rows, int cols) {
 }
 
 double NeuralNetwork::HyperTanFunction(double x) {
-	return 0.0;
+	if (x < -20.0) {
+		return -1.0f;
+	}
+	else if (x > 20.0f) {
+		return 1.0f;
+	}
+	
+	return  tanh(x);
 }
 
-double* NeuralNetwork::SoftMax(double* oSums) {
-	return nullptr;
+// TODO cache result to avoid excess allocations
+double* NeuralNetwork::SoftMax(double* oSums) const {
+	double max = oSums[0];
+	for (int i = 0; i < numOutput; i++) {
+		if (oSums[i] > max) {
+			max = oSums[i];
+		}
+	}
+
+	// determine scaling factor
+	double scale = 0.0;
+	for (int i = 0; i < numOutput; i++) {
+		scale += exp(oSums[i] - max);
+	}
+
+	double* result = new double[numOutput];
+	for (int i = 0; i < numOutput; i++) {
+		result[i] = exp(oSums[i] - max) / scale;
+	}
+
+	// scaled so xi sum to 1.0
+	return result;
 }
 
 void NeuralNetwork::Place(const Individual &child1,
@@ -291,7 +402,7 @@ int NeuralNetwork::MaxIndex(double* vector, int vectorLength) {
 	int bigIndex = 0;
 	double biggestVal = vector[0];
 
-	for (int i = 0; i < vectorLength; ++i) {
+	for (int i = 1; i < vectorLength; ++i) {
 		if (vector[i] > biggestVal) {
 			biggestVal = vector[i];
 			bigIndex = i;
@@ -299,6 +410,5 @@ int NeuralNetwork::MaxIndex(double* vector, int vectorLength) {
 	}
 
 	return bigIndex;
-	return 0;
 }
 
