@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <cassert>
 
 NeuralNetwork::NeuralNetwork(int numInput, int numHidden,
 	int numOutput) {
@@ -77,7 +78,7 @@ double* NeuralNetwork::GetWeights() {
 
 void NeuralNetwork::ComputeOutputs(double* xValues, double *yValues) const {
 	// feed-forward mechanism for NN classifier
-	// xValues has numInput values, outputs has numOutputs values
+	// xValues has numInput values, yValues has numOutputs values
 
 	// TODO cache arrays
 	double* hSums = new double[numHidden];
@@ -208,6 +209,7 @@ Individual* NeuralNetwork::Select(int n, Individual* population,
 	if (tournSize < n) {
 		tournSize = n;
 	}
+	assert(tournSize < popSize);
 	// TODO: cache
 	Individual* candidates = new Individual[tournSize];
 
@@ -332,7 +334,7 @@ double NeuralNetwork::HyperTanFunction(double x) {
 		return 1.0f;
 	}
 	
-	return  tanh(x);
+	return tanh(x);
 }
 
 // TODO cache result to avoid excess allocations

@@ -24,8 +24,8 @@ Individual::Individual(int numGenes, double minGene, double maxGene,
 	}
 }
 
-Individual::Individual(const Individual &p2) {
-	AllocateAndCopyFrom(p2);
+Individual::Individual(Individual const & p2) {
+	AllocateAndCopyChromosomesFrom(p2);
 	minGene = p2.minGene;
 	maxGene = p2.maxGene;
 	mutateRate = p2.mutateRate;
@@ -33,13 +33,13 @@ Individual::Individual(const Individual &p2) {
 	error = p2.error;
 }
 
-Individual& Individual::operator=(const Individual& other) {
+Individual& Individual::operator=(Individual const & other) {
 	if (this != &other) {
 		if (this->numGenes != other.numGenes) {
 			if (chromosome != nullptr) {
 				delete[] chromosome;
 			}
-			AllocateAndCopyFrom(other);
+			AllocateAndCopyChromosomesFrom(other);
 		}
 		else {
 			memcpy(chromosome, other.chromosome, sizeof(double)*other.numGenes);
@@ -60,7 +60,7 @@ Individual::~Individual() {
 	}
 }
 
-void Individual::AllocateAndCopyFrom(const Individual& other) {
+void Individual::AllocateAndCopyChromosomesFrom(Individual const & other) {
 	chromosome = new double[other.numGenes];
 	numGenes = other.numGenes;
 	memcpy(chromosome, other.chromosome, sizeof(double)*other.numGenes);

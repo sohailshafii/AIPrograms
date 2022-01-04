@@ -34,9 +34,6 @@ void ShowMatrix(double** matrix, int numRows,
 			if (matrix[i][j] >= 0.0) {
 				std::cout << " ";
 			}
-			else {
-				std::cout << "-";
-			}
 			std::cout << std::setprecision(decimals)
 				<< currElement << " ";
 		}
