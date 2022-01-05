@@ -107,17 +107,17 @@ int main() {
 	// selected as parents for reprdouction
 	double tau = 0.40;
 	int numWeights;
-	/*double* bestWeights = neuralNet.Train(trainData, popSize, maxGeneration,
+	double* bestWeights = neuralNet.Train(trainData, 24, popSize, maxGeneration,
 		exitError, mutateRate, mutateChange, tau, numWeights);
 	ShowVector(bestWeights, numWeights, 10, 3, true);
 
 	// TODO: num weights
-	/*neuralNet.SetWeights(bestWeights);
-	double trainAcc = neuralNet.GetAccuracy(trainData);
+	neuralNet.SetWeights(bestWeights);
+	double trainAcc = neuralNet.GetAccuracy(trainData, 24);
 	std::cout << "\nAccuracy of training data = "
 		<< std::setprecision(4) << trainAcc;
 
-	double testAcc = neuralNet.GetAccuracy(testData);
+	double testAcc = neuralNet.GetAccuracy(testData, 6);
 	std::cout << "\nAccuracy of test data = "
 		<< std::setprecision(4) << testAcc;
 
@@ -131,7 +131,7 @@ int main() {
 	for (int i = 0; i < 6; i++) {
 		delete [] testData[i];
 	}
-	delete [] testData;*/
+	delete [] testData;
 
 	return 0;
 }
