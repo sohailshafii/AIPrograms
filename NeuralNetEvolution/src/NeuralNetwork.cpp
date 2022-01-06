@@ -128,16 +128,22 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 	double minX = -10.0;
 	double maxX = 10.0;
 
-	// TODO: caching
 	Individual* population = new Individual[popSize];
 	double* bestSolution = new double[numWeights];
 	double bestError = std::numeric_limits<double>::max();
+	// inputs
+	double* xValues = new double[numInput];
+	// targets
+	double* tValues = new double[numOutput];
+	double sumSquaredError = 0.0;
+	double* yValues = new double[numOutput];
 
 	for (int i = 0; i < popSize; i++) {
 		population[i] = Individual(numWeights,
 			minX, maxX, mutateRate, mutateChange);
 		double error = MeanSquaredError(trainData,
-			numTrainData, population[i].chromosome);
+			numTrainData, population[i].chromosome,
+			xValues, yValues, tValues);
 		population[i].error = error;
 
 		if (population[i].error < bestError) {
@@ -158,9 +164,11 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 		delete[] parents;
 
 		children[0].error = MeanSquaredError(trainData,
-			numTrainData, children[0].chromosome);
+			numTrainData, children[0].chromosome,
+			xValues, yValues, tValues);
 		children[1].error = MeanSquaredError(trainData,
-			numTrainData, children[1].chromosome);
+			numTrainData, children[1].chromosome,
+			xValues, yValues, tValues);
 
 		Place(children[0], children[1], population, popSize);
 		delete[] children;
@@ -168,7 +176,8 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 		Individual immigrant(numWeights, minX, maxX,
 			mutateRate, mutateChange);
 		immigrant.error = MeanSquaredError(trainData,
-			numTrainData, immigrant.chromosome);
+			numTrainData, immigrant.chromosome,
+			xValues, yValues, tValues);
 		population[popSize - 3] = immigrant; // third worst
 
 		for (int i = popSize - 3; i < popSize; ++i) {
@@ -186,6 +195,10 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 	}
 
 	delete[] population;
+
+	delete[] xValues;
+	delete[] tValues;
+	delete[] yValues;
 
 	return bestSolution;
 }
@@ -374,14 +387,11 @@ void NeuralNetwork::Place(const Individual &child1,
 }
 
 double NeuralNetwork::MeanSquaredError(double** trainData,
-	int numTrainData, double* weights) {
+	int numTrainData, double* weights, double *xValues,
+	double *yValues, double *tValues) {
 	SetWeights(weights);
 
-	// TODO: caching, bad to allocate junk
-	double* xValues = new double[numInput]; // inputs
-	double* tValues = new double[numOutput]; // targets
 	double sumSquaredError = 0.0;
-	double *yValues = new double[numOutput];
 	for (int i = 0; i < numTrainData; ++i) {
 		// assume data has x-vals followed by y-vals
 		memcpy(xValues, trainData[i], numInput * sizeof(double));
@@ -392,10 +402,6 @@ double NeuralNetwork::MeanSquaredError(double** trainData,
 			sumSquaredError += yDiff*yDiff;
 		}
 	}
-
-	delete[] xValues;
-	delete[] tValues;
-	delete[] yValues;
 
 	return sumSquaredError/(double)numTrainData;
 }

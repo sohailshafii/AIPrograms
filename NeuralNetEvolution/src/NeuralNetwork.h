@@ -38,7 +38,8 @@ private:
 		const Individual& child2, Individual* population,
 		int popSize);
 	double MeanSquaredError(double** trainData, int numTrainData,
-		double* weights);
+		double* weights, double* xValues,
+		double* yValues, double* tValues);
 
 	static int MaxIndex(double* vector, int vectorLength);
 
