@@ -19,7 +19,8 @@ public:
 		double mutateChange, double tau, int& numWeights);
 
 	Individual* Select(int n, Individual* population,
-		int popSize, double tau);
+		int popSize, double tau, int* indices, Individual* candidates,
+		int tournSize);
 	Individual* Reproduce(Individual const & parent1,
 		Individual const & parent2, double minGene,
 		double maxGene, double mutateRate, double mutateChange);

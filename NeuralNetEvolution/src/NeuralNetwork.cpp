@@ -137,6 +137,7 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 	double* tValues = new double[numOutput];
 	double sumSquaredError = 0.0;
 	double* yValues = new double[numOutput];
+	int* indices = new int[popSize];
 
 	for (int i = 0; i < popSize; i++) {
 		population[i] = Individual(numWeights,
@@ -153,11 +154,20 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 		}
 	}
 
+	int numCandidates = 2;
+	int tournSize = (int)(tau * popSize);
+	if (tournSize < numCandidates) {
+		tournSize = numCandidates;
+	}
+	assert(tournSize < popSize);
+	Individual* tournamentCandidates = new Individual[tournSize];
+
 	// main EO processing loop
 	int gen = 0; bool done = false;
 	while (gen < maxGeneration && done == false) {
 		// TODO: caching
-		Individual* parents = Select(2, population, popSize, tau);
+		Individual* parents = Select(2, population, popSize, tau,
+			indices, tournamentCandidates, tournSize);
 		Individual* children = Reproduce(parents[0],
 			parents[1], minX, maxX, mutateRate,
 			mutateChange);
@@ -200,13 +210,15 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 	delete[] tValues;
 	delete[] yValues;
 
+	delete[] tournamentCandidates;
+	delete[] indices;
+
 	return bestSolution;
 }
 
 Individual* NeuralNetwork::Select(int n, Individual* population,
-	int popSize, double tau) {
-	// TODO: cache
-	int* indices = new int[popSize];
+	int popSize, double tau, int* indices, Individual* candidates,
+	int tournSize) {
 	for (int i = 0; i < popSize; i++) {
 		indices[i] = i;
 	}
@@ -217,14 +229,6 @@ Individual* NeuralNetwork::Select(int n, Individual* population,
 		indices[r] = indices[i];
 		indices[i] = tmp;
 	}
-
-	int tournSize = (int)(tau * popSize);
-	if (tournSize < n) {
-		tournSize = n;
-	}
-	assert(tournSize < popSize);
-	// TODO: cache
-	Individual* candidates = new Individual[tournSize];
 
 	for (int i = 0; i < tournSize; i++) {
 		candidates[i] = population[indices[i]];
@@ -245,8 +249,6 @@ Individual* NeuralNetwork::Select(int n, Individual* population,
 		results[i] = candidates[i];
 	}
 
-	delete[] indices;
-	delete[] candidates;
 	return results;
 }
 
