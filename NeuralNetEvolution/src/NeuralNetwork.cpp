@@ -20,6 +20,33 @@ NeuralNetwork::NeuralNetwork(int numInput, int numHidden,
 	hoWeights = MakeMatrix(numHidden, numOutput);
 	oBiases = new double[numOutput];
 	outputs = new double[numOutput];
+
+	// variables used for calculations for in-between
+	softMaxResult = new double[numOutput];
+	hSums = new double[numHidden];
+	oSums = new double[numOutput];
+}
+
+NeuralNetwork::~NeuralNetwork() {
+	delete[] inputs;
+	delete[] hBiases;
+	delete[] hOutputs;
+	delete[] oBiases;
+	delete[] outputs;
+	delete[] softMaxResult;
+
+	for (int i = 0; i < numInput; i++) {
+		delete[] ihWeights[i];
+	}
+	delete[] ihWeights;
+
+	for (int i = 0; i < numHidden; i++) {
+		delete[] hoWeights[i];
+	}
+	delete[] hoWeights;
+
+	delete[] hSums;
+	delete[] oSums;
 }
 
 void NeuralNetwork::SetWeights(double *bestWeights) {
@@ -79,11 +106,6 @@ double* NeuralNetwork::GetWeights() {
 void NeuralNetwork::ComputeOutputs(double* xValues, double *yValues) const {
 	// feed-forward mechanism for NN classifier
 	// xValues has numInput values, yValues has numOutputs values
-
-	// TODO cache arrays
-	double* hSums = new double[numHidden];
-	double* oSums = new double[numOutput];
-
 	for (int i = 0; i < numInput; i++) {
 		inputs[i] = xValues[i];
 	}
@@ -111,12 +133,9 @@ void NeuralNetwork::ComputeOutputs(double* xValues, double *yValues) const {
 		oSums[i] += oBiases[i];
 	}
 
-	// TODO: cache
-	double* softOut = SoftMax(oSums);
-	memcpy(outputs, softOut, numOutput * sizeof(double));
+	SoftMax(oSums);
+	memcpy(outputs, softMaxResult, numOutput * sizeof(double));
 	memcpy(yValues, outputs, numOutput * sizeof(double));
-
-	delete[] softOut;
 }
 
 double* NeuralNetwork::Train(double** trainData, int numTrainData,
@@ -164,14 +183,13 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 
 	// main EO processing loop
 	int gen = 0; bool done = false;
+	Individual* parents = new Individual[numCandidates];
+	Individual* children = new Individual[2];
 	while (gen < maxGeneration && done == false) {
-		// TODO: caching
-		Individual* parents = Select(2, population, popSize, tau,
-			indices, tournamentCandidates, tournSize);
-		Individual* children = Reproduce(parents[0],
-			parents[1], minX, maxX, mutateRate,
-			mutateChange);
-		delete[] parents;
+		Select(numCandidates, population, popSize, tau,
+			indices, tournamentCandidates, tournSize, parents);
+		Reproduce(parents[0], parents[1], minX, maxX, mutateRate,
+			mutateChange, children);
 
 		children[0].error = MeanSquaredError(trainData,
 			numTrainData, children[0].chromosome,
@@ -181,7 +199,6 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 			xValues, yValues, tValues);
 
 		Place(children[0], children[1], population, popSize);
-		delete[] children;
 
 		Individual immigrant(numWeights, minX, maxX,
 			mutateRate, mutateChange);
@@ -212,13 +229,15 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 
 	delete[] tournamentCandidates;
 	delete[] indices;
+	delete[] parents;
+	delete[] children;
 
 	return bestSolution;
 }
 
-Individual* NeuralNetwork::Select(int n, Individual* population,
+void NeuralNetwork::Select(int n, Individual* population,
 	int popSize, double tau, int* indices, Individual* candidates,
-	int tournSize) {
+	int tournSize, Individual* results) {
 	for (int i = 0; i < popSize; i++) {
 		indices[i] = i;
 	}
@@ -244,17 +263,15 @@ Individual* NeuralNetwork::Select(int n, Individual* population,
 	}
 	std::cout << std::endl;
 
-	Individual *results = new Individual[n];
 	for (int i = 0; i < n; i++) {
 		results[i] = candidates[i];
 	}
-
-	return results;
 }
 
-Individual* NeuralNetwork::Reproduce(Individual const & parent1,
+void NeuralNetwork::Reproduce(Individual const & parent1,
 	Individual const & parent2, double minGene,
-	double maxGene, double mutateRate, double mutateChange) {
+	double maxGene, double mutateRate, double mutateChange,
+	Individual* results) {
 	int numGenes = parent1.numGenes;
 	// crossover point: 0 means "between 0 and 1"
 	int cross = (int)(randVal()*(numGenes-1));
@@ -280,11 +297,8 @@ Individual* NeuralNetwork::Reproduce(Individual const & parent1,
 	Mutate(child1, maxGene, mutateRate, mutateChange);
 	Mutate(child2, maxGene, mutateRate, mutateChange);
 
-	Individual* result = new Individual[2];
-	result[0] = child1;
-	result[1] = child2;
-
-	return result;
+	results[0] = child1;
+	results[1] = child2;
 }
 
 void NeuralNetwork::Mutate(const Individual &child, double maxGene,
@@ -352,8 +366,7 @@ double NeuralNetwork::HyperTanFunction(double x) {
 	return tanh(x);
 }
 
-// TODO cache result to avoid excess allocations
-double* NeuralNetwork::SoftMax(double* oSums) const {
+void NeuralNetwork::SoftMax(double* oSums) const {
 	double max = oSums[0];
 	for (int i = 0; i < numOutput; i++) {
 		if (oSums[i] > max) {
@@ -367,13 +380,10 @@ double* NeuralNetwork::SoftMax(double* oSums) const {
 		scale += exp(oSums[i] - max);
 	}
 
-	double* result = new double[numOutput];
-	for (int i = 0; i < numOutput; i++) {
-		result[i] = exp(oSums[i] - max) / scale;
-	}
-
 	// scaled so xi sum to 1.0
-	return result;
+	for (int i = 0; i < numOutput; i++) {
+		softMaxResult[i] = exp(oSums[i] - max) / scale;
+	}
 }
 
 void NeuralNetwork::Place(const Individual &child1,

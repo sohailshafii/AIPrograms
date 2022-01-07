@@ -9,6 +9,7 @@ class NeuralNetwork {
 public:
 	NeuralNetwork(int numInput, int numHidden,
 		int numOutput);
+	~NeuralNetwork();
 
 	void SetWeights(double *bestWeights);
 	double* GetWeights();
@@ -18,12 +19,13 @@ public:
 		int maxGeneration, double exitError, double mutateRate, 
 		double mutateChange, double tau, int& numWeights);
 
-	Individual* Select(int n, Individual* population,
+	void Select(int n, Individual* population,
 		int popSize, double tau, int* indices, Individual* candidates,
-		int tournSize);
-	Individual* Reproduce(Individual const & parent1,
+		int tournSize, Individual* results);
+	void Reproduce(Individual const & parent1,
 		Individual const & parent2, double minGene,
-		double maxGene, double mutateRate, double mutateChange);
+		double maxGene, double mutateRate, double mutateChange,
+		Individual* results);
 
 	void Mutate(const Individual &child, double maxGene,
 		double mutateRate, double mutateChange);
@@ -33,7 +35,7 @@ public:
 private:
 	static double** MakeMatrix(int rows, int cols);
 	static double HyperTanFunction(double x);
-	double* SoftMax(double* oSums) const;
+	void SoftMax(double* oSums) const;
 
 	static void Place(const Individual &child1,
 		const Individual& child2, Individual* population,
@@ -60,4 +62,8 @@ private:
 	double** hoWeights;
 	double* oBiases;
 	double* outputs;
+
+	double* softMaxResult;
+	double* hSums;
+	double* oSums;
 };
