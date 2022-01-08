@@ -109,9 +109,9 @@ int main() {
 	int numWeights;
 	double* bestWeights = neuralNet.Train(trainData, 24, popSize, maxGeneration,
 		exitError, mutateRate, mutateChange, tau, numWeights);
+	std::cout << "Best weights vector:\n";
 	ShowVector(bestWeights, numWeights, 10, 3, true);
 
-	// TODO: num weights
 	neuralNet.SetWeights(bestWeights);
 	double trainAcc = neuralNet.GetAccuracy(trainData, 24);
 	std::cout << "\nAccuracy of training data = "

@@ -14,13 +14,13 @@ public:
 	void SetWeights(double *bestWeights);
 	double* GetWeights();
 
-	void ComputeOutputs(double* xValues, double* yValues) const;
+	void ComputeOutputs() const;
 	double* Train(double** trainData, int numTrainData, int popSize,
 		int maxGeneration, double exitError, double mutateRate, 
 		double mutateChange, double tau, int& numWeights);
 
 	void Select(int n, Individual* population,
-		int popSize, double tau, int* indices, Individual* candidates,
+		int popSize, int* indices, Individual* candidates,
 		int tournSize, Individual* results);
 	void Reproduce(Individual const & parent1,
 		Individual const & parent2, double minGene,
@@ -41,8 +41,7 @@ private:
 		const Individual& child2, Individual* population,
 		int popSize);
 	double MeanSquaredError(double** trainData, int numTrainData,
-		double* weights, double* xValues,
-		double* yValues, double* tValues);
+		double* weights);
 
 	static int MaxIndex(double* vector, int vectorLength);
 
@@ -66,4 +65,8 @@ private:
 	double* softMaxResult;
 	double* hSums;
 	double* oSums;
+
+	double* xValues;
+	double* tValues;
+	double* yValues;
 };

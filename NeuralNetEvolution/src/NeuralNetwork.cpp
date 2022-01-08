@@ -25,6 +25,11 @@ NeuralNetwork::NeuralNetwork(int numInput, int numHidden,
 	softMaxResult = new double[numOutput];
 	hSums = new double[numHidden];
 	oSums = new double[numOutput];
+
+	xValues = new double[numInput];
+	tValues = new double[numOutput];
+	// targets
+	yValues = new double[numOutput];
 }
 
 NeuralNetwork::~NeuralNetwork() {
@@ -33,7 +38,6 @@ NeuralNetwork::~NeuralNetwork() {
 	delete[] hOutputs;
 	delete[] oBiases;
 	delete[] outputs;
-	delete[] softMaxResult;
 
 	for (int i = 0; i < numInput; i++) {
 		delete[] ihWeights[i];
@@ -45,8 +49,13 @@ NeuralNetwork::~NeuralNetwork() {
 	}
 	delete[] hoWeights;
 
+	delete[] softMaxResult;
 	delete[] hSums;
 	delete[] oSums;
+
+	delete[] xValues;
+	delete[] tValues;
+	delete[] yValues;
 }
 
 void NeuralNetwork::SetWeights(double *bestWeights) {
@@ -103,7 +112,7 @@ double* NeuralNetwork::GetWeights() {
 	return result;
 }
 
-void NeuralNetwork::ComputeOutputs(double* xValues, double *yValues) const {
+void NeuralNetwork::ComputeOutputs() const {
 	// feed-forward mechanism for NN classifier
 	// xValues has numInput values, yValues has numOutputs values
 	for (int i = 0; i < numInput; i++) {
@@ -150,20 +159,14 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 	Individual* population = new Individual[popSize];
 	double* bestSolution = new double[numWeights];
 	double bestError = std::numeric_limits<double>::max();
-	// inputs
-	double* xValues = new double[numInput];
-	// targets
-	double* tValues = new double[numOutput];
 	double sumSquaredError = 0.0;
-	double* yValues = new double[numOutput];
 	int* indices = new int[popSize];
 
 	for (int i = 0; i < popSize; i++) {
 		population[i] = Individual(numWeights,
 			minX, maxX, mutateRate, mutateChange);
 		double error = MeanSquaredError(trainData,
-			numTrainData, population[i].chromosome,
-			xValues, yValues, tValues);
+			numTrainData, population[i].chromosome);
 		population[i].error = error;
 
 		if (population[i].error < bestError) {
@@ -175,7 +178,7 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 
 	int numCandidates = 2;
 	int tournSize = (int)(tau * popSize);
-	if (tournSize < numCandidates) {
+	if (tournSize > numCandidates) {
 		tournSize = numCandidates;
 	}
 	assert(tournSize < popSize);
@@ -186,25 +189,22 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 	Individual* parents = new Individual[numCandidates];
 	Individual* children = new Individual[2];
 	while (gen < maxGeneration && done == false) {
-		Select(numCandidates, population, popSize, tau,
+		Select(numCandidates, population, popSize,
 			indices, tournamentCandidates, tournSize, parents);
 		Reproduce(parents[0], parents[1], minX, maxX, mutateRate,
 			mutateChange, children);
 
 		children[0].error = MeanSquaredError(trainData,
-			numTrainData, children[0].chromosome,
-			xValues, yValues, tValues);
+			numTrainData, children[0].chromosome);
 		children[1].error = MeanSquaredError(trainData,
-			numTrainData, children[1].chromosome,
-			xValues, yValues, tValues);
+			numTrainData, children[1].chromosome);
 
 		Place(children[0], children[1], population, popSize);
 
 		Individual immigrant(numWeights, minX, maxX,
 			mutateRate, mutateChange);
 		immigrant.error = MeanSquaredError(trainData,
-			numTrainData, immigrant.chromosome,
-			xValues, yValues, tValues);
+			numTrainData, immigrant.chromosome);
 		population[popSize - 3] = immigrant; // third worst
 
 		for (int i = popSize - 3; i < popSize; ++i) {
@@ -223,10 +223,6 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 
 	delete[] population;
 
-	delete[] xValues;
-	delete[] tValues;
-	delete[] yValues;
-
 	delete[] tournamentCandidates;
 	delete[] indices;
 	delete[] parents;
@@ -236,14 +232,15 @@ double* NeuralNetwork::Train(double** trainData, int numTrainData,
 }
 
 void NeuralNetwork::Select(int n, Individual* population,
-	int popSize, double tau, int* indices, Individual* candidates,
+	int popSize, int* indices, Individual* candidates,
 	int tournSize, Individual* results) {
 	for (int i = 0; i < popSize; i++) {
 		indices[i] = i;
 	}
 
 	for (int i = 0; i < popSize; i++) {
-		int r = (int)(randVal()*popSize);
+		int r = (int)(randVal()*(popSize - 1));
+		assert(r < popSize);
 		int tmp = indices[r];
 		indices[r] = indices[i];
 		indices[i] = tmp;
@@ -256,12 +253,6 @@ void NeuralNetwork::Select(int n, Individual* population,
 		[](const Individual &one, const Individual &two) { 
 		return one.error <= two.error;
 	});
-
-	std::cout << "candidates, sorted: ";
-	for (int i = 0; i < tournSize; i++) {
-		std::cout << candidates[i].error << " ";
-	}
-	std::cout << std::endl;
 
 	for (int i = 0; i < n; i++) {
 		results[i] = candidates[i];
@@ -317,17 +308,12 @@ double NeuralNetwork::GetAccuracy(double **testData, int numTestData) const {
 	// percentage correct using winner takes all
 	int numCorrect = 0;
 	int numWrong = 0;
-	// again, this is stupid and I wish the original tutorial didn't allocate
-	// so much
-	double *xValues = new double[numInput];
-	double *tValues = new double[numOutput];
-	double *yValues = new double[numOutput];
 
 	for (int i = 0; i < numTestData; ++i) {
 		memcpy(xValues, testData[i], numInput * sizeof(double));
 		memcpy(tValues, &testData[i][numInput], numOutput * sizeof(double));
 
-		ComputeOutputs(xValues, yValues);
+		ComputeOutputs();
 
 		int maxIndex = MaxIndex(yValues, numOutput);
 		
@@ -338,10 +324,6 @@ double NeuralNetwork::GetAccuracy(double **testData, int numTestData) const {
 			++numWrong;
 		}
 	}
-
-	delete[] xValues;
-	delete[] tValues;
-	delete[] yValues;
 
 	return ((double)numCorrect + 1.0)/
 		(double)(numCorrect + numWrong);
@@ -399,8 +381,7 @@ void NeuralNetwork::Place(const Individual &child1,
 }
 
 double NeuralNetwork::MeanSquaredError(double** trainData,
-	int numTrainData, double* weights, double *xValues,
-	double *yValues, double *tValues) {
+	int numTrainData, double* weights) {
 	SetWeights(weights);
 
 	double sumSquaredError = 0.0;
@@ -408,7 +389,7 @@ double NeuralNetwork::MeanSquaredError(double** trainData,
 		// assume data has x-vals followed by y-vals
 		memcpy(xValues, trainData[i], numInput * sizeof(double));
 		memcpy(tValues, &trainData[i][numInput], numOutput * sizeof(double));
-		this->ComputeOutputs(xValues, yValues);
+		ComputeOutputs();
 		for (int j = 0; j < numOutput; ++j) {
 			double yDiff = yValues[j] - tValues[j];
 			sumSquaredError += yDiff*yDiff;
