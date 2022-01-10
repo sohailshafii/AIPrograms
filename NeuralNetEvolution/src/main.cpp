@@ -47,8 +47,10 @@ void ShowMatrix(double** matrix, int numRows,
 int main() {
 	srand((unsigned int)time(NULL));
 
-	// Fisher's data set
+	// Fisher's data set. Original consists of 150 items while this
+	// is just a subset.
 	double** trainData = new double*[24];
+	// each line is num input + num output
 	trainData[0] = new double[7] { 6.3, 2.9, 5.6, 1.8, 1, 0, 0 };
 	trainData[1] = new double[7] { 6.9, 3.1, 4.9, 1.5, 0, 1, 0 };
 	trainData[2] = new double[7] { 4.6, 3.4, 1.4, 0.3, 0, 0, 1 };
@@ -113,12 +115,13 @@ int main() {
 	ShowVector(bestWeights, numWeights, 10, 3, true);
 
 	neuralNet.SetWeights(bestWeights);
+	delete[] bestWeights;
 	double trainAcc = neuralNet.GetAccuracy(trainData, 24);
-	std::cout << "\nAccuracy of training data = "
+	std::cout << "\nAccuracy on training data = "
 		<< std::setprecision(4) << trainAcc;
 
 	double testAcc = neuralNet.GetAccuracy(testData, 6);
-	std::cout << "\nAccuracy of test data = "
+	std::cout << "\nAccuracy on test data = "
 		<< std::setprecision(4) << testAcc;
 
 	std::cout << "\nEnd Neural Net training demo.\n";

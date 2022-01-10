@@ -14,6 +14,8 @@ NeuralNetwork::NeuralNetwork(int numInput, int numHidden,
 	this->numHidden = numHidden;
 	this->numOutput = numOutput;
 	inputs = new double[numInput];
+
+	// variables used for calculations for in-between
 	ihWeights = MakeMatrix(numInput, numHidden);
 	hBiases = new double[numHidden];
 	hOutputs = new double[numHidden];
@@ -21,7 +23,6 @@ NeuralNetwork::NeuralNetwork(int numInput, int numHidden,
 	oBiases = new double[numOutput];
 	outputs = new double[numOutput];
 
-	// variables used for calculations for in-between
 	softMaxResult = new double[numOutput];
 	hSums = new double[numHidden];
 	oSums = new double[numOutput];
@@ -238,8 +239,10 @@ void NeuralNetwork::Select(int n, Individual* population,
 		indices[i] = i;
 	}
 
-	for (int i = 0; i < popSize; i++) {
-		int r = (int)(randVal()*(popSize - 1));
+	for (int i = 0; i < popSize-1; i++) {
+		int nextIndex = i + 1;
+		// find random index in remaining range
+		int r = nextIndex + (int)(randVal()*(popSize - 1 - nextIndex));
 		assert(r < popSize);
 		int tmp = indices[r];
 		indices[r] = indices[i];
