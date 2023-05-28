@@ -37,8 +37,8 @@ Population Algorithm::EvolvePopulation(Population & pop) {
 	return newPopulation;
 }
 
-Individual Algorithm::Crossover(Individual & indiv1,
-	Individual & indiv2) {
+Individual Algorithm::Crossover(Individual const & indiv1,
+	Individual const & indiv2) {
 	Individual newSol;
 	// Loop through genes
 	int indiv1Size = indiv1.Size();
@@ -81,12 +81,12 @@ void Algorithm::Mutate(Individual & indiv) {
 /// <summary>
 /// Get fittest from a random selection of individuals. 
 /// </summary>
-Individual Algorithm::TournamentSelection(Population& pop) {
+Individual Algorithm::TournamentSelection(Population const & pop) {
 	Population tournament(tournamentSize, false);
 	int popSize = pop.GetPopulationSize();
 	for (int i = 0; i < tournamentSize; i++) {
 		int randomId = (int)(Algorithm::RandomValue() * popSize);
-		tournament.SaveIndividual(i, pop.GetIndividual(randomId));
+		tournament.SaveIndividual(i, pop.GetIndividualConst(randomId));
 	}
 	Individual fittest = tournament.GetFittest();
 	return fittest;

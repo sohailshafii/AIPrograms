@@ -15,10 +15,10 @@ private:
 	static constexpr int tournamentSize = 5;
 	static constexpr bool elitism = true;
 
-	static Individual Crossover(Individual & indiv1,
-		Individual & indiv2);
+	static Individual Crossover(Individual const & indiv1,
+		Individual const & indiv2);
 	static void Mutate(Individual & indiv);
-	static Individual TournamentSelection(Population & pop);
+	static Individual TournamentSelection(Population const & pop);
 
 	static float RandomValue();
 

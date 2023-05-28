@@ -18,6 +18,10 @@ public:
 	Individual& GetIndividual(int index) {
 		return individuals[index];
 	}
+	
+	Individual const & GetIndividualConst(int index) const {
+		return individuals[index];
+	}
 
 	Individual& GetFittest() {
 		Individual& fittest = individuals[0];
@@ -37,7 +41,7 @@ public:
 	}
 
 	void SaveIndividual(int index,
-		Individual& indiv) {
+		Individual const & indiv) {
 		individuals[index] = indiv;
 	}
 
