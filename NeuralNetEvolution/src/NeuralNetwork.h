@@ -9,20 +9,23 @@ class NeuralNetwork {
 public:
 	NeuralNetwork(int numInput, int numHidden,
 		int numOutput);
+	~NeuralNetwork();
 
 	void SetWeights(double *bestWeights);
 	double* GetWeights();
 
-	void ComputeOutputs(double* xValues, double* outputs) const;
+	void ComputeOutputs() const;
 	double* Train(double** trainData, int numTrainData, int popSize,
 		int maxGeneration, double exitError, double mutateRate, 
-		double mutateChange, double tau);
+		double mutateChange, double tau, int& numWeights);
 
-	Individual* Select(int n, Individual* population,
-		int popSize, double tau);
-	Individual* Reproduce(const Individual& parent1,
-		const Individual& parent2, double minGene,
-		double maxGene, double mutateRate, double mutateChange);
+	void Select(int n, Individual* population,
+		int popSize, int* indices, Individual* candidates,
+		int tournSize, Individual* results);
+	void Reproduce(Individual const & parent1,
+		Individual const & parent2, double minGene,
+		double maxGene, double mutateRate, double mutateChange,
+		Individual* results);
 
 	void Mutate(const Individual &child, double maxGene,
 		double mutateRate, double mutateChange);
@@ -32,7 +35,7 @@ public:
 private:
 	static double** MakeMatrix(int rows, int cols);
 	static double HyperTanFunction(double x);
-	static double* SoftMax(double* oSums);
+	void SoftMax(double* oSums) const;
 
 	static void Place(const Individual &child1,
 		const Individual& child2, Individual* population,
@@ -41,6 +44,12 @@ private:
 		double* weights);
 
 	static int MaxIndex(double* vector, int vectorLength);
+
+	int GetNumWeights() const {
+		return numInput * numHidden +
+			numHidden * numOutput + numHidden +
+			numOutput;
+	}
 
 	int numInput;
 	int numHidden;
@@ -52,4 +61,12 @@ private:
 	double** hoWeights;
 	double* oBiases;
 	double* outputs;
+
+	double* softMaxResult;
+	double* hSums;
+	double* oSums;
+
+	double* xValues;
+	double* tValues;
+	double* yValues;
 };
