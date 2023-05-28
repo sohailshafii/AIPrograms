@@ -36,7 +36,7 @@ public:
 		float chanceOfMutation);
 
 	void CalculatePerf(std::string const & password);
-	void printPopulation() const;
+	void PrintPopulation() const;
 
 	void TestInitialData() const;
 	void TestFitnessFunction(std::string const & testPassword,
@@ -60,7 +60,7 @@ private:
 
 	void AllocateAndCopyFrom(PopulationData const & other);
 	void CopyFrom(PopulationData const & other);
-	//static void allocateRandData();
+	//static void AllocateRandData();
 
 	static float RandUnitVal();
 	static char RandomLetterAscii();

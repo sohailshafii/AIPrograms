@@ -114,7 +114,7 @@ void PopulationData::CopyFrom(PopulationData const & other) {
 	}
 }
 
-/*void PopulationData::allocateRandData() {
+/*void PopulationData::AllocateRandData() {
 	if (gen != nullptr) {
 		return;
 	}
@@ -143,7 +143,7 @@ void PopulationData::CalculatePerf(std::string const & password) {
 	ComputePerfPopulation(password);
 }
 
-void PopulationData::printPopulation() const {
+void PopulationData::PrintPopulation() const {
 	std::cout << "Printing current generation...\n";
 	for (unsigned int i = 0; i < populationSize; i++) {
 		auto& individual = currentGeneration[i];
@@ -195,6 +195,8 @@ float PopulationData::FitnessFunction(std::string const & password,
 void PopulationData::SelectBreedersFromPopulation() {
 	int pickedIndex = 0;
 	// pick from the front as those are the best
+	// it is expected that the current generation is sorted
+	// before this point
 	for (unsigned int i = 0; i < numBestBreeders; i++) {
 		breeders[pickedIndex] = currentGeneration[pickedIndex];
 		pickedIndex++;

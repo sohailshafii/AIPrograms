@@ -35,10 +35,24 @@ std::vector<PopulationData> EvolveMultipleTimes(int numberOfGenerations,
 	return allGenerations;
 }
 
-int main() {
+bool CheckUsage(int argc, char** argv) {
+	if (argc < 2) {
+		std::cerr << "Usage: GeneticAlgorithmPassword <password>\n";
+		return false;
+	}
+	return true;
+}
+
+int main(int argc, char** argv) {
 	srand((unsigned int)time(NULL));
 
-	std::string password = "banana";
+	bool goodUsage = CheckUsage(argc, argv);
+
+	if (!goodUsage) {
+		return 1;
+	}
+
+	std::string password = argv[1];
 	int populationSize = 100;
 	int numBestSamples = 20;
 	int numLuckyFewIndices = 20;
@@ -61,12 +75,12 @@ int main() {
 
 		std::cout << "Performance of first generation:\n";
 		auto& firstGen = allEvolutions[0];
-		firstGen.printPopulation();
+		firstGen.PrintPopulation();
 
 		std::cout << "Performance of last generation:\n";
 		auto& lastGen = allEvolutions[allEvolutions.size() - 1];
 		lastGen.CalculatePerf(password);
-		lastGen.printPopulation();
+		lastGen.PrintPopulation();
 	}
 	return 0;
 }
