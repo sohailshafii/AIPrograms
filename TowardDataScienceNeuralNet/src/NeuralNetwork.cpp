@@ -6,25 +6,36 @@
 #include "Common.h"
 
 NeuralNetwork::NeuralNetwork(Matrix const & x, Matrix const & y) {
+	// assuming x is 4x3...and y is 4x1 for comments regarding
+	// matrix sizes below.
 	this->input = new Matrix(x);
+	// weights1 is 3x4
 	this->weights1 = new Matrix(x.GetNumColumns(),
 		x.GetNumRows());
 	this->weights1->FillWithRandomValues(0.0f, 1.0f);
 
+	// weights2 is 4x1
 	this->weights2 = new Matrix(x.GetNumRows(), 1);
 	this->weights2->FillWithRandomValues(0.0f, 1.0f);
 
+	// y is 4x1
 	this->y = new Matrix(y);
+	// 4x1
 	this->output = new Matrix(x.GetNumRows(), 1);
 	this->output->FillWithZeros();
 
+	// 4x4
 	this->layer1 = new Matrix(x.GetNumRows(), x.GetNumRows());
 
+	// 3x3, for derivatives
 	this->dWeights1 = new Matrix(x.GetNumColumns(),
 		x.GetNumRows());
+	// 4x1, fore derivatives
 	this->dWeights2 = new Matrix(x.GetNumRows(), 1);
 
+	// 4x1
 	this->tempOutput = new Matrix(*output);
+	// 4x4
 	this->layer1Derivs = new Matrix(*layer1);
 }
 
@@ -82,6 +93,7 @@ void NeuralNetwork::Configure(int iterations) {
 }
 
 void NeuralNetwork::FeedForward() {
+	// 4x4 = 4x3 * 3x4, then calculate sigmoid on first layer
 	*layer1 = (*input)*(*weights1);
 	auto numRows = layer1->GetNumRows();
 	auto numCols = layer1->GetNumColumns();
@@ -92,6 +104,7 @@ void NeuralNetwork::FeedForward() {
 		}
 	}
 
+	// 4x1 = 4x4 * 4x1, then calculate sigmoid on second layer
 	*output = (*layer1)*(*weights2);
 	numRows = output->GetNumRows();
 	numCols = output->GetNumColumns();
@@ -131,6 +144,9 @@ float NeuralNetwork::ComputeCurrentLoss() const {
 
 void NeuralNetwork::BackProp() {
 	// compute partial deriv weights 2
+	// 4x1. y is our solution, output is what we computed
+	// compute derivative of (y - output)^2 to follow
+	// gradient descent
 	auto numRows = tempOutput->GetNumRows();
 	for (int row = 0; row < numRows; row++) {
 		(*tempOutput)[row][0] = 
@@ -139,21 +155,26 @@ void NeuralNetwork::BackProp() {
 	}
 	*dWeights2 = layer1->Transpose()*(*tempOutput);
 
+	// as you take derivative of inner layer, first derivative
+	// involves multiplying by outer set of weights
+	// 4x1 * 1x4 = 4x4
 	Matrix tempMult = (*tempOutput)*(weights2->Transpose());
 	numRows = layer1Derivs->GetNumRows();
 	auto numCols = layer1Derivs->GetNumColumns();
 	for (int row = 0; row < numRows; row++) {
-		auto currRow = (*layer1Derivs)[row];
+		auto currRowDeriv = (*layer1Derivs)[row];
 		auto currRowLayer1 = (*layer1)[row];
 		auto tempMultRow = tempMult[row];
 
 		for (int col = 0; col < numCols; col++) {
-			currRow[col] = DerivSigmoid(currRowLayer1[col]);
-			tempMultRow[col] *= currRow[col];
+			currRowDeriv[col] = DerivSigmoid(currRowLayer1[col]);
+			tempMultRow[col] *= currRowDeriv[col];
 		}
 	}
+	// 3x4 * 4x4 = 3x4
 	*dWeights1 = input->Transpose()*tempMult;
 
+	// weights2 => 4x1, weights1 = 3x4
 	(*weights2) += (*dWeights2);
 	(*weights1) += (*dWeights1);
 }
