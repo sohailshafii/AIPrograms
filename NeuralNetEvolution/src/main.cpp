@@ -101,8 +101,14 @@ int main() {
 	// training parameters specific to EO
 	int popSize = 8;
 	int maxGeneration = 500;
+	// exits early if best set of weights found
+	// produces an error less than the threshold
 	double exitError = 0.0;
+	// how many genes in new chromosome
+	// will be mutated
 	double mutateRate = 0.20;
+	// controls the magnitude of the change of
+	// mutated genes
 	double mutateChange = 0.01;
 	// selection pressure -- likelihood that the
 	// two best individuals in the population will be
