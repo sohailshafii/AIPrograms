@@ -1,0 +1,737 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		09A6D4B2713B4382A2E02325 /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = F7AD08A682874364BFEB0853 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				79BEEF70191B986E74FA38C4 /* Generate CMakeFiles/ALL_BUILD */,
+			);
+			dependencies = (
+				9387F514D485442E8F34DFFC /* PBXTargetDependency */,
+				EBB23737E01843FAA164E31A /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+		B2B5FCDBF51143CC8EDEDB03 /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = DC80C8208A334A0483361673 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				F1E03B3377832B77C6629865 /* Generate CMakeFiles/ZERO_CHECK */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		1E27BAF000CD4E6C97D65426 /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/src/main.cpp */ = {isa = PBXBuildFile; fileRef = A4A167F20A9848DBAFB63917 /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/src/main.cpp */; };
+		94D4D678FF31431A8E7359AB /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 4D486D7F9DC747B49C0AF421 /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeLists.txt */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		5F55CB0DE23249ECAD561F69 /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		95CEC55418A74631907EACBE /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+		D18839135E3D4FECAC586ED7 /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		D8A2A4958A544A9A83B5D7E6 /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		43F57B9C91B14882A0AE144B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CFF8A9C51CC549D79605AF6B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3FE6460974E74380A6F1D203;
+			remoteInfo = LogisticRegressionTest;
+		};
+		48D8A26785C84068B9797A68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CFF8A9C51CC549D79605AF6B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B2B5FCDBF51143CC8EDEDB03;
+			remoteInfo = ZERO_CHECK;
+		};
+		6A12E2E2E5A241DDA2230BE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CFF8A9C51CC549D79605AF6B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B2B5FCDBF51143CC8EDEDB03;
+			remoteInfo = ZERO_CHECK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4D486D7F9DC747B49C0AF421 /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		65ED34B23F8640B787DC01EF /* LogisticRegressionTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = LogisticRegressionTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4A167F20A9848DBAFB63917 /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/src/main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
+		CAC0F630C9284B61B9D67C49 /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FD3CC746281640788CF23C49 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		25892CADD6114047AC8A2020 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2C718822A79B4793AD583A2E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		6AFFC3CF25B04B839B23B317 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				A4A167F20A9848DBAFB63917 /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/src/main.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		85FA8B8003934D5798E65442 /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				F9EA43F093FF4486B7371FE5 /* CMake Rules */,
+				CAC0F630C9284B61B9D67C49 /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		A36BED5A5F4F4E5392CF6660 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65ED34B23F8640B787DC01EF /* LogisticRegressionTest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A78F138D75364DE493DC3D04 = {
+			isa = PBXGroup;
+			children = (
+				EED54441F2444CCDBBD7589D /* LogisticRegressionTest */,
+				85FA8B8003934D5798E65442 /* ALL_BUILD */,
+				A36BED5A5F4F4E5392CF6660 /* Products */,
+				25892CADD6114047AC8A2020 /* Frameworks */,
+				2C718822A79B4793AD583A2E /* Resources */,
+			);
+			sourceTree = "<group>";
+		};
+		EED54441F2444CCDBBD7589D /* LogisticRegressionTest */ = {
+			isa = PBXGroup;
+			children = (
+				6AFFC3CF25B04B839B23B317 /* Source Files */,
+				4D486D7F9DC747B49C0AF421 /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeLists.txt */,
+			);
+			name = LogisticRegressionTest;
+			sourceTree = "<group>";
+		};
+		F9EA43F093FF4486B7371FE5 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3FE6460974E74380A6F1D203 /* LogisticRegressionTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D723612B708D4340A01C20F1 /* Build configuration list for PBXNativeTarget "LogisticRegressionTest" */;
+			buildPhases = (
+				5348B95925384A19A03F71EC /* Sources */,
+				FD3CC746281640788CF23C49 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A31ADA78C5B342BA89DCB90F /* PBXTargetDependency */,
+			);
+			name = LogisticRegressionTest;
+			productName = LogisticRegressionTest;
+			productReference = 65ED34B23F8640B787DC01EF /* LogisticRegressionTest */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CFF8A9C51CC549D79605AF6B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1640;
+			};
+			buildConfigurationList = 009BD056775F4F9BAFACCFB2 /* Build configuration list for PBXProject "LogisticRegressionTest" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				D18839135E3D4FECAC586ED7 /* Debug */,
+				95CEC55418A74631907EACBE /* Release */,
+				5F55CB0DE23249ECAD561F69 /* MinSizeRel */,
+				D8A2A4958A544A9A83B5D7E6 /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = A78F138D75364DE493DC3D04;
+			projectDirPath = .;
+			projectRoot = "";
+			targets = (
+				09A6D4B2713B4382A2E02325 /* ALL_BUILD */,
+				3FE6460974E74380A6F1D203 /* LogisticRegressionTest */,
+				B2B5FCDBF51143CC8EDEDB03 /* ZERO_CHECK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3C0110FC8322DE7E50886E21 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		79BEEF70191B986E74FA38C4 /* Generate CMakeFiles/ALL_BUILD */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ALL_BUILD";
+			outputPaths = (
+/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeFiles/ALL_BUILD			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest
+  echo Build\\ all\\ projects
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		9B50530E35CC49C82C2FACCF = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		F1E03B3377832B77C6629865 /* Generate CMakeFiles/ZERO_CHECK */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ZERO_CHECK";
+			outputPaths = (
+/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeFiles/ZERO_CHECK			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest
+  make -f /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest
+  make -f /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest
+  make -f /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest
+  make -f /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/CMakeScripts/ReRunCMake.make
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5348B95925384A19A03F71EC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E27BAF000CD4E6C97D65426 /* /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/src/main.cpp */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9387F514D485442E8F34DFFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3FE6460974E74380A6F1D203 /* LogisticRegressionTest */;
+			targetProxy = 43F57B9C91B14882A0AE144B /* PBXContainerItemProxy */;
+		};
+		A31ADA78C5B342BA89DCB90F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B2B5FCDBF51143CC8EDEDB03 /* ZERO_CHECK */;
+			targetProxy = 6A12E2E2E5A241DDA2230BE5 /* PBXContainerItemProxy */;
+		};
+		EBB23737E01843FAA164E31A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B2B5FCDBF51143CC8EDEDB03 /* ZERO_CHECK */;
+			targetProxy = 48D8A26785C84068B9797A68 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		08D40383F1D7401196EA44B1 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/RelWithDebInfo;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest,/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/src,"$(inherited)");
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = LogisticRegressionTest;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/build/LogisticRegressionTest.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		0EBD295996F24CA8B8B4BBFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		106D5FBC7CA54E7A943829A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		11F50DB6EFA443878052B42A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/Debug;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest,/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/src,"$(inherited)");
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = LogisticRegressionTest;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/build/LogisticRegressionTest.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		199ABEE81FF549958AC4C727 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/build;
+			};
+			name = RelWithDebInfo;
+		};
+		1CAFB51D83414D8FB7AFF7F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/build;
+			};
+			name = Release;
+		};
+		45A427FE496E4CCF99618E66 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		5E478CE8765849D88F13C463 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		722894C4D9F04A799C0D12CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/Release;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest,/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/src,"$(inherited)");
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = LogisticRegressionTest;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/build/LogisticRegressionTest.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		7FCB56B6698341E2A45ADA5A /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		8CAEB848FA4C4F40B4ED5407 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		B2112B6E5E5E4DA181D05778 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		B5C0ECA726114188BC6CB3B8 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/build;
+			};
+			name = MinSizeRel;
+		};
+		D19BACA597AA4F98993BB997 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk;
+				SYMROOT = /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/build;
+			};
+			name = Debug;
+		};
+		E5783FEF9AF74C5283C44BD3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		FB14AEFCD2A54516A4156CCD /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/MinSizeRel;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest,/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/src,"$(inherited)");
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = LogisticRegressionTest;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/sohailshafii/src/AIPrograms/LogisticRegressionTest/build/LogisticRegressionTest.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		009BD056775F4F9BAFACCFB2 /* Build configuration list for PBXProject "LogisticRegressionTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D19BACA597AA4F98993BB997 /* Debug */,
+				1CAFB51D83414D8FB7AFF7F2 /* Release */,
+				B5C0ECA726114188BC6CB3B8 /* MinSizeRel */,
+				199ABEE81FF549958AC4C727 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D723612B708D4340A01C20F1 /* Build configuration list for PBXNativeTarget "LogisticRegressionTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11F50DB6EFA443878052B42A /* Debug */,
+				722894C4D9F04A799C0D12CD /* Release */,
+				FB14AEFCD2A54516A4156CCD /* MinSizeRel */,
+				08D40383F1D7401196EA44B1 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DC80C8208A334A0483361673 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EBD295996F24CA8B8B4BBFE /* Debug */,
+				5E478CE8765849D88F13C463 /* Release */,
+				45A427FE496E4CCF99618E66 /* MinSizeRel */,
+				8CAEB848FA4C4F40B4ED5407 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F7AD08A682874364BFEB0853 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5783FEF9AF74C5283C44BD3 /* Debug */,
+				106D5FBC7CA54E7A943829A7 /* Release */,
+				7FCB56B6698341E2A45ADA5A /* MinSizeRel */,
+				B2112B6E5E5E4DA181D05778 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CFF8A9C51CC549D79605AF6B /* Project object */;
+}
