@@ -23,8 +23,10 @@ void BuildDatasetInformation(const std::string& positiveLabel,
                              std::vector<float> yValues);
 void ResizeNearest(const unsigned char* src, int oldWidth, int oldHeight, int channels,
                    unsigned char* dst, int newWidth, int newHeight);
-void FlattenImages(const std::vector<unsigned char*>& trainingSet);
-void FreeImages(const std::vector<unsigned char*>& trainingSet);
+void FlattenImages(const std::vector<unsigned char*>& images);
+void FreeImages(const std::vector<unsigned char*>& images);
+
+void Normalize(const std::vector<unsigned char*>& images);
 
 int main(int argc, char** argv)
 {
@@ -65,16 +67,20 @@ int main(int argc, char** argv)
 
     std::vector<unsigned char*> trainingSet;
     std::vector<float> trainingSetY;
+    std::cout << "Reading training images.\n";
     BuildDatasetInformation(positiveLabel,
                             trainingPath,
                             trainingSet,
                             trainingSetY);
+    std::cout << "Done.\n";
     std::vector<unsigned char*> testSet;
     std::vector<float> testSetY;
+    std::cout << "Reading test images.\n";
     BuildDatasetInformation(positiveLabel,
                             testPath,
                             testSet,
                             testSetY);
+    std::cout << "Done.\n";
     
     size_t mTrain = trainingSet.size();
     size_t mTest = testSet.size();
@@ -87,6 +93,11 @@ int main(int argc, char** argv)
     FlattenImages(trainingSet);
     FlattenImages(testSet);
     std::cout << "Done flattening.\n";
+    
+    std::cout << "Normalizing...\n";
+    Normalize(trainingSet);
+    Normalize(testSet);
+    std::cout << "Done normalizing.\n";
 
     FreeImages(trainingSet);
     trainingSet.clear();
@@ -142,37 +153,6 @@ void BuildDatasetInformation(const std::string& positiveLabel,
     }
 }
 
-// flatten each image so that the red components are first,
-// followed by green and then blue
-void FlattenImages(const std::vector<unsigned char*>& trainingSet)
-{
-    std::vector<unsigned char> tempImage;
-    int imageSizeSquared = TARGET_IMAGE_SIZE*TARGET_IMAGE_SIZE;
-    int numBytes = imageSizeSquared*EXPECTED_CHANNELS;
-    tempImage.resize(numBytes);
-    for (size_t i = 0; i < trainingSet.size(); i++) {
-        for (int row = 0; row < TARGET_IMAGE_SIZE; row++) {
-            int rowOffsetOriginal = row*TARGET_IMAGE_SIZE*EXPECTED_CHANNELS;
-            int redOffsetDest = row*TARGET_IMAGE_SIZE;
-            int greenOffsetDest = imageSizeSquared + redOffsetDest;
-            int blueOffsetDest = 2 * imageSizeSquared + redOffsetDest;
-            auto image = trainingSet[i];
-            for (int col = 0; col < TARGET_IMAGE_SIZE; col++) {
-                tempImage[redOffsetDest + col] = image[rowOffsetOriginal + col*EXPECTED_CHANNELS];
-                tempImage[greenOffsetDest + col] = image[rowOffsetOriginal + col*EXPECTED_CHANNELS + 1];
-                tempImage[blueOffsetDest + col] = image[rowOffsetOriginal + col*EXPECTED_CHANNELS + 2];
-            }
-        }
-        memcpy(trainingSet[i], tempImage.data(), numBytes);
-    }
-}
-
-void FreeImages(const std::vector<unsigned char*>& trainingSet) {
-    for(auto img : trainingSet) {
-        delete [] img;
-    }
-}
-
 void ResizeNearest(const unsigned char* src, int oldWidth, int oldHeight, int channels,
                    unsigned char* dst, int newWidth, int newHeight) {
     for (int y = 0; y < newHeight; ++y) {
@@ -183,6 +163,48 @@ void ResizeNearest(const unsigned char* src, int oldWidth, int oldHeight, int ch
                 dst[(y * newWidth + x) * channels + c] =
                     src[(src_y * oldWidth + src_x) * channels + c];
             }
+        }
+    }
+}
+
+// flatten each image so that the red components are first,
+// followed by green and then blue.
+void FlattenImages(const std::vector<unsigned char*>& images)
+{
+    std::vector<unsigned char> tempImage;
+    int imageSizeSquared = TARGET_IMAGE_SIZE*TARGET_IMAGE_SIZE;
+    int numBytes = imageSizeSquared*EXPECTED_CHANNELS;
+    tempImage.resize(numBytes);
+    for (size_t i = 0; i < images.size(); i++) {
+        for (int row = 0; row < TARGET_IMAGE_SIZE; row++) {
+            int rowOffsetOriginal = row*TARGET_IMAGE_SIZE*EXPECTED_CHANNELS;
+            int redOffsetDest = row*TARGET_IMAGE_SIZE;
+            int greenOffsetDest = imageSizeSquared + redOffsetDest;
+            int blueOffsetDest = 2 * imageSizeSquared + redOffsetDest;
+            auto image = images[i];
+            for (int col = 0; col < TARGET_IMAGE_SIZE; col++) {
+                tempImage[redOffsetDest + col] = image[rowOffsetOriginal + col*EXPECTED_CHANNELS];
+                tempImage[greenOffsetDest + col] = image[rowOffsetOriginal + col*EXPECTED_CHANNELS + 1];
+                tempImage[blueOffsetDest + col] = image[rowOffsetOriginal + col*EXPECTED_CHANNELS + 2];
+            }
+        }
+        memcpy(images[i], tempImage.data(), numBytes);
+    }
+}
+
+void FreeImages(const std::vector<unsigned char*>& images) {
+    for(auto img : images) {
+        delete [] img;
+    }
+}
+
+void Normalize(const std::vector<unsigned char*>& images) {
+    int numPixels = TARGET_IMAGE_SIZE*TARGET_IMAGE_SIZE;
+    float normFactor = 1.0f/255.0f;
+    for (size_t i = 0; i < images.size(); i++) {
+        auto& currentImage = images[i];
+        for (int px = 0; px < numPixels; px++) {
+            currentImage[px] *= normFactor;
         }
     }
 }
