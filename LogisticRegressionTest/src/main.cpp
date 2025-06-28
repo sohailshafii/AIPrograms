@@ -1,3 +1,5 @@
+// From related course.
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -19,14 +21,17 @@ void PrintUsage();
 std::vector<std::string> GetFilesInPath(const std::string& path);
 void BuildDatasetInformation(const std::string& positiveLabel,
                              const std::string& parentFolder,
-                             std::vector<unsigned char*> images,
-                             std::vector<float> yValues);
-void ResizeNearest(const unsigned char* src, int oldWidth, int oldHeight, int channels,
-                   unsigned char* dst, int newWidth, int newHeight);
-void FlattenImages(const std::vector<unsigned char*>& images);
-void FreeImages(const std::vector<unsigned char*>& images);
+                             std::vector<float*>& images,
+                             std::vector<float>& yValues);
+void ResizeNearest(unsigned char* src, int oldWidth, int oldHeight, int channels,
+                   float* dst, int newWidth, int newHeight);
+void FlattenImages(const std::vector<float*>& images);
+void FreeImages(const std::vector<float*>& images);
 
-void Normalize(const std::vector<unsigned char*>& images);
+void Normalize(const std::vector<float*>& images);
+
+float Sigmoid(float z);
+void InitializeWithZeros(float* weights, float* b);
 
 int main(int argc, char** argv)
 {
@@ -65,7 +70,8 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    std::vector<unsigned char*> trainingSet;
+    // Images are bytes originally, but they need to be normalized so convert them into bytes.
+    std::vector<float*> trainingSet;
     std::vector<float> trainingSetY;
     std::cout << "Reading training images.\n";
     BuildDatasetInformation(positiveLabel,
@@ -73,7 +79,7 @@ int main(int argc, char** argv)
                             trainingSet,
                             trainingSetY);
     std::cout << "Done.\n";
-    std::vector<unsigned char*> testSet;
+    std::vector<float*> testSet;
     std::vector<float> testSetY;
     std::cout << "Reading test images.\n";
     BuildDatasetInformation(positiveLabel,
@@ -93,7 +99,7 @@ int main(int argc, char** argv)
     FlattenImages(trainingSet);
     FlattenImages(testSet);
     std::cout << "Done flattening.\n";
-    
+
     std::cout << "Normalizing...\n";
     Normalize(trainingSet);
     Normalize(testSet);
@@ -128,8 +134,8 @@ std::vector<std::string> GetFilesInPath(const std::string& path) {
 
 void BuildDatasetInformation(const std::string& positiveLabel,
          const std::string& parentFolder,
-         std::vector<unsigned char*> images,
-         std::vector<float> yValues) {
+         std::vector<float*>& images,
+         std::vector<float>& yValues) {
     std::vector<std::string> filePaths = GetFilesInPath(parentFolder);
     std::cout << "Found " << filePaths.size() << " images in path " << parentFolder << ".\n";
     for(auto path : filePaths) {
@@ -142,7 +148,7 @@ void BuildDatasetInformation(const std::string& positiveLabel,
             std::cerr << "Could not load image at path " << path << ".\n";
             return 1;
         }
-        unsigned char* output = new unsigned char[TARGET_IMAGE_SIZE*TARGET_IMAGE_SIZE*EXPECTED_CHANNELS];
+        float* output = new float[TARGET_IMAGE_SIZE*TARGET_IMAGE_SIZE*EXPECTED_CHANNELS];
         int input_stride = width * channels;
         int output_stride = TARGET_IMAGE_SIZE * channels;
         // force a resize
@@ -153,8 +159,8 @@ void BuildDatasetInformation(const std::string& positiveLabel,
     }
 }
 
-void ResizeNearest(const unsigned char* src, int oldWidth, int oldHeight, int channels,
-                   unsigned char* dst, int newWidth, int newHeight) {
+void ResizeNearest(unsigned char* src, int oldWidth, int oldHeight, int channels,
+                   float* dst, int newWidth, int newHeight) {
     for (int y = 0; y < newHeight; ++y) {
         int src_y = y * oldHeight / newHeight;
         for (int x = 0; x < newWidth; ++x) {
@@ -169,9 +175,9 @@ void ResizeNearest(const unsigned char* src, int oldWidth, int oldHeight, int ch
 
 // flatten each image so that the red components are first,
 // followed by green and then blue.
-void FlattenImages(const std::vector<unsigned char*>& images)
+void FlattenImages(const std::vector<float*>& images)
 {
-    std::vector<unsigned char> tempImage;
+    std::vector<float> tempImage;
     int imageSizeSquared = TARGET_IMAGE_SIZE*TARGET_IMAGE_SIZE;
     int numBytes = imageSizeSquared*EXPECTED_CHANNELS;
     tempImage.resize(numBytes);
@@ -192,13 +198,13 @@ void FlattenImages(const std::vector<unsigned char*>& images)
     }
 }
 
-void FreeImages(const std::vector<unsigned char*>& images) {
+void FreeImages(const std::vector<float*>& images) {
     for(auto img : images) {
         delete [] img;
     }
 }
 
-void Normalize(const std::vector<unsigned char*>& images) {
+void Normalize(const std::vector<float*>& images) {
     int numPixels = TARGET_IMAGE_SIZE*TARGET_IMAGE_SIZE;
     float normFactor = 1.0f/255.0f;
     for (size_t i = 0; i < images.size(); i++) {
@@ -207,4 +213,13 @@ void Normalize(const std::vector<unsigned char*>& images) {
             currentImage[px] *= normFactor;
         }
     }
+}
+
+inline float Sigmoid(float z) {
+    return 1.0f/(1.0f + exp(-z));
+}
+
+inline void InitializeWithZeros(float* weights, float& b, int numWeights) {
+    memset(weights, 0.0f, numWeights * sizeof(float));
+    b = 0.0f;
 }
